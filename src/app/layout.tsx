@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import "bootstrap/dist/css/bootstrap.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,8 +27,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+  
+        {/* Responsive stylesheet */}
+
+        <Script
+          src="/js/jquery-migrate-3.0.0.min.js"
+          strategy="beforeInteractive"
+        />
+       
         {children}
+
+    
       </body>
     </html>
   );
+}
+function useEffect(arg0: () => void, arg1: never[]) {
+  throw new Error("Function not implemented.");
 }
