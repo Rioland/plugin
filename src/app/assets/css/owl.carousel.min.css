@@ -1,15 +1,11 @@
-/**
- * Owl Carousel v2.3.4
- * Copyright 2013-2018 David Deutsch
- * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
- */
+/*Owl Carousel v2.3.4*/
 .owl-carousel,
 .owl-carousel .owl-item {
   -webkit-tap-highlight-color: transparent;
   position: relative;
 }
 .owl-carousel {
-  display: none;
+  /* display:none; */
   width: 100%;
   z-index: 1;
 }
@@ -72,11 +68,8 @@
 .owl-carousel .owl-nav button.owl-next,
 .owl-carousel .owl-nav button.owl-prev,
 .owl-carousel button.owl-dot {
-  background: 0 0;
-  color: inherit;
-  border: none;
-  padding: 0 !important;
-  font: inherit;
+  /* background:0 0; */ /* color:inherit; */
+  border: none; /* padding:0!important; */ /* font:inherit; */
 }
 .owl-carousel.owl-loading {
   opacity: 0;
@@ -154,7 +147,7 @@
   top: 50%;
   margin-left: -40px;
   margin-top: -40px;
-  background: url(owl.video.play.png) no-repeat;
+  background: url(./img/owl.video.play.png) no-repeat;
   cursor: pointer;
   z-index: 1;
   -webkit-backface-visibility: hidden;

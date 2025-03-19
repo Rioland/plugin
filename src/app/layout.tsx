@@ -1,7 +1,10 @@
 // 'use client'
 import type { Metadata } from "next";
 import "bootstrap/dist/css/bootstrap.css";
-// import "./assets/css/bootstrap.min.css";
+// import "./assets/css/owl-carousel.css";
+// import "./assets/css/owl.theme.green.min.css";
+import "./assets/css/owl.carousel.min.css";
+import "./assets/css/bootstrap.min.css";
 import "./assets/css/style.css";
 import "./assets/css/menu.css";
 import "./assets/css/dashbord_navitaion.css";
@@ -12,7 +15,8 @@ import "./assets/css/ud-custom-spacing.css";
 import "./assets/css/responsive.css";
 import "./assets/css/flaticon.css";
 import "./assets/css/animate.css";
-// import "./assets/css/owl-carousel.css";
+
+
 import "./assets/css/fontawesome.css";
 // import React, { useEffect } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -53,9 +57,9 @@ export default function RootLayout({
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossOrigin="anonymous"
       />
-      <Script  src="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/owl.carousel.min.js" />
+      <Script  src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" />
         {/* Responsive stylesheet */}
-
+        <Script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossOrigin="anonymous"/>
        
         {children}
 
