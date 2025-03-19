@@ -1,7 +1,7 @@
 // 'use client'
 import type { Metadata } from "next";
-import "bootstrap/dist/css/bootstrap.css";
-// import "./assets/css/owl-carousel.css";
+// import "bootstrap/dist/css/bootstrap.css";
+import "./assets/css/slider.css";
 // import "./assets/css/owl.theme.green.min.css";
 import "./assets/css/owl.carousel.min.css";
 import "./assets/css/bootstrap.min.css";
