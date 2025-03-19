@@ -11,6 +11,8 @@ export default function Home() {
 
   return (
     <Fragment>
+      {/* <Headers /> */}
+      
     <section className="hero-home6 py-0">
   <div className="container">
     <div className="row align-items-center justify-content-between">
@@ -2876,7 +2878,7 @@ export default function Home() {
 
 
 
-  <>
+
   {/* Highest Rated Freelancers */}
   <section className="pb120">
     <div className="container">
@@ -3287,7 +3289,1320 @@ export default function Home() {
       </div>
     </div>
   </section>
+
+
+
+  {/* Our Funfact */}
+  <section className="hover-bgc-color pb90 pb30-md overflow-hidden">
+    <img
+      className="left-top-img wow zoomIn d-none d-lg-block"
+      src="/assets/images/vector-img/left-top.png"
+      alt=""
+    />
+    <img
+      className="right-bottom-img wow zoomIn d-none d-lg-block"
+      src="/assets/images/vector-img/right-bottom.png"
+      alt=""
+    />
+    <div className="container">
+      <div className="row align-items-center">
+        <div
+          className="col-md-6 col-xl-4 wow fadeInRight"
+          data-wow-delay="100ms"
+        >
+          <div className="cta-style6 mb30-sm">
+            <h2 className="cta-title mb25">
+              Find the talent needed to
+              <br className="d-none d-lg-block" />
+              get your business growing.
+            </h2>
+            <p className="text-thm2 fz15 mb25">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+              <br className="d-none d-md-block" />
+              do eiusmod tempor incididunt.
+            </p>
+            <a href="page-contact.html" className="ud-btn btn-dark bdrs60">
+              Get Started <i className="fal fa-arrow-right-long" />
+            </a>
+          </div>
+        </div>
+        <div
+          className="col-md-6 col-xl-6 offset-xl-2 wow fadeInLeft"
+          data-wow-delay="300ms"
+        >
+          <div className="row align-items-center position-relative">
+            <div className="home9-floating-img position-absolute">
+              <img
+                className="w-100-lg"
+                src="/assets/images/about/element-6.png"
+                alt=""
+              />
+            </div>
+            <div className="col-sm-6">
+              <div className="funfact-style1 bdrs16 text-center ms-md-auto">
+                <ul className="ps-0 mb-0 d-flex justify-content-center">
+                  <li>
+                    <div className="timer title mb15">4</div>
+                  </li>
+                  <li>
+                    <span>.9/5</span>
+                  </li>
+                </ul>
+                <p className="fz15 dark-color">
+                  Clients rate <br />
+                  professionals on Freeio
+                </p>
+              </div>
+              <div className="funfact-style1 bdrs16 text-center ms-md-auto">
+                <ul className="ps-0 mb-0 d-flex justify-content-center">
+                  <li>
+                    <div className="timer title mb15">96</div>
+                  </li>
+                  <li>
+                    <span>%</span>
+                  </li>
+                </ul>
+                <p className="fz15 dark-color">
+                  95% of customers are satisfied through to see their
+                  <br />
+                  freelancers
+                </p>
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="funfact-style1 bdrs16 text-center">
+                <ul className="ps-0 mb-0 d-flex justify-content-center">
+                  <li>
+                    <div className="title mb15">Award</div>
+                  </li>
+                </ul>
+                <p className="fz15 dark-color">
+                  G2’s 2021 Best <br />
+                  Software Awards
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <>
+  {/* Trending Services */}
+  <section className="bgc-dark pb90 pb30-md">
+    <div className="container">
+      <div className="row align-items-center wow fadeInUp">
+        <div className="col-lg-9">
+          <div className="main-title">
+            <h2 className="title text-white">Trending Services</h2>
+            <p className="paragraph text-white">
+              Most viewed and all-time top-selling services
+            </p>
+          </div>
+        </div>
+        <div className="col-lg-3">
+          <div className="text-lg-end mb-4">
+            <a
+              href="page-contact.html"
+              className="ud-btn btn-light-white bdrs60"
+            >
+              Get Started <i className="fal fa-arrow-right-long" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-lg-12">
+          <div className="slider-outer-dib vam_nav_style dots_none slider-4-grid owl-carousel owl-theme">
+            <div className="item">
+              <div className="listing-style1 border-0 default-box-shadow1 bdrs16">
+                <div className="list-thumb">
+                  <img className="w-100" src="/assets/images/listings/g-1.jpg" alt="" />
+                  <a href="#" className="listing-fav fz12">
+                    <span className="far fa-heart" />
+                  </a>
+                </div>
+                <div className="list-content">
+                  <p className="list-text body-color fz14 mb-1">
+                    Web &amp; App Design
+                  </p>
+                  <h5 className="list-title">
+                    <a href="page-services-single.html">
+                      I will design modern websites in figma or adobe xd
+                    </a>
+                  </h5>
+                  <div className="review-meta d-flex align-items-center">
+                    <i className="fas fa-star fz10 review-color me-2" />
+                    <p className="mb-0 body-color fz14">
+                      <span className="dark-color me-2">4.82</span>94 reviews
+                    </p>
+                  </div>
+                  <hr className="my-2" />
+                  <div className="list-meta d-flex justify-content-between align-items-center mt15">
+                    <a className="d-flex" href="#">
+                      <span className="position-relative mr10">
+                        <img
+                          className="rounded-circle wa"
+                          src="/assets/images/team/fl-s-1.png"
+                          alt="Freelancer Photo"
+                        />
+                        <span className="online-badges" />
+                      </span>
+                      <span className="fz14">Wanda Runo</span>
+                    </a>
+                    <div className="budget">
+                      <p className="mb-0 body-color">
+                        Starting at
+                        <span className="fz17 fw500 dark-color ms-1">$983</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="item">
+              <div className="listing-style1 border-0 default-box-shadow1 bdrs16">
+                <div className="list-thumb">
+                  <img className="w-100" src="/assets/images/listings/g-2.jpg" alt="" />
+                  <a href="#" className="listing-fav fz12">
+                    <span className="far fa-heart" />
+                  </a>
+                </div>
+                <div className="list-content">
+                  <p className="list-text body-color fz14 mb-1">
+                    Art &amp; Illustration
+                  </p>
+                  <h5 className="list-title">
+                    <a href="page-services-single.html">
+                      I will create modern flat design illustration
+                    </a>
+                  </h5>
+                  <div className="review-meta d-flex align-items-center">
+                    <i className="fas fa-star fz10 review-color me-2" />
+                    <p className="mb-0 body-color fz14">
+                      <span className="dark-color me-2">4.82</span>94 reviews
+                    </p>
+                  </div>
+                  <hr className="my-2" />
+                  <div className="list-meta d-flex justify-content-between align-items-center mt15">
+                    <a className="d-flex" href="#">
+                      <span className="position-relative mr10">
+                        <img
+                          className="rounded-circle wa"
+                          src="/assets/images/team/fl-s-2.png"
+                          alt="Freelancer Photo"
+                        />
+                        <span className="online-badges" />
+                      </span>
+                      <span className="fz14">Ali Tufan</span>
+                    </a>
+                    <div className="budget">
+                      <p className="mb-0 body-color">
+                        Starting at
+                        <span className="fz17 fw500 dark-color ms-1">$983</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="item">
+              <div className="listing-style1 border-0 default-box-shadow1 bdrs16">
+                <div className="list-thumb">
+                  <img className="w-100" src="/assets/images/listings/g-3.jpg" alt="" />
+                  <a href="#" className="listing-fav fz12">
+                    <span className="far fa-heart" />
+                  </a>
+                </div>
+                <div className="list-content">
+                  <p className="list-text body-color fz14 mb-1">
+                    Design &amp; Creative
+                  </p>
+                  <h5 className="list-title line-clamp2">
+                    <a href="page-services-single.html">
+                      I will build a fully responsive design in HTML,CSS,
+                      bootstrap, and javascript
+                    </a>
+                  </h5>
+                  <div className="review-meta d-flex align-items-center">
+                    <i className="fas fa-star fz10 review-color me-2" />
+                    <p className="mb-0 body-color fz14">
+                      <span className="dark-color me-2">4.82</span>94 reviews
+                    </p>
+                  </div>
+                  <hr className="my-2" />
+                  <div className="list-meta d-flex justify-content-between align-items-center mt15">
+                    <a className="d-flex" href="#">
+                      <span className="position-relative mr10">
+                        <img
+                          className="rounded-circle"
+                          src="/assets/images/team/fl-s-3.png"
+                          alt="Freelancer Photo"
+                        />
+                        <span className="online-badges" />
+                      </span>
+                      <span className="fz14">Wanda Runo</span>
+                    </a>
+                    <div className="budget">
+                      <p className="mb-0 body-color">
+                        Starting at
+                        <span className="fz17 fw500 dark-color ms-1">$983</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="item">
+              <div className="listing-style1 border-0 default-box-shadow1 bdrs16">
+                <div className="list-thumb">
+                  <img className="w-100" src="/assets/images/listings/g-4.jpg" alt="" />
+                  <a href="#" className="listing-fav fz12">
+                    <span className="far fa-heart" />
+                  </a>
+                </div>
+                <div className="list-content">
+                  <p className="list-text body-color fz14 mb-1">
+                    Web &amp; App Design
+                  </p>
+                  <h5 className="list-title line-clamp2">
+                    <a href="page-services-single.html">
+                      I will do mobile app development for ios and android
+                    </a>
+                  </h5>
+                  <div className="review-meta d-flex align-items-center">
+                    <i className="fas fa-star fz10 review-color me-2" />
+                    <p className="mb-0 body-color fz14">
+                      <span className="dark-color me-2">4.82</span>94 reviews
+                    </p>
+                  </div>
+                  <hr className="my-2" />
+                  <div className="list-meta d-flex justify-content-between align-items-center mt15">
+                    <a className="d-flex" href="#">
+                      <span className="position-relative mr10">
+                        <img
+                          className="rounded-circle"
+                          src="/assets/images/team/fl-s-4.png"
+                          alt="Freelancer Photo"
+                        />
+                        <span className="online-badges" />
+                      </span>
+                      <span className="fz14">Wanda Runo</span>
+                    </a>
+                    <div className="budget">
+                      <p className="mb-0 body-color">
+                        Starting at
+                        <span className="fz17 fw500 dark-color ms-1">$983</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="item">
+              <div className="listing-style1 border-0 default-box-shadow1 bdrs16">
+                <div className="list-thumb">
+                  <img className="w-100" src="/assets/images/listings/g-5.jpg" alt="" />
+                  <a href="#" className="listing-fav fz12">
+                    <span className="far fa-heart" />
+                  </a>
+                </div>
+                <div className="list-content">
+                  <p className="list-text body-color fz14 mb-1">
+                    Web &amp; App Design
+                  </p>
+                  <h5 className="list-title">
+                    <a href="page-services-single.html">
+                      I will design modern websites in figma or adobe xd
+                    </a>
+                  </h5>
+                  <div className="review-meta d-flex align-items-center">
+                    <i className="fas fa-star fz10 review-color me-2" />
+                    <p className="mb-0 body-color fz14">
+                      <span className="dark-color me-2">4.82</span>94 reviews
+                    </p>
+                  </div>
+                  <hr className="my-2" />
+                  <div className="list-meta d-flex justify-content-between align-items-center mt15">
+                    <a className="d-flex" href="#">
+                      <span className="position-relative mr10">
+                        <img
+                          className="rounded-circle"
+                          src="/assets/images/team/fl-s-1.png"
+                          alt="Freelancer Photo"
+                        />
+                        <span className="online-badges" />
+                      </span>
+                      <span className="fz14">Wanda Runo</span>
+                    </a>
+                    <div className="budget">
+                      <p className="mb-0 body-color">
+                        Starting at
+                        <span className="fz17 fw500 dark-color ms-1">$983</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="item">
+              <div className="listing-style1 border-0 default-box-shadow1 bdrs16">
+                <div className="list-thumb">
+                  <img className="w-100" src="/assets/images/listings/g-6.jpg" alt="" />
+                  <a href="#" className="listing-fav fz12">
+                    <span className="far fa-heart" />
+                  </a>
+                </div>
+                <div className="list-content">
+                  <p className="list-text body-color fz14 mb-1">
+                    Web &amp; App Design
+                  </p>
+                  <h5 className="list-title">
+                    <a href="page-services-single.html">
+                      I will design modern websites in figma or adobe xd
+                    </a>
+                  </h5>
+                  <div className="review-meta d-flex align-items-center">
+                    <i className="fas fa-star fz10 review-color me-2" />
+                    <p className="mb-0 body-color fz14">
+                      <span className="dark-color me-2">4.82</span>94 reviews
+                    </p>
+                  </div>
+                  <hr className="my-2" />
+                  <div className="list-meta d-flex justify-content-between align-items-center mt15">
+                    <a className="d-flex" href="#">
+                      <span className="position-relative mr10">
+                        <img
+                          className="rounded-circle"
+                          src="/assets/images/team/fl-s-2.png"
+                          alt="Freelancer Photo"
+                        />
+                        <span className="online-badges" />
+                      </span>
+                      <span className="fz14">Wanda Runo</span>
+                    </a>
+                    <div className="budget">
+                      <p className="mb-0 body-color">
+                        Starting at
+                        <span className="fz17 fw500 dark-color ms-1">$983</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="item">
+              <div className="listing-style1 border-0 default-box-shadow1 bdrs16">
+                <div className="list-thumb">
+                  <img className="w-100" src="/assets/images/listings/g-7.jpg" alt="" />
+                  <a href="#" className="listing-fav fz12">
+                    <span className="far fa-heart" />
+                  </a>
+                </div>
+                <div className="list-content">
+                  <p className="list-text body-color fz14 mb-1">
+                    Design &amp; Creative
+                  </p>
+                  <h5 className="list-title line-clamp2">
+                    <a href="page-services-single.html">
+                      I will build a fully responsive design in HTML,CSS,
+                      bootstrap, and javascript
+                    </a>
+                  </h5>
+                  <div className="review-meta d-flex align-items-center">
+                    <i className="fas fa-star fz10 review-color me-2" />
+                    <p className="mb-0 body-color fz14">
+                      <span className="dark-color me-2">4.82</span>94 reviews
+                    </p>
+                  </div>
+                  <hr className="my-2" />
+                  <div className="list-meta d-flex justify-content-between align-items-center mt15">
+                    <a className="d-flex" href="#">
+                      <span className="position-relative mr10">
+                        <img
+                          className="rounded-circle"
+                          src="/assets/images/team/fl-s-3.png"
+                          alt="Freelancer Photo"
+                        />
+                        <span className="online-badges" />
+                      </span>
+                      <span className="fz14">Wanda Runo</span>
+                    </a>
+                    <div className="budget">
+                      <p className="mb-0 body-color">
+                        Starting at
+                        <span className="fz17 fw500 dark-color ms-1">$983</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="item">
+              <div className="listing-style1 border-0 default-box-shadow1 bdrs16">
+                <div className="list-thumb">
+                  <img className="w-100" src="/assets/images/listings/g-1.jpg" alt="" />
+                  <a href="#" className="listing-fav fz12">
+                    <span className="far fa-heart" />
+                  </a>
+                </div>
+                <div className="list-content">
+                  <p className="list-text body-color fz14 mb-1">
+                    Web &amp; App Design
+                  </p>
+                  <h5 className="list-title">
+                    <a href="page-services-single.html">
+                      I will design modern websites in figma or adobe xd
+                    </a>
+                  </h5>
+                  <div className="review-meta d-flex align-items-center">
+                    <i className="fas fa-star fz10 review-color me-2" />
+                    <p className="mb-0 body-color fz14">
+                      <span className="dark-color me-2">4.82</span>94 reviews
+                    </p>
+                  </div>
+                  <hr className="my-2" />
+                  <div className="list-meta d-flex justify-content-between align-items-center mt15">
+                    <a className="d-flex" href="#">
+                      <span className="position-relative mr10">
+                        <img
+                          className="rounded-circle wa"
+                          src="/assets/images/team/fl-s-1.png"
+                          alt="Freelancer Photo"
+                        />
+                        <span className="online-badges" />
+                      </span>
+                      <span className="fz14">Wanda Runo</span>
+                    </a>
+                    <div className="budget">
+                      <p className="mb-0 body-color">
+                        Starting at
+                        <span className="fz17 fw500 dark-color ms-1">$983</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="item">
+              <div className="listing-style1 border-0 default-box-shadow1 bdrs16">
+                <div className="list-thumb">
+                  <img className="w-100" src="/assets/images/listings/g-2.jpg" alt="" />
+                  <a href="#" className="listing-fav fz12">
+                    <span className="far fa-heart" />
+                  </a>
+                </div>
+                <div className="list-content">
+                  <p className="list-text body-color fz14 mb-1">
+                    Art &amp; Illustration
+                  </p>
+                  <h5 className="list-title">
+                    <a href="page-services-single.html">
+                      I will create modern flat design illustration
+                    </a>
+                  </h5>
+                  <div className="review-meta d-flex align-items-center">
+                    <i className="fas fa-star fz10 review-color me-2" />
+                    <p className="mb-0 body-color fz14">
+                      <span className="dark-color me-2">4.82</span>94 reviews
+                    </p>
+                  </div>
+                  <hr className="my-2" />
+                  <div className="list-meta d-flex justify-content-between align-items-center mt15">
+                    <a className="d-flex" href="#">
+                      <span className="position-relative mr10">
+                        <img
+                          className="rounded-circle wa"
+                          src="/assets/images/team/fl-s-2.png"
+                          alt="Freelancer Photo"
+                        />
+                        <span className="online-badges" />
+                      </span>
+                      <span className="fz14">Ali Tufan</span>
+                    </a>
+                    <div className="budget">
+                      <p className="mb-0 body-color">
+                        Starting at
+                        <span className="fz17 fw500 dark-color ms-1">$983</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {/* Learn With Freeio */}
+  <section className="bgc-light-yellow">
+    <div className="container">
+      <div className="row align-items-md-center">
+        <div
+          className="col-md-6 col-lg-8 mb30-md wow fadeInUp"
+          data-wow-delay="100ms"
+        >
+          <div className="main-title">
+            <h2 className="title">People Love To Learn With Freeio</h2>
+            <p className="paragraph">
+              Lorem ipsum dolor sit amet, consectetur.
+            </p>
+          </div>
+          <div className="row">
+            <div className="col-sm-6 col-lg-4">
+              <div className="funfact_one">
+                <div className="details">
+                  <ul className="ps-0 d-flex mb-0">
+                    <li>
+                      <div className="timer">4</div>
+                    </li>
+                    <li>
+                      <div>.</div>
+                    </li>
+                    <li>
+                      <div className="timer">9</div>
+                    </li>
+                    <li>
+                      <span>/</span>
+                    </li>
+                    <li>
+                      <div className="timer">5</div>
+                    </li>
+                  </ul>
+                  <p className="text mb-0">
+                    Clients rate professionals on Freeio
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-6 col-lg-4">
+              <div className="funfact_one">
+                <div className="details">
+                  <ul className="ps-0 d-flex mb-0">
+                    <li>
+                      <div className="timer">99</div>
+                    </li>
+                    <li>
+                      <span>%</span>
+                    </li>
+                  </ul>
+                  <p className="text mb-0">
+                    95% of customers are satisfied <br />
+                    through to see their freelancers
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-6 col-lg-4">
+              <div className="funfact_one">
+                <div className="details">
+                  <h2>Award winner</h2>
+                  <p className="text mb-0">Home ownership</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-6 col-lg-4 col-xl-4">
+          <div
+            className="testimonial-slider2 navi_pagi_bottom_center slider-1-grid owl-carousel owl-theme wow fadeInUp"
+            data-wow-delay="300ms"
+          >
+            <div className="item">
+              <div className="testimonial-style1 default-box-shadow1 position-relative mb25">
+                <div className="testimonial-content">
+                  <h4 className="title text-thm">Great Work</h4>
+                  <span className="icon fas fa-quote-left" />
+                  <h4 className="t_content">
+                    “I found the course material to be highly engaging, and the
+                    instructors to be helpful and communicative.”
+                  </h4>
+                </div>
+                <div className="thumb d-flex align-items-center">
+                  <div className="flex-shrink-0">
+                    <img
+                      className="wa"
+                      src="/assets/images/testimonials/testimonial-1.png"
+                      alt=""
+                    />
+                  </div>
+                  <div className="flex-grow-1 ms-3">
+                    <h6 className="mb-0">Courtney Henry</h6>
+                    <p className="fz14 mb-0">Web Designer</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="item">
+              <div className="testimonial-style1 default-box-shadow1 position-relative mb25">
+                <div className="testimonial-content">
+                  <h4 className="title text-thm">Great Work</h4>
+                  <span className="icon fas fa-quote-left" />
+                  <h4 className="t_content">
+                    “I found the course material to be highly engaging, and the
+                    instructors to be helpful and communicative.”
+                  </h4>
+                </div>
+                <div className="thumb d-flex align-items-center">
+                  <div className="flex-shrink-0">
+                    <img
+                      className="wa"
+                      src="/assets/images/testimonials/testimonial-2.png"
+                      alt=""
+                    />
+                  </div>
+                  <div className="flex-grow-1 ms-3">
+                    <h6 className="mb-0">Courtney Henry</h6>
+                    <p className="fz14 mb-0">Web Designer</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="item">
+              <div className="testimonial-style1 default-box-shadow1 position-relative mb25">
+                <div className="testimonial-content">
+                  <h4 className="title text-thm">Great Work</h4>
+                  <span className="icon fas fa-quote-left" />
+                  <h4 className="t_content">
+                    “I found the course material to be highly engaging, and the
+                    instructors to be helpful and communicative.”
+                  </h4>
+                </div>
+                <div className="thumb d-flex align-items-center">
+                  <div className="flex-shrink-0">
+                    <img
+                      className="wa"
+                      src="/assets/images/testimonials/testimonial-3.png"
+                      alt=""
+                    />
+                  </div>
+                  <div className="flex-grow-1 ms-3">
+                    <h6 className="mb-0">Courtney Henry</h6>
+                    <p className="fz14 mb-0">Web Designer</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="item">
+              <div className="testimonial-style1 default-box-shadow1 position-relative mb25">
+                <div className="testimonial-content">
+                  <h4 className="title text-thm">Great Work</h4>
+                  <span className="icon fas fa-quote-left" />
+                  <h4 className="t_content">
+                    “I found the course material to be highly engaging, and the
+                    instructors to be helpful and communicative.”
+                  </h4>
+                </div>
+                <div className="thumb d-flex align-items-center">
+                  <div className="flex-shrink-0">
+                    <img
+                      className="wa"
+                      src="/assets/images/testimonials/testimonial-3.png"
+                      alt=""
+                    />
+                  </div>
+                  <div className="flex-grow-1 ms-3">
+                    <h6 className="mb-0">Courtney Henry</h6>
+                    <p className="fz14 mb-0">Web Designer</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {/* Skills */}
+  <section className="pb90 pb30-md">
+    <div className="container">
+      <div className="row align-items-md-center">
+        <div className="col-lg-12">
+          <div className="home9-navtab-style">
+            <div className="navtab-style2">
+              <nav>
+                <div className="nav nav-tabs mb50" id="nav-tab2" role="tablist">
+                  <button
+                    className="nav-link active fw600"
+                    id="nav-item1-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nav-item1"
+                    type="button"
+                    role="tab"
+                    aria-controls="nav-item1"
+                    aria-selected="true"
+                  >
+                    Top skills
+                  </button>
+                  <button
+                    className="nav-link fw600"
+                    id="nav-item2-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nav-item2"
+                    type="button"
+                    role="tab"
+                    aria-controls="nav-item2"
+                    aria-selected="false"
+                  >
+                    Trending skills
+                  </button>
+                  <button
+                    className="nav-link fw600"
+                    id="nav-item3-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nav-item3"
+                    type="button"
+                    role="tab"
+                    aria-controls="nav-item3"
+                    aria-selected="false"
+                  >
+                    Top skills in US
+                  </button>
+                  <button
+                    className="nav-link fw600"
+                    id="nav-item4-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nav-item4"
+                    type="button"
+                    role="tab"
+                    aria-controls="nav-item4"
+                    aria-selected="false"
+                  >
+                    Project Catalog
+                  </button>
+                </div>
+              </nav>
+              <div className="tab-content" id="nav-tabContent">
+                <div
+                  className="tab-pane fade show active"
+                  id="nav-item1"
+                  role="tabpanel"
+                  aria-labelledby="nav-item1-tab"
+                >
+                  <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Data Entry Specialists</a>
+                          </li>
+                          <li>
+                            <a href="#">Video Editors</a>
+                          </li>
+                          <li>
+                            <a href="#">Data Analyst</a>
+                          </li>
+                          <li>
+                            <a href="#">Shopify Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Ruby on Rails Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Social Media Manager</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Android Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Bookkeeper</a>
+                          </li>
+                          <li>
+                            <a href="#">Content Writer</a>
+                          </li>
+                          <li>
+                            <a href="#">Copywriter</a>
+                          </li>
+                          <li>
+                            <a href="#">Database Administrator</a>
+                          </li>
+                          <li>
+                            <a href="#">Software Developer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Data Scientist</a>
+                          </li>
+                          <li>
+                            <a href="#">Front-End Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Game Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Graphic Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">iOS Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Java Developer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">JavaScript Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Logo Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">Mobile App Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">PHP Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Python Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Resume Writer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Technical Writer</a>
+                          </li>
+                          <li>
+                            <a href="#">UI Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">UX Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">Virtual Assistant</a>
+                          </li>
+                          <li>
+                            <a href="#">Web Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">Wordpress Developer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="nav-item2"
+                  role="tabpanel"
+                  aria-labelledby="nav-item2-tab"
+                >
+                  <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Data Entry Specialists</a>
+                          </li>
+                          <li>
+                            <a href="#">Video Editors</a>
+                          </li>
+                          <li>
+                            <a href="#">Data Analyst</a>
+                          </li>
+                          <li>
+                            <a href="#">Shopify Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Ruby on Rails Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Social Media Manager</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Android Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Bookkeeper</a>
+                          </li>
+                          <li>
+                            <a href="#">Content Writer</a>
+                          </li>
+                          <li>
+                            <a href="#">Copywriter</a>
+                          </li>
+                          <li>
+                            <a href="#">Database Administrator</a>
+                          </li>
+                          <li>
+                            <a href="#">Software Developer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Data Scientist</a>
+                          </li>
+                          <li>
+                            <a href="#">Front-End Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Game Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Graphic Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">iOS Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Java Developer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">JavaScript Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Logo Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">Mobile App Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">PHP Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Python Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Resume Writer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Technical Writer</a>
+                          </li>
+                          <li>
+                            <a href="#">UI Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">UX Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">Virtual Assistant</a>
+                          </li>
+                          <li>
+                            <a href="#">Web Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">Wordpress Developer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="nav-item3"
+                  role="tabpanel"
+                  aria-labelledby="nav-item3-tab"
+                >
+                  <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Data Entry Specialists</a>
+                          </li>
+                          <li>
+                            <a href="#">Video Editors</a>
+                          </li>
+                          <li>
+                            <a href="#">Data Analyst</a>
+                          </li>
+                          <li>
+                            <a href="#">Shopify Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Ruby on Rails Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Social Media Manager</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Android Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Bookkeeper</a>
+                          </li>
+                          <li>
+                            <a href="#">Content Writer</a>
+                          </li>
+                          <li>
+                            <a href="#">Copywriter</a>
+                          </li>
+                          <li>
+                            <a href="#">Database Administrator</a>
+                          </li>
+                          <li>
+                            <a href="#">Software Developer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Data Scientist</a>
+                          </li>
+                          <li>
+                            <a href="#">Front-End Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Game Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Graphic Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">iOS Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Java Developer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">JavaScript Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Logo Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">Mobile App Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">PHP Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Python Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Resume Writer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Technical Writer</a>
+                          </li>
+                          <li>
+                            <a href="#">UI Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">UX Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">Virtual Assistant</a>
+                          </li>
+                          <li>
+                            <a href="#">Web Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">Wordpress Developer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="nav-item4"
+                  role="tabpanel"
+                  aria-labelledby="nav-item4-tab"
+                >
+                  <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Data Entry Specialists</a>
+                          </li>
+                          <li>
+                            <a href="#">Video Editors</a>
+                          </li>
+                          <li>
+                            <a href="#">Data Analyst</a>
+                          </li>
+                          <li>
+                            <a href="#">Shopify Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Ruby on Rails Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Social Media Manager</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Android Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Bookkeeper</a>
+                          </li>
+                          <li>
+                            <a href="#">Content Writer</a>
+                          </li>
+                          <li>
+                            <a href="#">Copywriter</a>
+                          </li>
+                          <li>
+                            <a href="#">Database Administrator</a>
+                          </li>
+                          <li>
+                            <a href="#">Software Developer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Data Scientist</a>
+                          </li>
+                          <li>
+                            <a href="#">Front-End Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Game Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Graphic Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">iOS Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Java Developer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">JavaScript Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Logo Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">Mobile App Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">PHP Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Python Developer</a>
+                          </li>
+                          <li>
+                            <a href="#">Resume Writer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="skill-list-style1 mb20">
+                        <ul className="p-0 mb-0">
+                          <li>
+                            <a href="#">Technical Writer</a>
+                          </li>
+                          <li>
+                            <a href="#">UI Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">UX Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">Virtual Assistant</a>
+                          </li>
+                          <li>
+                            <a href="#">Web Designer</a>
+                          </li>
+                          <li>
+                            <a href="#">Wordpress Developer</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </>
+
+
 
 
 
