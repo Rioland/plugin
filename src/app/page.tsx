@@ -2989,6 +2989,183 @@ export default function Home() {
         </section>
         {/* Learn With Freeio */}
         <section className="bgc-light-yellow">
+  <div className="container">
+    <div className="row align-items-md-center">
+      <div
+        className="col-md-6 col-lg-8 mb30-md wow fadeInUp"
+        data-wow-delay="100ms"
+      >
+        <div className="main-title">
+          <h2 className="title">People Love To Learn With Freeio</h2>
+          <p className="paragraph">Lorem ipsum dolor sit amet, consectetur.</p>
+        </div>
+        <div className="row">
+          <div className="col-sm-6 col-lg-4">
+            <div className="funfact_one">
+              <div className="details">
+                <ul className="ps-0 d-flex mb-0">
+                  <li>
+                    <div className="timer">4</div>
+                  </li>
+                  <li>
+                    <div>.</div>
+                  </li>
+                  <li>
+                    <div className="timer">9</div>
+                  </li>
+                  <li>
+                    <span>/</span>
+                  </li>
+                  <li>
+                    <div className="timer">5</div>
+                  </li>
+                </ul>
+                <p className="text mb-0">
+                  Clients rate professionals on Freeio
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="col-sm-6 col-lg-4">
+            <div className="funfact_one">
+              <div className="details">
+                <ul className="ps-0 d-flex mb-0">
+                  <li>
+                    <div className="timer">99</div>
+                  </li>
+                  <li>
+                    <span>%</span>
+                  </li>
+                </ul>
+                <p className="text mb-0">
+                  95% of customers are satisfied <br />
+                  through to see their freelancers
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="col-sm-6 col-lg-4">
+            <div className="funfact_one">
+              <div className="details">
+                <h2>Award winner</h2>
+                <p className="text mb-0">Home ownership</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="col-md-6 col-lg-4 col-xl-4">
+        <div
+          className="testimonial-slider2 navi_pagi_bottom_center slider-1-grid owl-carousel owl-theme wow fadeInUp"
+          data-wow-delay="300ms"
+        >
+          <div className="item">
+            <div className="testimonial-style1 default-box-shadow1 position-relative mb25">
+              <div className="testimonial-content">
+                <h4 className="title text-thm">Great Work</h4>
+                <span className="icon fas fa-quote-left" />
+                <h4 className="t_content">
+                  “I found the course material to be highly engaging, and the
+                  instructors to be helpful and communicative.”
+                </h4>
+              </div>
+              <div className="thumb d-flex align-items-center">
+                <div className="flex-shrink-0">
+                  <img
+                    className="wa"
+                    src="/assets/images/testimonials/testimonial-1.png"
+                    alt=""
+                  />
+                </div>
+                <div className="flex-grow-1 ms-3">
+                  <h6 className="mb-0">Courtney Henry</h6>
+                  <p className="fz14 mb-0">Web Designer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="item">
+            <div className="testimonial-style1 default-box-shadow1 position-relative mb25">
+              <div className="testimonial-content">
+                <h4 className="title text-thm">Great Work</h4>
+                <span className="icon fas fa-quote-left" />
+                <h4 className="t_content">
+                  “I found the course material to be highly engaging, and the
+                  instructors to be helpful and communicative.”
+                </h4>
+              </div>
+              <div className="thumb d-flex align-items-center">
+                <div className="flex-shrink-0">
+                  <img
+                    className="wa"
+                    src="/assets/images/testimonials/testimonial-2.png"
+                    alt=""
+                  />
+                </div>
+                <div className="flex-grow-1 ms-3">
+                  <h6 className="mb-0">Courtney Henry</h6>
+                  <p className="fz14 mb-0">Web Designer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="item">
+            <div className="testimonial-style1 default-box-shadow1 position-relative mb25">
+              <div className="testimonial-content">
+                <h4 className="title text-thm">Great Work</h4>
+                <span className="icon fas fa-quote-left" />
+                <h4 className="t_content">
+                  “I found the course material to be highly engaging, and the
+                  instructors to be helpful and communicative.”
+                </h4>
+              </div>
+              <div className="thumb d-flex align-items-center">
+                <div className="flex-shrink-0">
+                  <img
+                    className="wa"
+                    src="/assets/images/testimonials/testimonial-3.png"
+                    alt=""
+                  />
+                </div>
+                <div className="flex-grow-1 ms-3">
+                  <h6 className="mb-0">Courtney Henry</h6>
+                  <p className="fz14 mb-0">Web Designer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="item">
+            <div className="testimonial-style1 default-box-shadow1 position-relative mb25">
+              <div className="testimonial-content">
+                <h4 className="title text-thm">Great Work</h4>
+                <span className="icon fas fa-quote-left" />
+                <h4 className="t_content">
+                  “I found the course material to be highly engaging, and the
+                  instructors to be helpful and communicative.”
+                </h4>
+              </div>
+              <div className="thumb d-flex align-items-center">
+                <div className="flex-shrink-0">
+                  <img
+                    className="wa"
+                    src="/assets/images/testimonials/testimonial-3.png"
+                    alt=""
+                  />
+                </div>
+                <div className="flex-grow-1 ms-3">
+                  <h6 className="mb-0">Courtney Henry</h6>
+                  <p className="fz14 mb-0">Web Designer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+        {/* <section className="bgc-light-yellow">
           <div className="container">
             <div className="row align-items-md-center">
               <div
@@ -3165,7 +3342,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
         {/* Skills */}
         <section className="pb90 pb30-md">
           <div className="container">
