@@ -1,6 +1,12 @@
 // 'use client'
 import type { Metadata } from "next";
+// import { useEffect } from "react";
+import jQuery from "jquery";
+import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
+import Head from "next/head";
 
+import "./globals.css";
 import "./assets/css/bootstrap.min.css";
 import "./assets/css/style.css";
 import "./assets/css/menu.css";
@@ -12,14 +18,7 @@ import "./assets/css/ud-custom-spacing.css";
 import "./assets/css/responsive.css";
 import "./assets/css/flaticon.css";
 import "./assets/css/animate.css";
-
-
 import "./assets/css/fontawesome.css";
-// import React, { useEffect } from "react";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Script from "next/script";
-import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,33 +37,54 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
+  // useEffect(() => {
+  //   window.$ = window.jQuery = jQuery;
+  // }, []);
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
       <Head>
-      <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-/>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+        />
       </Head>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {/* Preloader */}
+        <div className="preloader" id="preloader"></div>
 
-      <Script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-        crossOrigin="anonymous"
-      />
-      <Script  src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" />
-        {/* Responsive stylesheet */}
-        <Script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" />
-       
         {children}
 
-    
+        {/* External Scripts */}
+        <Script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+        />
+        {/* <Script
+          src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+          strategy="lazyOnload"
+        /> */}
+        <Script
+          src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"
+          strategy="lazyOnload"
+        />
+
+        {/* Local Scripts */}
+        {/* <Script src="/js/jquery-migrate-3.0.0.min.js" strategy="lazyOnload" /> */}
+        <Script src="/js/popper.min.js" strategy="lazyOnload" />
+        {/* <Script src="/js/bootstrap.min.js" strategy="lazyOnload" /> */}
+        {/* <Script src="/js/bootstrap-select.min.js" strategy="lazyOnload" /> */}
+        <Script src="/js/jquery.mmenu.all.js" strategy="lazyOnload" />
+        {/* <Script src="/js/ace-responsive-menu.js" strategy="lazyOnload" /> */}
+        {/* <Script src="/js/jquery-scrolltofixed-min.js" strategy="lazyOnload" /> */}
+        {/* <Script src="/js/wow.min.js" strategy="lazyOnload" /> */}
+        {/* <Script src="/js/owl.js" strategy="lazyOnload" /> */}
+        {/* <Script src="/js/scrollbalance.js" strategy="lazyOnload" /> */}
+        <Script src="/js/script.js" strategy="lazyOnload" />
       </body>
     </html>
   );
