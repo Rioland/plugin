@@ -1,5 +1,7 @@
 'use client'
 import Footer from '@/components/Footer'
+import MyHeaders from '@/components/Headers';
+
 import Link from 'next/link'
 import React, { Fragment, useState } from 'react'
 
@@ -37,7 +39,7 @@ export default function login() {
           };
   return (
         <Fragment>
-     
+     <MyHeaders currentPage="Login" />
         <section className="our-login">
       <div className="container">
         <div className="row">

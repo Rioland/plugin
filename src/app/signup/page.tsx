@@ -1,9 +1,11 @@
 import Footer from '@/components/Footer'
+import MyHeaders from '@/components/Headers'
 import React, { Fragment } from 'react'
 
 export default function register() {
   return (
     <Fragment>
+      <MyHeaders />
       <>
   {/* Our SignUp Area */}
   <section className="our-register">

@@ -1,0 +1,40 @@
+.mySwiper{
+        width: 100%;
+}
+.mySwiperPeople{
+        width: 100%;
+        height: 50%;
+}
+.swiper-pagination-bullet-active{
+        background-color: #f4d71c !important;
+}
+.swiper-button-next, .swiper-button-prev{
+        color: #f4d71c !important;
+        background-color: #fff !important;
+        width: 80px !important;
+        height: 80px !important;
+        border-radius: 50% !important;
+        transform: background-color, color 2s ease-in-out !important;
+}
+.swiper-button-next:hover, .swiper-button-prev:hover{
+        color: #fff !important;
+        background-color: #f4d71c !important;
+
+}
+.swiper-pagination{
+        bottom: 0;
+}
+
+
+.dropdown-menu{
+    
+        border-radius: 0 0 5px 5px !important;
+        box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+        transition: background-color 0.3s ease-in-out;
+        border: none !important;
+}
+
+.dropdown:hover .dropdown-menu {
+        display: block;
+     
+}

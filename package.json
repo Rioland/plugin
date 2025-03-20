@@ -12,11 +12,14 @@
     "@types/jquery": "^3.5.32",
     "animate.css": "^4.1.1",
     "bootstrap": "^5.3.3",
+    "install": "^0.13.0",
     "jquery": "^3.7.1",
     "next": "15.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "save-dev": "^0.0.1-security"
+    "react-owl-carousel": "^2.3.3",
+    "save-dev": "^0.0.1-security",
+    "swiper": "^11.2.5"
   },
   "devDependencies": {
     "@types/node": "^20",
