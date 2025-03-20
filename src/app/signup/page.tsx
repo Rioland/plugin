@@ -71,23 +71,32 @@ export default function register() {
               <hr />
               <span className="hr_top_text">OR</span>
             </div>
-            <div className="d-md-flex justify-content-between">
-              <button
-                className="ud-btn btn-fb fz14 fw400 mb-2 mb-md-0"
-                type="button"
+            <div className="container">
+              <div className="row">
+                <div className="col-12 col-md-4">
+                <button
+                className="ud-btn btn-fb fz14 fw400 mb-2 mb-md-0 w-100"
+                type="button" style={{height: '50px'}}
               >
                 <i className="fab fa-facebook-f pr10" /> Continue Facebook
               </button>
-              <button
-                className="ud-btn btn-google fz14 fw400 mb-2 mb-md-0"
-                type="button"
+                </div>
+                <div className="col-12 col-md-4">
+                <button
+                className="ud-btn btn-google fz14 fw400 mb-2 mb-md-0 w-100" 
+                type="button" style={{height: '50px'}}
               >
                 <i className="fab fa-google" /> Continue Google
               </button>
-              <button className="ud-btn btn-apple fz14 fw400" type="button">
+                </div>
+                <div className="col-12 col-md-4">
+                <button className="ud-btn btn-apple fz14 fw400 w-100" type="button" style={{height: '50px'}}>
                 <i className="fab fa-apple" /> Continue Apple
               </button>
+                </div>
+              </div>
             </div>
+          
           </div>
         </div>
       </div>
