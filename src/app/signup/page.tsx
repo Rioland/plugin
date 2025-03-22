@@ -28,7 +28,7 @@ export default function register() {
               <h4>Let's create your account!</h4>
               <p className="text mt20">
                 Already have an account?{" "}
-                <a href="page-login.html" className="text-thm">
+                <a href="/login" className="text-thm">
                   Log In!
                 </a>
               </p>

@@ -12,13 +12,16 @@
     "@types/jquery": "^3.5.32",
     "animate.css": "^4.1.1",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.8",
     "install": "^0.13.0",
     "jquery": "^3.7.1",
     "next": "15.2.3",
     "react": "^19.0.0",
+    "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.0.0",
     "react-owl-carousel": "^2.3.3",
     "save-dev": "^0.0.1-security",
+    "sweetalert2": "^11.17.2",
     "swiper": "^11.2.5"
   },
   "devDependencies": {

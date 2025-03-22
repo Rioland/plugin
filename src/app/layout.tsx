@@ -1,7 +1,7 @@
 // 'use client'
 import type { Metadata } from "next";
 // import { useEffect } from "react";
-import jQuery from "jquery";
+
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import Head from "next/head";
@@ -38,9 +38,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // useEffect(() => {
-  //   window.$ = window.jQuery = jQuery;
-  // }, []);
+
 
   return (
     <html lang="en">

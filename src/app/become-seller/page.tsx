@@ -109,7 +109,7 @@ export default function page() {
                   sometimes by accident, sometimes on purpose (injected humour
                   and the like).
                 </p>
-                <a href="/become-seller" className="ud-btn btn-thm-border mb25 me-4">
+                <a href="/signup" className="ud-btn btn-thm-border mb25 me-4">
                   Get Started
                   <i className="fal fa-arrow-right-long" />
                 </a>

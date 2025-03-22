@@ -60,7 +60,7 @@ export default function login() {
                   <h4>We're glad to see you again!</h4>
                   <p className="text">
                     Don't have an account?{" "}
-                    <Link href="/user/registeration" className="text-thm">
+                    <Link href="/signup" className="text-thm">
                       Sign Up!
                     </Link>
                   </p>
@@ -94,7 +94,7 @@ export default function login() {
                     <input type="checkbox" defaultChecked={true} />
                     <span className="checkmark"></span>
                   </label>
-                  <Link className="fz14 ff-heading" href="/forgot-password">
+                  <Link className="fz14 ff-heading" href='/login/forgot-password'>
                     Lost your password?
                   </Link>
                 </div>

@@ -54,7 +54,7 @@ if (sidebar) {
 document.querySelector(".dashboard_sidebar_toggle_icon")?.addEventListener("click", () => {
   document.querySelector(".dashboard.dashboard_wrapper")?.classList.toggle("dsh_board_sidebar_hidden");
 });
-// alert("Dashboard Script Loaded");
+alert("Dashboard Script Loaded");
 // Dashboard Sidebar Toggle
 // document.addEventListener("DOMContentLoaded", () => {
 //   document.querySelector(".dashboard_sidebar_toggle_icon")?.addEventListener("click", () => {
