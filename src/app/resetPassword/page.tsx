@@ -4,13 +4,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import { toast, Toaster } from "sonner"
 import { ApiBaseUrl } from "../functions";
 import { useSearchParams } from "next/navigation";
 
 export default function Home() {
+      return (
+        <Suspense fallback={<div>Loading...</div>}>
+        <ForgotPasswordContent/>
+      </Suspense>
+      );
+}
+
+
+const ForgotPasswordContent=()=>{
         const searchParams = useSearchParams();
         const email = searchParams.get('email');
         // login form submission handler with user name and password
@@ -111,6 +120,7 @@ export default function Home() {
 
 
         };
+
         return (
                 <div className="pt-34 px-4"  >
 

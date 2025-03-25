@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 import { toast, Toaster } from "sonner"
@@ -12,6 +12,15 @@ import { useSearchParams } from "next/navigation";
 
 
 export default function Home() {
+          return (
+                <Suspense fallback={<div>Loading...</div>}>
+                <OUPUI/>
+              </Suspense>
+              );
+}
+
+
+const OUPUI=()=>{
         const searchParams = useSearchParams();
         const email = searchParams.get('email');
         const [countdown, setCountdown] = useState(60); // Initial countdown
