@@ -73,7 +73,35 @@ export default function Home() {
                 event.preventDefault();
                 const formData = new FormData(event.currentTarget);
                 const otp = formData.get("otp") as string;
-                console.log(otp);
+                if (!otp) {
+                        toast.error("OTP field is required",);
+                        return;  // stop the function execution here if otp field is required
+                }
+                setLoading(true);
+                // api call
+                fetch(`${ApiBaseUrl}/register-step-two`, {
+                        method: "POST",
+                        headers: {
+                                "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                                email: email,
+                                verification_code: otp,
+                        }),
+                })
+                        .then((res) => res.json())
+                        .then((data) => {
+                                console.log(data);
+                                if (data.status == false) {
+                                        toast.error(data.message,);
+                                        setLoading(false);
+                                } else {
+                                        setLoading(false);
+                                        toast.success("Registration successful",);
+                                        window.location.href = "/";
+
+                                }
+                        });
         };
         return (
                 <div className="pt-34 px-4"  >
@@ -109,7 +137,7 @@ export default function Home() {
                                                                         <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
                                                                 </div>
                                                         ) : <Button type="submit" className="w-full bg-yellow-500 py-6 mt-10 ">
-                                                               Verify OTP <i className="fal fa-arrow-right-long"></i>
+                                                                Verify OTP <i className="fal fa-arrow-right-long"></i>
                                                         </Button>}
                                                 </form>
                                         </CardContent>

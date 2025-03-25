@@ -67,9 +67,9 @@ export default function Home() {
             setLoading(false);
 
             if (data.data.role == 1) {
-              window.location.href = `/seller-dashboard`;
+              window.location.href = `/dashboard/seller-dashboard`;
             } else {
-              window.location.href = `/buyer-dashboard`;
+              window.location.href = `/dashboard/buyer-dashboard`;
             }
 
 
