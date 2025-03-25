@@ -113,7 +113,10 @@ export default function Home() {
                     required
                     value={value}
                     className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-4 rounded-md"
-                    onChange={(e) => setValue} />
+                   onChange={setValue}
+                    
+                    
+                    />
 
                   {/* <Input
                     type="tel"
