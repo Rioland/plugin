@@ -9,25 +9,32 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/jquery": "^3.5.32",
-    "animate.css": "^4.1.1",
-    "bootstrap": "^5.3.3",
-    "chart.js": "^4.4.8",
-    "install": "^0.13.0",
-    "jquery": "^3.7.1",
-    "next": "15.2.3",
+    "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-slot": "^1.1.2",
+    "@types/js-cookie": "^3.0.6",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "input-otp": "^1.4.2",
+    "js-cookie": "^3.0.5",
+    "lucide-react": "^0.483.0",
+    "next": "15.2.4",
+    "next-themes": "^0.4.6",
     "react": "^19.0.0",
-    "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.0.0",
-    "react-owl-carousel": "^2.3.3",
-    "save-dev": "^0.0.1-security",
-    "sweetalert2": "^11.17.2",
-    "swiper": "^11.2.5"
+    "react-flags-select": "^2.4.0",
+    "sonner": "^2.0.1",
+    "tailwind-merge": "^3.0.2",
+    "tw-animate-css": "^1.2.4"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.2.4",
+    "tailwindcss": "^4",
     "typescript": "^5"
   }
 }

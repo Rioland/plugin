@@ -1,0 +1,1 @@
+export const ApiBaseUrl="https://plugins.cyclebreeze.com/api";
