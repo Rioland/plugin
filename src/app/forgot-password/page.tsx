@@ -80,7 +80,7 @@ export default function Home() {
                         <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
                   </div>
                   ) : <Button type="submit" className="w-full bg-yellow-500 py-6 mt-10 ">
-                        Reset Password
+                        Reset Password <i className="fal fa-arrow-right-long"></i>
                   </Button>}
         
        

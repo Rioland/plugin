@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast, Toaster } from "sonner"
 import { ApiBaseUrl } from "./functions";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 
 export default function Home() {
@@ -90,8 +90,8 @@ export default function Home() {
         {/* Your content goes here */}
         <Card className="border-none py-16">
           <CardHeader>
-            <CardTitle className="pb-2">We're glad to see you again!</CardTitle>
-            <CardDescription className="font-semibold text-sm mb-5">Don't have an account?  <a href="/signup" className="text-yellow-500">Sign Up!</a></CardDescription>
+            <CardTitle className="pb-2">We&apos;re glad to see you again!</CardTitle>
+            <CardDescription className="font-semibold text-sm mb-5">Don&apos;t have an account?  <a href="/signup" className="text-yellow-500">Sign Up!</a></CardDescription>
 
             <CardContent>
               <form className="space-y-6" onSubmit={handleSubmit}>
@@ -139,7 +139,7 @@ export default function Home() {
                         <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
                   </div>
                   ) : <Button type="submit" className="w-full bg-yellow-500 py-6 mt-10 ">
-                    Log In
+                    Log In <i className="fal fa-arrow-right-long"></i>
                   </Button>}
 
 
