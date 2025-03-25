@@ -10,6 +10,7 @@ import { toast, Toaster } from "sonner"
 
 import { ApiBaseUrl } from "@/app/functions";
 import PhoneInput from 'react-phone-number-input/input'
+import Link from "next/link";
 export default function Home() {
   const [selected, setSelected] = useState("");
   const [value, setValue] = useState()
@@ -71,7 +72,7 @@ export default function Home() {
         <Card className="border-none py-16">
           <CardHeader>
             <CardTitle className="pb-2">We&apos;re glad to see you again!</CardTitle>
-            <CardDescription className="font-semibold text-sm mb-5">Alread have an account?  <a href="/" className="text-yellow-500">Login !</a></CardDescription>
+            <CardDescription className="font-semibold text-sm mb-5">Alread have an account?  <Link href="/" className="text-yellow-500">Login !</Link></CardDescription>
 
             <CardContent>
               <Toaster position="top-center" />
