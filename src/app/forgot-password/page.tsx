@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 
 import { toast, Toaster } from "sonner"
 import { useState } from "react";
-import { ApiBaseUrl } from "../functions";
+import { ApiBaseUrl } from "../../helper/functions";
 
 export default function Home() {
   
@@ -66,6 +66,7 @@ export default function Home() {
             <Input
               type="email"
               name="email"
+              placeholder="Enter your email address"
               id="email"
               required
               className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-7 rounded-md"

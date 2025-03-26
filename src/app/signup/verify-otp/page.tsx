@@ -7,7 +7,7 @@ import { Suspense, useEffect, useState } from "react";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 import { toast, Toaster } from "sonner"
-import { ApiBaseUrl } from "@/app/functions";
+import { ApiBaseUrl } from "@/helper/functions";
 import { useSearchParams } from "next/navigation";
 
 

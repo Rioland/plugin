@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Suspense, useEffect, useState } from "react";
 
 import { toast, Toaster } from "sonner"
-import { ApiBaseUrl } from "../functions";
+import { ApiBaseUrl } from "../../helper/functions";
 import { useSearchParams } from "next/navigation";
 
 export default function Home() {

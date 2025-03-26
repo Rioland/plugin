@@ -3,10 +3,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { toast, Toaster } from "sonner"
-import { ApiBaseUrl } from "./functions";
+import { ApiBaseUrl } from "@/helper/functions";
 import Cookies from "js-cookie";
+import Myheader from "@/components/header";
+import Footer from "@/components/Footer";
 
 
 export default function Home() {
@@ -83,72 +85,77 @@ export default function Home() {
 
   };
   return (
+   <Fragment>
+    <Myheader/>
     <div className="pt-34 px-4"  >
 
-      <h1 className="text-center text-5xl font-bold  mb-15">Log In</h1>
-      <div className="w-full lg:w-2/5 mx-auto ">
-        {/* Your content goes here */}
-        <Card className="border-none py-16">
-          <CardHeader>
-            <CardTitle className="pb-2">We&apos;re glad to see you again!</CardTitle>
-            <CardDescription className="font-semibold text-sm mb-5">Don&apos;t have an account?  <a href="/signup" className="text-yellow-500">Sign Up!</a></CardDescription>
+<h1 className="text-center text-5xl font-bold  mb-15">Log In</h1>
+<div className="w-full lg:w-2/5 mx-auto ">
+  {/* Your content goes here */}
+  <Card className="border-none py-16">
+    <CardHeader>
+      <CardTitle className="pb-2">We&apos;re glad to see you again!</CardTitle>
+      <CardDescription className="font-semibold text-sm mb-5">Don&apos;t have an account?  <a href="/signup" className="text-yellow-500">Sign Up!</a></CardDescription>
 
-            <CardContent>
-              <form className="space-y-6" onSubmit={handleSubmit}>
-                <div className="mb-4">
-                  <Label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">Username</Label>
-                  <Input
-                    type="text"
-                    name="username"
-                    id="username"
-                    required
-                    className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-7 rounded-md"
-                  />
-                </div>
-                <Toaster position="top-center"  />
+      <CardContent>
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <Label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">Username</Label>
+            <Input
+              type="text"
+              name="username"
+              id="username"
+              required
+              className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-7 rounded-md"
+            />
+          </div>
+          <Toaster position="top-center"  />
 
-                <div className="mb-4">
-                  <Label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password</Label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    required
-                    className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-4 rounded-md"
-                  />
-                </div>
-                {/* remember me checkbox and forgot password  */}
-                <div className="flex items-center justify-between my-4">
-                  <div className="flex items-center justify-content-center">
-                    <input
-                      type="checkbox"
-                      name="rememberPassword"
-                      id="rememberPassword" />
-                    <Label htmlFor="rememberPassword" className="block text-sm font-medium text-gray-700 ms-2">Remember me</Label>
-
-
-
-                  </div>
-                  <a href="/forgot-password" className="text-sm text-blue-500 hover:text-blue-600">Lost your password?</a>
-
-                </div>
-               
-           
-                  {loading ? (
-                  <div className="flex items-center justify-center">
-                        <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
-                  </div>
-                  ) : <Button type="submit" className="w-full bg-yellow-500 py-6 mt-10 ">
-                    Log In <i className="fal fa-arrow-right-long"></i>
-                  </Button>}
+          <div className="mb-4">
+            <Label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password</Label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              required
+              className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-4 rounded-md"
+            />
+          </div>
+          {/* remember me checkbox and forgot password  */}
+          <div className="flex items-center justify-between my-4">
+            <div className="flex items-center justify-content-center">
+              <input
+                type="checkbox"
+                name="rememberPassword"
+                id="rememberPassword" />
+              <Label htmlFor="rememberPassword" className="block text-sm font-medium text-gray-700 ms-2">Remember me</Label>
 
 
-             
-              </form>
-            </CardContent>
-          </CardHeader>
-        </Card>
-      </div>
-    </div>
+
+            </div>
+            <a href="/forgot-password" className="text-sm text-blue-500 hover:text-blue-600">Lost your password?</a>
+
+          </div>
+         
+     
+            {loading ? (
+            <div className="flex items-center justify-center">
+                  <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
+            </div>
+            ) : <Button type="submit" className="w-full bg-yellow-500 py-6 mt-10 ">
+              Log In <i className="fal fa-arrow-right-long"></i>
+            </Button>}
+
+
+    
+        </form>
+      </CardContent>
+    </CardHeader>
+  </Card>
+</div>
+</div>
+<Footer/>
+    
+   </Fragment>
   );
 }
