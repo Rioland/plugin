@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { NextResponse } from 'next/server';
 
 export function middleware(request) {
@@ -27,6 +28,7 @@ export function middleware(request) {
                 }
               } catch (error) {
                 // Handle invalid token
+                console.log('Error during authentication:', error);
                 return NextResponse.redirect(new URL('/', request.url));
               }
   }
