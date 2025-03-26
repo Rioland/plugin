@@ -9,11 +9,15 @@ import { Suspense, useEffect, useState } from "react";
 import { toast, Toaster } from "sonner"
 import { ApiBaseUrl } from "../../helper/functions";
 import { useSearchParams } from "next/navigation";
+import Myheader from "@/components/header";
+import Footer from "@/components/Footer";
 
 export default function Home() {
       return (
         <Suspense fallback={<div>Loading...</div>}>
-        <ForgotPasswordContent/>
+                <Myheader/>
+                <ForgotPasswordContent/>
+                <Footer/>
       </Suspense>
       );
 }
