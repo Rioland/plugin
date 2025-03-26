@@ -1,4 +1,4 @@
-import { log } from 'console';
+
 import { NextResponse } from 'next/server';
 
 export function middleware(request) {
