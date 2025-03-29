@@ -50,7 +50,7 @@ export default function Page() {
       </Card>
 
       <MyModal isOpen={showOnboarding} onClose={() => { setshowOnboarding(false) }}  >
-        <OnBoardingScreen screen={onboardingState} onNext={() => { }} onPrevious={() => { setshowOnboarding(false) }} />
+        <OnBoardingScreen screen={onboardingState}onPrevious={() => { setshowOnboarding(false) }} />
       </MyModal>
     </div>
   )

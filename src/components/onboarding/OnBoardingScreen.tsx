@@ -10,10 +10,10 @@ import { toast, Toaster } from "sonner"
 import Cookies from 'js-cookie';
 interface OnBoardingScreenProps{
   screen?: string;
-  onNext?: () => void;
+  // onNext?: () => void;
   onPrevious?: () => void;
 }
-const  OnBoardingScreen:React.FC<OnBoardingScreenProps>=({screen,onNext,onPrevious})=> {
+const  OnBoardingScreen:React.FC<OnBoardingScreenProps>=({screen,onPrevious})=> {
   // const [headingText,setHeadingText]=useState('Lorem ipsum dolor sit amet consectetur adipisicing elit.')
   // const [bodyText,setBodyText]=useState('Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos alias neque non! Porro soluta blanditiis impedit quisquam nemo.')
         const [image, setImage] = useState<File | null>(null);
