@@ -1,44 +1,57 @@
-// import { AppSidebar } from "@/components/app-sidebar"
-import { SellerAppSidebar } from "@/components/seller-app-sidebar"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+'use client'
 
-import { Separator } from "@/components/ui/separator"
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import MyModal from "@/components/ui/MyModal"
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import OnBoardingScreen from "@/components/onboarding/OnBoardingScreen";
+
+
+
 
 export default function Page() {
-  return (
-    <SidebarProvider>
-      <SellerAppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator
-            orientation="vertical"
-            className="mr-2 data-[orientation=vertical]:h-4"
-          />
-          <div className="flex justify-end w-full items-center">
-            <div className="flex justify-center items-center pe-8">
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </div>
-          </div>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">
+  const user = Cookies.get("currentUser") as any;
+  const [showOnboarding, setshowOnboarding] = useState(false);
+  const currentUser = user ? JSON.parse(user) : null;
+  // console.log(currentUser);
+  const [onboardingState, setOnboardingState] = useState('ProfilePicture');
 
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="bg-muted/50 aspect-video rounded-xl" >hngghjgjh</div>
-            <div className="bg-muted/50 aspect-video rounded-xl" />
-            <div className="bg-muted/50 aspect-video rounded-xl" />
-          </div>
-          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
+  // Check if user has uploaded a profile picture and update the state accordingly
+  useEffect(() => {
+    if (!currentUser.profile_picture == null) {
+      setOnboardingState('ProfilePicture');
+      setshowOnboarding(true);
+    } else if (currentUser.bio == null) {
+      setOnboardingState('Bio');
+      setshowOnboarding(true);
+    } else if (currentUser.skills==null || currentUser.skills.length){
+      setOnboardingState('Skills');
+      setshowOnboarding(true);
+    }else if (currentUser.kyc_verified==0){
+      setOnboardingState('kyc');
+      setshowOnboarding(true);
+    }else{
+      setshowOnboarding(false);
+    }
+  }, [])
+
+  return (
+    <div>
+
+      <Card className="w-full md:w-3/5 mx-auto">
+        <CardHeader >
+          <h2>Welcome! We are going to work you through setting up your Account</h2>
+        </CardHeader>
+        <CardContent>
+
+
+        </CardContent>
+        {/* <CardDescription >Description</CardDescription> */}
+      </Card>
+
+      <MyModal isOpen={showOnboarding} onClose={() => { setshowOnboarding(false) }}  >
+        <OnBoardingScreen screen={onboardingState} onNext={() => { }} onPrevious={() => { setshowOnboarding(false) }} />
+      </MyModal>
+    </div>
   )
 }
