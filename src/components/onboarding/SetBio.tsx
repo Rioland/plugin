@@ -85,6 +85,7 @@ export default function SetBio() {
   )
 }
 function setOnboardingState(arg0: string) {
+  console.log(arg0);
         throw new Error('Function not implemented.');
 }
 

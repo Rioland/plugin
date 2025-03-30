@@ -10,7 +10,7 @@ import OnBoardingScreen from "@/components/onboarding/OnBoardingScreen";
 
 
 export default function Page() {
-  const user = Cookies.get("currentUser") as any;
+  const user = Cookies.get("currentUser") as string;
   const [showOnboarding, setshowOnboarding] = useState(false);
   const currentUser = user ? JSON.parse(user) : null;
   console.log(currentUser);

@@ -16,7 +16,7 @@ const SellerSkills = () => {
        }})
       .then((res) => res.json())
       .then((data) => setCategories(data.data))
-      .catch((err) => toast.error("Failed to load skills"));
+      .catch(() => toast.error("Failed to load skills"));
   }, []);
 
   const handleSelectSkill = (skillId, categoryId) => {
