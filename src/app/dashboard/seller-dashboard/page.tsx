@@ -13,22 +13,19 @@ export default function Page() {
   const user = Cookies.get("currentUser") as any;
   const [showOnboarding, setshowOnboarding] = useState(false);
   const currentUser = user ? JSON.parse(user) : null;
-  // console.log(currentUser);
+  console.log(currentUser);
   const [onboardingState, setOnboardingState] = useState('ProfilePicture');
 
   // Check if user has uploaded a profile picture and update the state accordingly
   useEffect(() => {
-    if (!currentUser.profile_picture == null) {
+    if (!currentUser.profile_picture == null || !currentUser.profile_picture) {
       setOnboardingState('ProfilePicture');
       setshowOnboarding(true);
-    } else if (currentUser.bio == null) {
+    } else if (currentUser.bio == null ||  !currentUser.bio ) {
       setOnboardingState('Bio');
       setshowOnboarding(true);
-    } else if (currentUser.skills==null || currentUser.skills.length){
+    } else if (currentUser.skills==null || currentUser.skills.length<1){
       setOnboardingState('Skills');
-      setshowOnboarding(true);
-    }else if (currentUser.kyc_verified==0){
-      setOnboardingState('kyc');
       setshowOnboarding(true);
     }else{
       setshowOnboarding(false);

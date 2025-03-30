@@ -29,8 +29,9 @@ export default function Home() {
     const phoneNumber = formData.get("phoneNumber") as string;
     const email = formData.get("email") as string;
     const countryCode = selected as string;
+    const account_type = formData.get("account_type") as string;
 // console.log(phoneNumber, email, countryCode,selected, displayName, username, password)
-    if (!displayName || !username || !password || !phoneNumber || !email || !countryCode) {
+    if (!displayName || !username || !password || !phoneNumber || !email || !countryCode || !account_type) {
       toast.error("All fields must be provided",);
       return;
     }
@@ -49,6 +50,7 @@ export default function Home() {
         username: username,
         email: email,
         country: countryCode,
+        account_type:account_type
       }),
     })
       .then((res) => res.json())
@@ -140,6 +142,24 @@ export default function Home() {
             />
           </div>
 
+          {/* Account type */}
+          <div className="mb-4">
+            <Label htmlFor="account_type" className="block text-sm font-medium text-gray-700 mb-2">Account type</Label>
+            <select name="account_type" id="account_type" className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-3 rounded-md">
+              <option value="">Select Account Type</option>
+              <option value="individual">Individual</option>
+              <option value="agency">Agency</option>
+              <option value="business">Business</option>
+            </select>
+            {/* <Input
+              type=""
+              name="email"
+              id="email"
+              placeholder="johndoe@example.com"
+              required
+              className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-7 rounded-md"
+            /> */}
+          </div>
           {/* email */}
           <div className="mb-4">
             <Label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email Address</Label>
