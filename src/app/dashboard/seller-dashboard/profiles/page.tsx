@@ -6,18 +6,25 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { toast, Toaster } from "sonner";
 
 import Cookies from 'js-cookie';
-import { Tabs } from "@radix-ui/react-tabs";
-import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import KYCVerification from "@/components/onboarding/KycUploader";
+
+// import KYCVerification from "@/components/onboarding/KycUploader";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from "@radix-ui/react-select";
+import MyModal from "@/components/ui/MyModal";
+import SellerSkills from "@/components/onboarding/SellerSkills";
 
 export default function SellerProfile() {
     const [profile, setProfile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
-
+    const [addSkill, setAddSkill] = useState(false);
+    // const user = Cookies.get("currentUser") as string;
+    // const currentUser = user ? JSON.parse(user) : null;
+    console.log(profile);
     const tabState = "account";
 
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
         async function fetchProfile() {
             try {
@@ -79,113 +86,246 @@ export default function SellerProfile() {
     if (!profile) return <p className="text-center py-10">Loading profile...</p>;
 
     return (
-        <div className="max-w-3xl mx-auto p-6">
-            <Tabs defaultValue={tabState} className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="account">Account</TabsTrigger>
-                    <TabsTrigger value="kyc">KYC</TabsTrigger>
-                </TabsList>
-                <TabsContent value="account" className="mt-10">
-                    <Card className="shadow-lg p-6 rounded-xl bg-white">
-                        <CardHeader className="flex items-center gap-4">
-                            <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-yellow-500">
-                                <img
-                                    src={preview || profile.profile_picture}
-                                    alt="Profile"
-                                    className="w-full h-full object-cover"
-                                />
-                                <input
+        <div className=" w-full p-6  ">
+            
+            <h1 className="font-bold text-3xl">My Profile</h1>
+            <p className="py-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae voluptates quo sit! Molestias, iusto ipsam!</p>
+            {/* user profile */}
+            <Card className="mt-8 p-4">
+                <CardHeader><h2 className="font-bold text-lg py-6 border-b border-gray-300">Profile Details</h2></CardHeader>
+                <CardContent>
+                    <div className="flex flex-col md:flex-row my-5">
+                       <div className="relative w-24 h-24 rounded-full overflow-hidden ">
+                       <img
+                             src={preview || profile.profile_picture}
+                            // {profile.profile_picture || "https://picsum.photos/200/300"}
+                            alt="User Avatar"
+                            className="w-20 h-20 rounded-full object-cover border shadow"
+                        />
+                        <input
                                     type="file"
                                     accept="image/*"
                                     className="absolute inset-0 opacity-0 cursor-pointer"
                                     onChange={handleImageChange}
                                 />
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold">{profile.name}</h2>
-                                <p className="text-gray-500">{profile.country}</p>
-                            </div>
-                        </CardHeader>
-                        <Toaster position="top-center" className='bg-amber-200' />
-                        <CardContent>
-                            {/* <div className="pb-3">
-                                <h3 className="text-lg font-semibold">Phone Number</h3>
-                                <p className="text-gray-700">{profile.name}</p>
-                            </div> */}
+                       </div>
 
-                            <div className="pb-3">   <h3 className="text-lg font-semibold">Bio</h3>
-                                <p className="text-gray-700">{profile.bio}</p>
+
+                        <div className="flex flex-col justi">
+                            <div className=" pt-2 ms-0 md:ms-5 flex md:flex-row ">
+                                <div className=" p-2 bg-red-100 w-fit  rounded h-fit me-3 md:me-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                    </svg>
+                                </div>
+
+                                <div className=" p-2 bg-orange-100 w-fit  rounded h-fit ms-4 cursor-pointer" onClick={uploadImage}>
+                                    <p> {uploading ? "Uploading..." : "Update Profile Picture"}</p>
+                                </div>
                             </div>
-                            <h3 className="text-lg font-semibold mt-4">Skills</h3>
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                {profile.skills.map((skill) => (
-                                    <span key={skill.id} className="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm">
-                                        {skill.name}
-                                    </span>
-                                ))}
-                            </div>
+                            <p className=" ps-5 pt-2">Max file size  not more 1MB, Minimum dimension: 330x300 And Suitable files are .jpg & .png</p>
+                        </div>
 
-                            {selectedFile && (
-                                <Button
-                                    onClick={uploadImage}
-                                    className="mt-4 bg-yellow-500 w-full py-2"
-                                    disabled={uploading}
-                                >
-                                    {uploading ? "Uploading..." : "Update Profile Picture"}
-                                </Button>
-                            )}
-                        </CardContent>
-                    </Card>
-                </TabsContent>
-                <TabsContent value="kyc" className="">
-                       <KYCVerification />
-                </TabsContent>
-            </Tabs>
-            {/* <Card className="shadow-lg p-6 rounded-xl bg-white">
-                                <CardHeader className="flex items-center gap-4">
-                                        <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-yellow-500">
-                                                <img
-                                                        src={preview || profile.profile_picture}
-                                                        alt="Profile"
-                                                        className="w-full h-full object-cover"
-                                                />
-                                                <input
-                                                        type="file"
-                                                        accept="image/*"
-                                                        className="absolute inset-0 opacity-0 cursor-pointer"
-                                                        onChange={handleImageChange}
-                                                />
-                                        </div>
-                                        <div>
-                                                <h2 className="text-xl font-bold">{profile.name}</h2>
-                                                <p className="text-gray-500">{profile.country}</p>
-                                        </div>
-                                </CardHeader>
-                                <Toaster position="top-center" className='bg-amber-200' />
-                                <CardContent>
-                                        <h3 className="text-lg font-semibold">Bio</h3>
-                                        <p className="text-gray-700">{profile.bio}</p>
+                    </div>
+                    {/*  */}
+                    <div className=" flex flex-col md:flex-row gap-4">
+                        <div className=" p-1">
+                            <label htmlFor="username">UserName</label><br />
+                            <input type="text" id="username" placeholder="username" name="username" defaultValue={profile?.username || ""} disabled className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100 " />
+                        </div>
+                        <div className=" p-1">
+                            <label htmlFor="username">Email</label><br />
+                            <input type="text" id="username" name="username" placeholder="email address" defaultValue={profile?.username || ""} disabled className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100" />
+                        </div>
+                    </div>
 
-                                        <h3 className="text-lg font-semibold mt-4">Skills</h3>
-                                        <div className="flex flex-wrap gap-2 mt-2">
-                                                {profile.skills.map((skill) => (
-                                                        <span key={skill.id} className="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm">
-                                                                {skill.name}
-                                                        </span>
-                                                ))}
-                                        </div>
 
-                                        {selectedFile && (
-                                                <Button
-                                                        onClick={uploadImage}
-                                                        className="mt-4 bg-yellow-500 w-full py-2"
-                                                        disabled={uploading}
-                                                >
-                                                        {uploading ? "Uploading..." : "Update Profile Picture"}
-                                                </Button>
-                                        )}
-                                </CardContent>
-                        </Card> */}
+                    <div className=" flex flex-col md:flex-row gap-4 mt-8">
+                        <div className=" p-1">
+                            <label htmlFor="username">Phone Number</label><br />
+                            <input type="text" id="username" name="username" defaultValue={profile?.username || ""} className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100 " />
+                        </div>
+                        <div className=" p-1">
+                            <label htmlFor="username">TagLine</label><br />
+                            <input type="text" id="username" name="username" defaultValue={profile?.username || ""} className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100" />
+                        </div>
+                    </div>
+
+                    <div className=" flex flex-col md:flex-row gap-4 mt-8">
+
+                        <div className=" p-1">
+                            <label htmlFor="username">Hourly Rate</label><br />
+                            <select className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100">
+                                <option value=""></option>
+                                <option value=""></option>
+                                <option value=""></option>
+                            </select>
+
+                        </div>
+                        <div className=" p-1">
+                            <label htmlFor="username">Gender</label><br />
+                            {/* <input type="text" id="username" name="username" value={profile?.username || ""}   className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100"/> */}
+                            <select className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                {/* <option value=""></option> */}
+                            </select>
+                        </div>
+
+                    </div>
+                    <div className="p-1 mt-3">
+                        <label htmlFor="username">Introduce Yourself</label><br />
+                        <textarea name="" id="" rows={10} className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-200">
+
+                        </textarea>
+                    </div>
+                    {loading ? (
+                        <div className="flex items-center justify-center">
+                            <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
+                        </div>
+                    ) : <Button type="submit" className="w-fit bg-yellow-500 py-6 mt-10 text-lg font-bold ">
+                        Save <i className="fal fa-arrow-right-long"></i>
+                    </Button>}
+                </CardContent>
+            </Card>
+            {/* skills */}
+            <Card className="mt-8 p-4">
+                <CardHeader className="flex justify-between items-center border-b border-gray-300">
+                    <h2 className="font-bold text-lg py-1 ">My Skills</h2>
+                    <div className="flex items-center cursor-pointer " onClick={()=>{setAddSkill(true)}}>
+                        <div className="w-fit h-fit p-2 rounded-full bg-red-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </div>
+                        <p className="text-blue-600 font-semibold  ms-3">Add Skills</p>
+                        </div>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex flex-wrap gap-2 mt-2 md:w-200">
+                        {profile.skills.map((skill) => (
+                            <span key={skill.id} className="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm">
+                                {skill.name}
+                            </span>
+                        ))}
+                    </div>
+
+
+                </CardContent>
+            </Card>
+
+            <MyModal isOpen={addSkill} onClose={()=>{setAddSkill(false)}}>
+              <SellerSkills/>
+            </MyModal>
+            <Toaster position="top-center"  />
         </div>
+        // <div className="max-w-3xl mx-auto p-6">
+        //     <Tabs defaultValue={tabState} className="w-full">
+        //         <TabsList className="grid w-full grid-cols-2">
+        //             <TabsTrigger value="account">Account</TabsTrigger>
+        //             <TabsTrigger value="kyc">KYC</TabsTrigger>
+        //         </TabsList>
+        //         <TabsContent value="account" className="mt-10">
+        //             <Card className="shadow-lg p-6 rounded-xl bg-white">
+        //                 <CardHeader className="flex items-center gap-4">
+        //                     <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-yellow-500">
+        //                         <img
+        //                             src={preview || profile.profile_picture}
+        //                             alt="Profile"
+        //                             className="w-full h-full object-cover"
+        //                         />
+                                // <input
+                                //     type="file"
+                                //     accept="image/*"
+                                //     className="absolute inset-0 opacity-0 cursor-pointer"
+                                //     onChange={handleImageChange}
+                                // />
+        //                     </div>
+        //                     <div>
+        //                         <h2 className="text-xl font-bold">{profile.name}</h2>
+        //                         <p className="text-gray-500">{profile.country}</p>
+        //                     </div>
+        //                 </CardHeader>
+        //                 <Toaster position="top-center" className='bg-amber-200' />
+        //                 <CardContent>
+        //                     {/* <div className="pb-3">
+        //                         <h3 className="text-lg font-semibold">Phone Number</h3>
+        //                         <p className="text-gray-700">{profile.name}</p>
+        //                     </div> */}
+
+        //                     <div className="pb-3">   <h3 className="text-lg font-semibold">Bio</h3>
+        //                         <p className="text-gray-700">{profile.bio}</p>
+        //                     </div>
+        //                     <h3 className="text-lg font-semibold mt-4">Skills</h3>
+        // <div className="flex flex-wrap gap-2 mt-2">
+        //     {profile.skills.map((skill) => (
+        //         <span key={skill.id} className="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm">
+        //             {skill.name}
+        //         </span>
+        //     ))}
+        // </div>
+
+        //                     {selectedFile && (
+        //                         <Button
+        //                             onClick={uploadImage}
+        //                             className="mt-4 bg-yellow-500 w-full py-2"
+        //                             disabled={uploading}
+        //                         >
+        //                             {uploading ? "Uploading..." : "Update Profile Picture"}
+        //                         </Button>
+        //                     )}
+        //                 </CardContent>
+        //             </Card>
+        //         </TabsContent>
+        //         <TabsContent value="kyc" className="">
+        //                <KYCVerification />
+        //         </TabsContent>
+        //     </Tabs>
+        //     {/* <Card className="shadow-lg p-6 rounded-xl bg-white">
+        //                         <CardHeader className="flex items-center gap-4">
+        //                                 <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-yellow-500">
+        //                                         <img
+        //                                                 src={preview || profile.profile_picture}
+        //                                                 alt="Profile"
+        //                                                 className="w-full h-full object-cover"
+        //                                         />
+        //                                         <input
+        //                                                 type="file"
+        //                                                 accept="image/*"
+        //                                                 className="absolute inset-0 opacity-0 cursor-pointer"
+        //                                                 onChange={handleImageChange}
+        //                                         />
+        //                                 </div>
+        //                                 <div>
+        //                                         <h2 className="text-xl font-bold">{profile.name}</h2>
+        //                                         <p className="text-gray-500">{profile.country}</p>
+        //                                 </div>
+        //                         </CardHeader>
+        //                         <Toaster position="top-center" className='bg-amber-200' />
+        //                         <CardContent>
+        //                                 <h3 className="text-lg font-semibold">Bio</h3>
+        //                                 <p className="text-gray-700">{profile.bio}</p>
+
+        //                                 <h3 className="text-lg font-semibold mt-4">Skills</h3>
+        //                                 <div className="flex flex-wrap gap-2 mt-2">
+        //                                         {profile.skills.map((skill) => (
+        //                                                 <span key={skill.id} className="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm">
+        //                                                         {skill.name}
+        //                                                 </span>
+        //                                         ))}
+        //                                 </div>
+
+        //                                 {selectedFile && (
+        //                                         <Button
+        //                                                 onClick={uploadImage}
+        //                                                 className="mt-4 bg-yellow-500 w-full py-2"
+        //                                                 disabled={uploading}
+        //                                         >
+        //                                                 {uploading ? "Uploading..." : "Update Profile Picture"}
+        //                                         </Button>
+        //                                 )}
+        //                         </CardContent>
+        //                 </Card> */}
+        // </div>
     );
 }
