@@ -107,10 +107,10 @@ export default function SellerProfile() {
                         </CardHeader>
                         <Toaster position="top-center" className='bg-amber-200' />
                         <CardContent>
-                            <div className="pb-3">
+                            {/* <div className="pb-3">
                                 <h3 className="text-lg font-semibold">Phone Number</h3>
                                 <p className="text-gray-700">{profile.name}</p>
-                            </div>
+                            </div> */}
 
                             <div className="pb-3">   <h3 className="text-lg font-semibold">Bio</h3>
                                 <p className="text-gray-700">{profile.bio}</p>
