@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ApiBaseUrl, fetchAndStoreUserProfile } from "@/helper/functions";
 import { Button } from "@/components/ui/button";
-import { toast,Toaster } from "sonner";
+import { toast, Toaster } from "sonner";
 import Cookies from 'js-cookie';
 const SellerSkills = () => {
   const [categories, setCategories] = useState([]);
@@ -9,11 +9,13 @@ const SellerSkills = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch(`${ApiBaseUrl}/categories`,{headers: {
-       'Content-Type': 'application/json' ,
+    fetch(`${ApiBaseUrl}/categories`, {
+      headers: {
+        'Content-Type': 'application/json',
 
-      Authorization: `Bearer ${Cookies.get("token")}`, // Keep only this header
-       }})
+        Authorization: `Bearer ${Cookies.get("token")}`, // Keep only this header
+      }
+    })
       .then((res) => res.json())
       .then((data) => setCategories(data.data))
       .catch(() => toast.error("Failed to load skills"));
@@ -38,7 +40,8 @@ const SellerSkills = () => {
     try {
       const response = await fetch(`${ApiBaseUrl}/seller/set-skills`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" ,
+        headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${Cookies.get("token")}`, // Keep only this header
 
         },
@@ -47,7 +50,7 @@ const SellerSkills = () => {
       const data = await response.json();
       if (data.status) {
         toast.success("Skills updated successfully");
-       await fetchAndStoreUserProfile();
+        await fetchAndStoreUserProfile();
         window.location.reload();
       } else {
         toast.error("Failed to update skills");
@@ -64,7 +67,7 @@ const SellerSkills = () => {
     <div className="p-4 border rounded-lg">
       <h2 className="text-lg font-semibold mb-2">Select Your Skills</h2>
       <div className="flex flex-wrap gap-2 mb-4">
-             <Toaster position="top-center" className='bg-amber-200' />
+        <Toaster position="top-center" className='bg-amber-200' />
         {categories.map((category) => (
           <div key={category.id} className="mb-3">
             <h3 className="font-medium">{category.name}</h3>
@@ -72,11 +75,10 @@ const SellerSkills = () => {
               {category.skills.map((skill) => (
                 <button
                   key={skill.id}
-                  className={`px-3 py-1 border rounded-md cursor-pointer transition-all ${
-                    selectedSkills.some((s) => s.skillId === skill.id)
+                  className={`px-3 py-1 border rounded-md cursor-pointer transition-all ${selectedSkills.some((s) => s.skillId === skill.id)
                       ? "bg-blue-500 text-white"
                       : "bg-gray-200"
-                  }`}
+                    }`}
                   onClick={() => handleSelectSkill(skill.id, skill.category_id)}
                 >
                   {skill.name}

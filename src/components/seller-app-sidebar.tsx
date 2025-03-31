@@ -21,7 +21,7 @@ const data = {
   navMain: [
     {
       title: "Overview",
-      url: "#",
+      url: "/dashboard/seller-dashboard",
       items: [
         {
           title: "Installation",
@@ -43,7 +43,7 @@ const data = {
         },
         {
           title: "Profile",
-          url: "#",
+          url: "/dashboard/seller-dashboard/profiles",
           isActive: true,
         },
         // {
