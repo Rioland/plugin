@@ -20,130 +20,84 @@ const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
-      title: "Overview",
-      url: "/dashboard/seller-dashboard",
+      title: "Start",
+      url: "#",
       items: [
         {
-          title: "Installation",
+          title: "Dashboard",
+          url: "/dashboard/seller-dashboard",
+        },
+        {
+          title: "My Proposals",
           url: "#",
         },
         {
-          title: "Project Structure",
+          title: "Saved",
+          url: "#",
+        },
+        {
+          title: "Messages",
+          url: "#",
+        },
+        {
+          title: "Invoice",
+          url: "#",
+        },
+        {
+          title: "Payment",
+          url: "#",
+        },
+        {
+          title: "Statement",
           url: "#",
         },
       ],
     },
     {
-      title: "Account Settings and Security",
+      title: "Organize and Manage",
       url: "#",
       items: [
         {
-          title: "Settings",
+          title: "Manage Services",
           url: "#",
         },
+        {
+          title: "Manage Jobs",
+          url: "#",
+        },
+        {
+          title: "Manage Project",
+          url: "#",
+        },
+        {
+          title: "Add Services",
+          url: "#",
+        },
+        {
+          title: "Create Project",
+          url: "#",
+        },
+        
+      ],
+    },
+    {
+      title: "Account",
+      url: "#",
+      items: [
         {
           title: "Profile",
           url: "/dashboard/seller-dashboard/profiles",
           isActive: true,
         },
-        // {
-        //   title: "Rendering",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Caching",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Styling",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Optimizing",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Configuring",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Testing",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Authentication",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Deploying",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Upgrading",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Examples",
-        //   url: "#",
-        // },
+        {
+          title: "Log Out",
+          url: "#",
+        },
+        
+       
       ],
     },
-    // {
-    //   title: "API Reference",
-    //   url: "#",
-    //   items: [
-    //     {
-    //       title: "Components",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "File Conventions",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Functions",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "next.config.js Options",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "CLI",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Edge Runtime",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Architecture",
-    //   url: "#",
-    //   items: [
-    //     {
-    //       title: "Accessibility",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Fast Refresh",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Next.js Compiler",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Supported Browsers",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Logout",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
+  
   
   
   ],

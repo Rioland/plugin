@@ -13,6 +13,9 @@ import Cookies from 'js-cookie';
 import MyModal from "@/components/ui/MyModal";
 import SellerSkills from "@/components/onboarding/SellerSkills";
 import MySkills from "./Components/MySkill";
+import ChangePassword from "./Components/ChangePassword";
+import CloseAccount from "./Components/CloseAccount";
+import AddExperience from "./Components/AddExperience";
 
 export default function SellerProfile() {
     const [profile, setProfile] = useState(null);
@@ -20,6 +23,7 @@ export default function SellerProfile() {
     const [preview, setPreview] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [addSkill, setAddSkill] = useState(false);
+    const [addExperience, setAddExperience] = useState(false);
     // const user = Cookies.get("currentUser") as string;
     // const currentUser = user ? JSON.parse(user) : null;
     console.log(profile);
@@ -160,9 +164,14 @@ const saveprofile = () => {
                         <div className=" p-1">
                             <label htmlFor="username">Hourly Rate</label><br />
                             <select className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100">
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
+                                <option value="">$25</option>
+                                <option value="">$50</option>
+                                <option value="">$75</option>
+                                <option value="">$100</option>
+                                <option value="">$125</option>
+                                <option value="">$150</option>
+                                <option value="">$175</option>
+                                <option value="">$200</option>
                             </select>
 
                         </div>
@@ -207,124 +216,52 @@ const saveprofile = () => {
                 </CardHeader>
                 <CardContent>
                     <MySkills cominprofile={profile}/>
-                 
-
-
+                </CardContent>
+            </Card>
+            {/* add experience */}
+            <Card className="mt-8 p-4">
+            <CardHeader className="flex justify-between items-center border-b border-gray-300">
+                    <h2 className="font-bold text-lg py-1 ">My Experience</h2>
+                    <div className="flex items-center cursor-pointer " onClick={()=>{setAddExperience(true)}}>
+                        <div className="w-fit h-fit p-2 rounded-full bg-red-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </div>
+                        <p className="text-blue-600 font-semibold  ms-3">Add Experience</p>
+                        </div>
+                </CardHeader>
+            </Card>
+            {/* change password */}
+            <Card className="mt-8 p-4">
+            <CardHeader className="flex justify-between items-center border-b border-gray-300">
+                    <h2 className="font-bold text-lg py-1 ">Change Password</h2>
+                </CardHeader>
+                <CardContent>
+                    <ChangePassword/>
+                </CardContent>
+            </Card>
+             {/* Close account */}
+            <Card className="mt-8 p-4">
+            <CardHeader className="flex justify-between items-center border-b border-gray-300">
+                    <h2 className="font-bold text-lg py-1 ">Close Account</h2>
+                </CardHeader>
+                <CardContent>
+                    <CloseAccount/>
                 </CardContent>
             </Card>
 
+
+
+            {/* others */}
             <MyModal isOpen={addSkill} onClose={()=>{setAddSkill(false)}}>
               <SellerSkills/>
             </MyModal>
+            <MyModal isOpen={addExperience} onClose={()=>{setAddExperience(false)}}>
+              <AddExperience/>
+            </MyModal>
             <Toaster position="top-center"  />
         </div>
-        // <div className="max-w-3xl mx-auto p-6">
-        //     <Tabs defaultValue={tabState} className="w-full">
-        //         <TabsList className="grid w-full grid-cols-2">
-        //             <TabsTrigger value="account">Account</TabsTrigger>
-        //             <TabsTrigger value="kyc">KYC</TabsTrigger>
-        //         </TabsList>
-        //         <TabsContent value="account" className="mt-10">
-        //             <Card className="shadow-lg p-6 rounded-xl bg-white">
-        //                 <CardHeader className="flex items-center gap-4">
-        //                     <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-yellow-500">
-        //                         <img
-        //                             src={preview || profile.profile_picture}
-        //                             alt="Profile"
-        //                             className="w-full h-full object-cover"
-        //                         />
-                                // <input
-                                //     type="file"
-                                //     accept="image/*"
-                                //     className="absolute inset-0 opacity-0 cursor-pointer"
-                                //     onChange={handleImageChange}
-                                // />
-        //                     </div>
-        //                     <div>
-        //                         <h2 className="text-xl font-bold">{profile.name}</h2>
-        //                         <p className="text-gray-500">{profile.country}</p>
-        //                     </div>
-        //                 </CardHeader>
-        //                 <Toaster position="top-center" className='bg-amber-200' />
-        //                 <CardContent>
-        //                     {/* <div className="pb-3">
-        //                         <h3 className="text-lg font-semibold">Phone Number</h3>
-        //                         <p className="text-gray-700">{profile.name}</p>
-        //                     </div> */}
-
-        //                     <div className="pb-3">   <h3 className="text-lg font-semibold">Bio</h3>
-        //                         <p className="text-gray-700">{profile.bio}</p>
-        //                     </div>
-        //                     <h3 className="text-lg font-semibold mt-4">Skills</h3>
-        // <div className="flex flex-wrap gap-2 mt-2">
-        //     {profile.skills.map((skill) => (
-        //         <span key={skill.id} className="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm">
-        //             {skill.name}
-        //         </span>
-        //     ))}
-        // </div>
-
-        //                     {selectedFile && (
-        //                         <Button
-        //                             onClick={uploadImage}
-        //                             className="mt-4 bg-yellow-500 w-full py-2"
-        //                             disabled={uploading}
-        //                         >
-        //                             {uploading ? "Uploading..." : "Update Profile Picture"}
-        //                         </Button>
-        //                     )}
-        //                 </CardContent>
-        //             </Card>
-        //         </TabsContent>
-        //         <TabsContent value="kyc" className="">
-        //                <KYCVerification />
-        //         </TabsContent>
-        //     </Tabs>
-        //     {/* <Card className="shadow-lg p-6 rounded-xl bg-white">
-        //                         <CardHeader className="flex items-center gap-4">
-        //                                 <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-yellow-500">
-        //                                         <img
-        //                                                 src={preview || profile.profile_picture}
-        //                                                 alt="Profile"
-        //                                                 className="w-full h-full object-cover"
-        //                                         />
-        //                                         <input
-        //                                                 type="file"
-        //                                                 accept="image/*"
-        //                                                 className="absolute inset-0 opacity-0 cursor-pointer"
-        //                                                 onChange={handleImageChange}
-        //                                         />
-        //                                 </div>
-        //                                 <div>
-        //                                         <h2 className="text-xl font-bold">{profile.name}</h2>
-        //                                         <p className="text-gray-500">{profile.country}</p>
-        //                                 </div>
-        //                         </CardHeader>
-        //                         <Toaster position="top-center" className='bg-amber-200' />
-        //                         <CardContent>
-        //                                 <h3 className="text-lg font-semibold">Bio</h3>
-        //                                 <p className="text-gray-700">{profile.bio}</p>
-
-        //                                 <h3 className="text-lg font-semibold mt-4">Skills</h3>
-        //                                 <div className="flex flex-wrap gap-2 mt-2">
-        //                                         {profile.skills.map((skill) => (
-        //                                                 <span key={skill.id} className="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm">
-        //                                                         {skill.name}
-        //                                                 </span>
-        //                                         ))}
-        //                                 </div>
-
-        //                                 {selectedFile && (
-        //                                         <Button
-        //                                                 onClick={uploadImage}
-        //                                                 className="mt-4 bg-yellow-500 w-full py-2"
-        //                                                 disabled={uploading}
-        //                                         >
-        //                                                 {uploading ? "Uploading..." : "Update Profile Picture"}
-        //                                         </Button>
-        //                                 )}
-        //                         </CardContent>
-        //                 </Card> */}
-        // </div>
+        
     );
 }

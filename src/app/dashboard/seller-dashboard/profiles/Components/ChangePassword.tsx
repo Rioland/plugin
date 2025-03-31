@@ -1,0 +1,43 @@
+"use client"
+import { Button } from '@/components/ui/button'
+import React, { useState } from 'react'
+import { toast, Toaster } from "sonner"
+export default function ChangePassword() {
+        const [loading, setLoading] = useState(false);
+        return (
+                <div className='p-2'>
+                     <form >
+                     <Toaster position="top-center" />
+                        <div className=" flex flex-col md:flex-row gap-4">
+                                <div className=" p-1">
+                                        <label htmlFor="oldpassword">Old Password</label><br />
+                                        <input type="password" id="oldpassword" placeholder="**********" name="oldpassword" className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-200 " />
+                                </div>
+
+                        </div>
+                        <div className=" flex flex-col md:flex-row gap-4">
+                                <div className=" p-1">
+                                        <label htmlFor="newpassword">New Password</label><br />
+                                        <input type="password" id="newpassword" placeholder="**********" name="newpassword" className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-200 " />
+                                </div>
+
+                        </div>
+                        <div className=" flex flex-col md:flex-row gap-4">
+                                <div className=" p-1">
+                                        <label htmlFor="confirmpassword">Confirm Password</label><br />
+                                        <input type="password" id="confirmpassword" placeholder="**********" name="confirmpassword" className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-200 " />
+                                </div>
+
+                        </div>
+
+                        {loading ? (
+                                <div className="flex items-center justify-center">
+                                        <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
+                                </div>
+                        ) : <Button type="submit" className="w-fit bg-yellow-500 py-6 mt-10 ">
+                               Save <i className="fal fa-arrow-right-long"></i>
+                        </Button>}
+                     </form>
+                </div>
+        )
+}

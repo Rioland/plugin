@@ -9,23 +9,6 @@ const MySkills:React.FC<MySkillProps> = ({cominprofile}) => {
   const [profile, setProfile] = useState(cominprofile);
   const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
-//   useEffect(() => {
-//     async function fetchProfile() {
-//       try {
-//         const res = await fetch(`${ApiBaseUrl}/seller/get-profile`, {
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${Cookies.get("token")}`,
-//           },
-//         });
-//         const data = await res.json();
-//         setProfile(data.data);
-//       } catch (error) {
-//         toast.error("Failed to fetch profile data");
-//       }
-//     }
-//     fetchProfile();
-//   }, []);
 
   const handleSkillClick = (skillId: number) => {
     setSelectedSkills((prev) =>
