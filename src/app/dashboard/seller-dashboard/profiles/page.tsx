@@ -15,7 +15,10 @@ import SellerSkills from "@/components/onboarding/SellerSkills";
 import MySkills from "./Components/MySkill";
 import ChangePassword from "./Components/ChangePassword";
 import CloseAccount from "./Components/CloseAccount";
-import AddExperience from "./Components/AddExperience";
+
+import MyExperience from "./Components/MyExperience";
+import AddExperienceForm from "./Components/AddExperienceForm";
+import AddAword from "./Components/AddAword";
 
 export default function SellerProfile() {
     const [profile, setProfile] = useState(null);
@@ -24,6 +27,7 @@ export default function SellerProfile() {
     const [selectedFile, setSelectedFile] = useState(null);
     const [addSkill, setAddSkill] = useState(false);
     const [addExperience, setAddExperience] = useState(false);
+    const [addAward, setAddAward] = useState(false);
     // const user = Cookies.get("currentUser") as string;
     // const currentUser = user ? JSON.parse(user) : null;
     console.log(profile);
@@ -231,6 +235,26 @@ const saveprofile = () => {
                         <p className="text-blue-600 font-semibold  ms-3">Add Experience</p>
                         </div>
                 </CardHeader>
+                <CardContent>
+                    <MyExperience/>
+                </CardContent>
+            </Card>
+             {/* add award */}
+             <Card className="mt-8 p-4">
+            <CardHeader className="flex justify-between items-center border-b border-gray-300">
+                    <h2 className="font-bold text-lg py-1 ">My Awards</h2>
+                    <div className="flex items-center cursor-pointer " onClick={()=>{setAddExperience(true)}}>
+                        <div className="w-fit h-fit p-2 rounded-full bg-red-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </div>
+                        <p className="text-blue-600 font-semibold  ms-3">Add Award</p>
+                        </div>
+                </CardHeader>
+                <CardContent>
+                    <MyExperience/>
+                </CardContent>
             </Card>
             {/* change password */}
             <Card className="mt-8 p-4">
@@ -258,7 +282,10 @@ const saveprofile = () => {
               <SellerSkills/>
             </MyModal>
             <MyModal isOpen={addExperience} onClose={()=>{setAddExperience(false)}}>
-              <AddExperience/>
+              <AddExperienceForm/>
+            </MyModal>
+            <MyModal isOpen={addAward} onClose={()=>{setAddAward(false)}}>
+              <AddAword/>
             </MyModal>
             <Toaster position="top-center"  />
         </div>
