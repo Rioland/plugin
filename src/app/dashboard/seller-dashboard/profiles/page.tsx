@@ -12,6 +12,7 @@ import Cookies from 'js-cookie';
 // import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from "@radix-ui/react-select";
 import MyModal from "@/components/ui/MyModal";
 import SellerSkills from "@/components/onboarding/SellerSkills";
+import MySkills from "./Components/MySkill";
 
 export default function SellerProfile() {
     const [profile, setProfile] = useState(null);
@@ -205,13 +206,8 @@ const saveprofile = () => {
                         </div>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex flex-wrap gap-2 mt-2 md:w-200">
-                        {profile.skills.map((skill) => (
-                            <span key={skill.id} className="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm">
-                                {skill.name}
-                            </span>
-                        ))}
-                    </div>
+                    <MySkills cominprofile={profile}/>
+                 
 
 
                 </CardContent>
