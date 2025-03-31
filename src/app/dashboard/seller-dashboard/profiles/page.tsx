@@ -16,7 +16,7 @@ export default function SellerProfile() {
     const [preview, setPreview] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
 
-    var tabState = "account";
+    const tabState = "account";
 
     useEffect(() => {
         async function fetchProfile() {
@@ -29,6 +29,7 @@ export default function SellerProfile() {
                 const data = await res.json();
                 setProfile(data.data);
             } catch (error) {
+                console.error(error);
                 toast.error("Failed to fetch profile data");
             }
         }
