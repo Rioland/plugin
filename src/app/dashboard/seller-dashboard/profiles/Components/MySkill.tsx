@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Cookies from "js-cookie";
 import { toast, Toaster } from "sonner";
 import { ApiBaseUrl } from "@/helper/functions";
