@@ -67,6 +67,7 @@ export default function SellerProfile() {
                 toast.error("Upload failed!");
             }
         } catch (error) {
+            console.log(error);
             toast.error("Upload error occurred");
         } finally {
             setUploading(false);

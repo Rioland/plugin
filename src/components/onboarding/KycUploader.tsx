@@ -45,6 +45,8 @@ const KYCVerification = () => {
                 toast.error("KYC Submission Failed!");
             }
         } catch (error) {
+                console.error(error);
+    
             toast.error("Error submitting KYC");
         } finally {
             setLoading(false);
