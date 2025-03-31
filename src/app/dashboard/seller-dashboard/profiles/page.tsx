@@ -89,7 +89,7 @@ export default function SellerProfile() {
 
 const saveprofile = () => {
     setLoading(true);
-    const { first_name, last_name, email, phone_number, address, city, state, zip_code } = profile;
+    // const { first_name, last_name, email, phone_number, address, city, state, zip_code } = profile;
 };
     if (!profile) return <p className="text-center py-10">Loading profile...</p>;
 
