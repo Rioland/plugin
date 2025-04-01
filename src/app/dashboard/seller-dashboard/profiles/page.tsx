@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from "react";
-import { ApiBaseUrl } from "@/helper/functions";
+import { ApiBaseUrl, fetchAndStoreUserProfile } from "@/helper/functions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { toast, Toaster } from "sonner";
@@ -19,6 +19,8 @@ import CloseAccount from "./Components/CloseAccount";
 import MyExperience from "./Components/MyExperience";
 import AddExperienceForm from "./Components/AddExperienceForm";
 import AddAword from "./Components/AddAword";
+import ReactFlagsSelect from "react-flags-select";
+import PhoneInput from "react-phone-number-input/input";
 
 export default function SellerProfile() {
     const [profile, setProfile] = useState(null);
@@ -28,10 +30,12 @@ export default function SellerProfile() {
     const [addSkill, setAddSkill] = useState(false);
     const [addExperience, setAddExperience] = useState(false);
     const [addAward, setAddAward] = useState(false);
+    const [selected, setSelected] = useState("");
+      const [phoneNUmber, setPhoneNumber] = useState()
     // const user = Cookies.get("currentUser") as string;
     // const currentUser = user ? JSON.parse(user) : null;
     console.log(profile);
-   
+
 
     const [loading, setLoading] = useState(false);
     useEffect(() => {
@@ -43,6 +47,8 @@ export default function SellerProfile() {
                     },
                 });
                 const data = await res.json();
+                setSelected(data.data.country)
+                setPhoneNumber(data.data.phone_number)
                 setProfile(data.data);
             } catch (error) {
                 console.error(error);
@@ -65,7 +71,7 @@ export default function SellerProfile() {
         setUploading(true);
 
         const formData = new FormData();
-        formData.append("image", selectedFile);
+        formData.append("profile_picture", selectedFile);
 
         try {
             const response = await fetch(`${ApiBaseUrl}/seller/upload-profile-picture`, {
@@ -73,12 +79,14 @@ export default function SellerProfile() {
                 body: formData,
                 headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`, // Keep only Authorization header
+               
                 },
             });
 
             const data = await response.json();
             if (data.status) {
                 setProfile((prev) => ({ ...prev, profile_picture: data.url }));
+                fetchAndStoreUserProfile();
                 toast.success("Profile picture updated successfully!");
             } else {
                 toast.error("Upload failed!");
@@ -91,36 +99,93 @@ export default function SellerProfile() {
         }
     };
 
-const saveprofile = () => {
-    setLoading(true);
-    // const { first_name, last_name, email, phone_number, address, city, state, zip_code } = profile;
-};
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const bio = formData.get("bio") as string;
+        const phone_number = formData.get("phone_number") as string;
+        const username = formData.get("username") as string;
+        const country = selected 
+        if(!bio){
+            toast.error("Bio field is required");
+            return false;
+        }
+        if(!phone_number){
+            toast.error("Phone number field is required");
+            return false;
+        }
+        if(!country){
+            toast.error("Country field is required");
+            return false;
+        }
+        // if(!username){
+        //     toast.error("Username field is required");
+        //     return false;
+        // }
+        setLoading(true);
+        fetch(`${ApiBaseUrl}/seller/update-profile`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+          body: JSON.stringify({
+            
+                "phone_number":phone_number,
+                "country":country,
+                "bio":bio,
+                "username": username,
+            
+            
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            if (data.status === false) {
+              toast.error(data.message,);
+              
+              setLoading(false);
+            } else {
+              setLoading(false);
+              fetchAndStoreUserProfile();
+              toast.success("Data Updated successful",);
+  
+            }
+          })
+          .catch((error) => {
+            console.error("Error during login:", error);
+            setLoading(false);
+          });
+    };
     if (!profile) return <p className="text-center py-10">Loading profile...</p>;
 
     return (
         <div className=" w-full p-6  ">
-            
+
             <h1 className="font-bold text-3xl">My Profile</h1>
             <p className="py-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae voluptates quo sit! Molestias, iusto ipsam!</p>
             {/* user profile */}
             <Card className="mt-8 p-4">
                 <CardHeader><h2 className="font-bold text-lg py-6 border-b border-gray-300">Profile Details</h2></CardHeader>
                 <CardContent>
+                    <form onSubmit={handleSubmit}>
+                    <h1 className="text-2xl font-bold">{profile.name}</h1>
                     <div className="flex flex-col md:flex-row my-5">
-                       <div className="relative w-24 h-24 rounded-full overflow-hidden ">
-                       <img
-                             src={preview || profile.profile_picture}
-                            // {profile.profile_picture || "https://picsum.photos/200/300"}
-                            alt="User Avatar"
-                            className="w-20 h-20 rounded-full object-cover border shadow"
-                        />
-                        <input
-                                    type="file"
-                                    accept="image/*"
-                                    className="absolute inset-0 opacity-0 cursor-pointer"
-                                    onChange={handleImageChange}
-                                />
-                       </div>
+                        <div className="relative w-24 h-24 rounded-full overflow-hidden ">
+                            <img
+                                src={preview || profile.profile_picture}
+                                // {profile.profile_picture || "https://picsum.photos/200/300"}
+                                alt="User Avatar"
+                                className="w-20 h-20 rounded-full object-cover border shadow"
+                            />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                onChange={handleImageChange}
+                            />
+                        </div>
 
 
                         <div className="flex flex-col justi">
@@ -146,20 +211,39 @@ const saveprofile = () => {
                             <input type="text" id="username" placeholder="username" name="username" defaultValue={profile?.username || ""} disabled className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100 " />
                         </div>
                         <div className=" p-1">
-                            <label htmlFor="username">Email</label><br />
-                            <input type="text" id="username" name="username" placeholder="email address" defaultValue={profile?.username || ""} disabled className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100" />
+                            <label htmlFor="email">Email</label><br />
+                            <input type="email" id="email" name="email" placeholder="email address" defaultValue={profile?.email || ""} disabled className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100" />
                         </div>
                     </div>
 
 
                     <div className=" flex flex-col md:flex-row gap-4 mt-8">
                         <div className=" p-1">
-                            <label htmlFor="username">Phone Number</label><br />
-                            <input type="text" id="username" name="username" defaultValue={profile?.username || ""} className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100 " />
+                            <label htmlFor="phone_number">Phone Number</label><br />
+                            {/* <input type="text" id="username" name="username" defaultValue={profile?.phone_number || ""} className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100 " /> */}
+                            <PhoneInput
+                                placeholder="Enter phone number"
+                                // defaultCountry="US"
+                                // countryCallingCodeEditable={false}
+                                name="phone_number"
+                                id="phone_number"
+                                required
+                                value={phoneNUmber}
+                               className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100 "
+                                onChange={() => setPhoneNumber} />
                         </div>
                         <div className=" p-1">
-                            <label htmlFor="username">TagLine</label><br />
-                            <input type="text" id="username" name="username" defaultValue={profile?.username || ""} className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100" />
+                            <label htmlFor="username">Conutry</label><br />
+                            <ReactFlagsSelect
+                                selected={selected}
+                                placeholder="Select Country"
+                                searchPlaceholder="Search countries"
+                                searchable
+                                
+                                className="p-2 mt-2 rounded w-full  md:w-100"
+                                onSelect={(code) => setSelected(code)}
+                            />
+                            {/* <input type="text" id="username" name="username" defaultValue={profile?.username || ""} className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-100" /> */}
                         </div>
                     </div>
 
@@ -192,103 +276,104 @@ const saveprofile = () => {
                     </div>
                     <div className="p-1 mt-3">
                         <label htmlFor="username">Introduce Yourself</label><br />
-                        <textarea name="" id="" rows={10} className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-200">
+                        <textarea name="bio" id="bio" rows={10} defaultValue={profile.bio} className="p-2 border-1 border-gray-400 mt-2 rounded w-full  md:w-200">
 
                         </textarea>
                     </div>
                     {loading ? (
-                        <div className="flex items-center justify-center">
+                        <div className="flex items-start justify-start">
                             <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
                         </div>
                     ) : <Button type="submit" className="w-fit bg-yellow-500 py-6 mt-10 text-lg font-bold ">
                         Save <i className="fal fa-arrow-right-long"></i>
                     </Button>}
+</form>
                 </CardContent>
             </Card>
             {/* skills */}
             <Card className="mt-8 p-4">
                 <CardHeader className="flex justify-between items-center border-b border-gray-300">
                     <h2 className="font-bold text-lg py-1 ">My Skills</h2>
-                    <div className="flex items-center cursor-pointer " onClick={()=>{setAddSkill(true)}}>
+                    <div className="flex items-center cursor-pointer " onClick={() => { setAddSkill(true) }}>
                         <div className="w-fit h-fit p-2 rounded-full bg-red-100">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
                         </div>
                         <p className="text-blue-600 font-semibold  ms-3">Add Skills</p>
-                        </div>
+                    </div>
                 </CardHeader>
                 <CardContent>
-                    <MySkills cominprofile={profile}/>
+                    <MySkills cominprofile={profile} />
                 </CardContent>
             </Card>
             {/* add experience */}
             <Card className="mt-8 p-4">
-            <CardHeader className="flex justify-between items-center border-b border-gray-300">
+                <CardHeader className="flex justify-between items-center border-b border-gray-300">
                     <h2 className="font-bold text-lg py-1 ">My Experience</h2>
-                    <div className="flex items-center cursor-pointer " onClick={()=>{setAddExperience(true)}}>
+                    <div className="flex items-center cursor-pointer " onClick={() => { setAddExperience(true) }}>
                         <div className="w-fit h-fit p-2 rounded-full bg-red-100">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
                         </div>
                         <p className="text-blue-600 font-semibold  ms-3">Add Experience</p>
-                        </div>
+                    </div>
                 </CardHeader>
                 <CardContent>
-                    <MyExperience/>
+                    <MyExperience />
                 </CardContent>
             </Card>
-             {/* add award */}
-             <Card className="mt-8 p-4">
-            <CardHeader className="flex justify-between items-center border-b border-gray-300">
+            {/* add award */}
+            <Card className="mt-8 p-4">
+                <CardHeader className="flex justify-between items-center border-b border-gray-300">
                     <h2 className="font-bold text-lg py-1 ">My Awards</h2>
-                    <div className="flex items-center cursor-pointer " onClick={()=>{setAddExperience(true)}}>
+                    <div className="flex items-center cursor-pointer " onClick={() => { setAddExperience(true) }}>
                         <div className="w-fit h-fit p-2 rounded-full bg-red-100">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
                         </div>
                         <p className="text-blue-600 font-semibold  ms-3">Add Award</p>
-                        </div>
+                    </div>
                 </CardHeader>
                 <CardContent>
-                    <MyExperience/>
+                    <MyExperience />
                 </CardContent>
             </Card>
             {/* change password */}
             <Card className="mt-8 p-4">
-            <CardHeader className="flex justify-between items-center border-b border-gray-300">
+                <CardHeader className="flex justify-between items-center border-b border-gray-300">
                     <h2 className="font-bold text-lg py-1 ">Change Password</h2>
                 </CardHeader>
                 <CardContent>
-                    <ChangePassword/>
+                    <ChangePassword />
                 </CardContent>
             </Card>
-             {/* Close account */}
+            {/* Close account */}
             <Card className="mt-8 p-4">
-            <CardHeader className="flex justify-between items-center border-b border-gray-300">
+                <CardHeader className="flex justify-between items-center border-b border-gray-300">
                     <h2 className="font-bold text-lg py-1 ">Close Account</h2>
                 </CardHeader>
                 <CardContent>
-                    <CloseAccount/>
+                    <CloseAccount />
                 </CardContent>
             </Card>
 
 
 
             {/* others */}
-            <MyModal isOpen={addSkill} onClose={()=>{setAddSkill(false)}}>
-              <SellerSkills/>
+            <MyModal isOpen={addSkill} onClose={() => { setAddSkill(false) }}>
+                <SellerSkills />
             </MyModal>
-            <MyModal isOpen={addExperience} onClose={()=>{setAddExperience(false)}}>
-              <AddExperienceForm/>
+            <MyModal isOpen={addExperience} onClose={() => { setAddExperience(false) }}>
+                <AddExperienceForm />
             </MyModal>
-            <MyModal isOpen={addAward} onClose={()=>{setAddAward(false)}}>
-              <AddAword/>
+            <MyModal isOpen={addAward} onClose={() => { setAddAward(false) }}>
+                <AddAword />
             </MyModal>
-            <Toaster position="top-center"  />
+            <Toaster position="top-center" />
         </div>
-        
+
     );
 }

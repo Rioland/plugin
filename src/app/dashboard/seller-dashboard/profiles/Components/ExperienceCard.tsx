@@ -12,7 +12,7 @@ interface ExperienceCardProps {
         subTitle: string
         description: string
 }
-const ExperienceCard: React.FC<ExperienceCardProps> = ({ startYear, endYear,title,subTitle,description }) => {
+const ExperienceCard: React.FC<ExperienceCardProps> = ({ startYear, endYear, title, subTitle, description }) => {
         return (
                 <div className=' w-full my-8 border-b border-gray-300 pb-4'>
                         <div className='flex  justify-between'>

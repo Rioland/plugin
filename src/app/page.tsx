@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Fragment, useState } from "react";
 import { toast, Toaster } from "sonner"
-import { ApiBaseUrl } from "@/helper/functions";
+import { ApiBaseUrl, fetchAndStoreUserProfile } from "@/helper/functions";
 import Cookies from "js-cookie";
 import Myheader from "@/components/header";
 import Footer from "@/components/Footer";
@@ -41,7 +41,7 @@ export default function Home() {
         }),
       })
         .then((res) => res.json())
-        .then((data) => {
+        .then(async (data) => {
           console.log(data);
           if (data.status === false) {
             toast.error(data.message,);
@@ -52,20 +52,17 @@ export default function Home() {
             toast.success("Login successful",);
             // Set cookies instead of localStorage
             Cookies.set("token", data.data.token, {
-              expires: 7,
+              expires: 0.5,
               secure: process.env.NODE_ENV === "production",
               sameSite: "strict",
             });
             Cookies.set("role", data.data.role, {
-              expires: 7,
+              expires: 0.5,
               secure: process.env.NODE_ENV === "production",
               sameSite: "strict",
             });
-            Cookies.set("currentUser", JSON.stringify(data.data.user), {
-              expires: 7,
-              secure: process.env.NODE_ENV === "production",
-              sameSite: "strict",
-            });
+         await   fetchAndStoreUserProfile();
+            
             setLoading(false);
 
             if (data.data.role == 1) {

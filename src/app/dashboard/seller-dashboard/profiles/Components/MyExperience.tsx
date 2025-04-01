@@ -1,9 +1,7 @@
 import React from 'react'
 import ExperienceCard from './ExperienceCard'
 
-interface MyExperience{
 
-}
 export default function MyExperience() {
   return (
     <div>

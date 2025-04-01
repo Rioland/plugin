@@ -5,6 +5,7 @@ import MyModal from "@/components/ui/MyModal"
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import OnBoardingScreen from "@/components/onboarding/OnBoardingScreen";
+import { Chart1 } from "./Components/Chart1";
 
 
 
@@ -24,7 +25,7 @@ export default function Page() {
     } else if (currentUser.bio == null ||  !currentUser.bio ) {
       setOnboardingState('Bio');
       setshowOnboarding(true);
-    } else if (currentUser.skills==null || currentUser.skills.length<1){
+    } else if (currentUser.skills==null || !currentUser.skills){
       setOnboardingState('Skills');
       setshowOnboarding(true);
     }else{
@@ -35,16 +36,7 @@ export default function Page() {
   return (
     <div>
 
-      <Card className="w-full md:w-3/5 mx-auto">
-        <CardHeader >
-          <h2>Welcome! We are going to work you through setting up your Account</h2>
-        </CardHeader>
-        <CardContent>
-
-
-        </CardContent>
-        {/* <CardDescription >Description</CardDescription> */}
-      </Card>
+      <Chart1/>
 
       <MyModal isOpen={showOnboarding} onClose={() => { setshowOnboarding(false) }}  >
         <OnBoardingScreen screen={onboardingState}onPrevious={() => { setshowOnboarding(false) }} />
