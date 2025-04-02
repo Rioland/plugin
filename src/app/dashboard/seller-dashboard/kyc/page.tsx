@@ -1,6 +1,6 @@
 'use client'
 // import { ApiBaseUrl } from '@/helper/functions';
-import React, { Fragment,  useState } from 'react'
+import React, { Fragment, useState } from 'react'
 // import { toast, Toaster } from 'sonner';
 import Cookies from 'js-cookie';
 // import { useDropzone } from 'react-dropzone';
@@ -19,8 +19,8 @@ export default function page() {
 
         return (
                 <Fragment>
-                        {kycCurrentPage=='start' ?<StartKc  onContinue={()=>setkycCurrentPage('level2')} /> :kycCurrentPage=='level2'?<UpgradeToleveltwo onContinue={()=>setkycCurrentPage('success')}  /> : <SuccefullKycUpload /> }
-                      
+                        {/* {kycCurrentPage == 'start' ? <StartKc onContinue={() => setkycCurrentPage('level2')} /> : kycCurrentPage == 'level2' ? <UpgradeToleveltwo onContinue={() => setkycCurrentPage('success')} /> : <SuccefullKycUpload />} */}
+
                 </Fragment>
         )
 }
