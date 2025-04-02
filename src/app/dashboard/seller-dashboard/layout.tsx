@@ -27,10 +27,10 @@ export default function layout({ children}) {
             />
             <div className="flex justify-end w-full items-center">
               <div className="flex justify-center items-center pe-8">
-                <Avatar>
+                {/* <Avatar>
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
+                </Avatar> */}
               </div>
             </div>
           </header>
