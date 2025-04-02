@@ -4,7 +4,7 @@
 import { SellerAppSidebar } from '@/components/seller-app-sidebar'
 
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar'
-import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
+
 import { Separator } from '@radix-ui/react-separator'
 
 // import { useState, useEffect } from "react";

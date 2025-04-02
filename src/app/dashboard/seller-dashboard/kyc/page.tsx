@@ -1,11 +1,9 @@
 'use client'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { ApiBaseUrl } from '@/helper/functions';
+// import { ApiBaseUrl } from '@/helper/functions';
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
-import { toast, Toaster } from 'sonner';
+// import { toast, Toaster } from 'sonner';
 import Cookies from 'js-cookie';
-import { useDropzone } from 'react-dropzone';
+// import { useDropzone } from 'react-dropzone';
 import SuccefullKycUpload from './Components/SuccefullKycUpload';
 import StartKc from './Components/StartKc';
 import UpgradeToleveltwo from './Components/UpgradeToleveltwo';
