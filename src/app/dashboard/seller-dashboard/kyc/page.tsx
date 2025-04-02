@@ -30,7 +30,7 @@ interface StartKcProps {
         onContinue?: () => void
 }
 const StartKc: React.FC<StartKcProps> = ({ onContinue }) => {
-
+'use client'
         return (<div>
                 <h1 className='text-center text-4xl  font-semibold  py-8 text-blue-950'>KYC Verification</h1>
                 <p className='text-center text-lg text-gray-600 md:w-1/2 mx-auto pb-12'>To comply with regulation each participant will have to go through indentity verification (KYC/AML) to prevent fraud causes. Please, complete our fast and secure verification process to participate in our token sale.</p>
@@ -53,6 +53,7 @@ const StartKc: React.FC<StartKcProps> = ({ onContinue }) => {
 }
 
 const UpgradeToleveltwo :React.FC<StartKcProps>= ({onContinue}) => {
+        'use client'
         const [selectedId, setSelectedId] = useState('passport')
         const [image, setImage] = useState<File | null>(null);
         const [preview, setPreview] = useState<string | null>(null);
@@ -101,7 +102,7 @@ const UpgradeToleveltwo :React.FC<StartKcProps>= ({onContinue}) => {
                                                 </div>
                                                 <div className={`flex  gap-2 border-2 rounded ${selectedId == 'dl' ? 'border-blue-500' : 'border-gray-400 cursor-pointer'} px-4 py-3 items-center w-full`} onClick={() => setSelectedId('dl')}>
                                                         <img src='/images/icon-passport-color.png' className='w-10 h-10' />
-                                                        <p className={` font-bold text-gray-500 uppercase text-sm`}>Driver's License</p>
+                                                        <p className={` font-bold text-gray-500 uppercase text-sm`}>Drivers License</p>
 
                                                 </div>
                                         </div>
@@ -159,7 +160,7 @@ interface SuccefullKycUploadProps {
         onContinue?: () => void
 }
 const SuccefullKycUpload: React.FC<SuccefullKycUploadProps> = ({ onContinue }) => {
-
+'use client'
         return (<div>
                 <h1 className='text-center text-4xl  font-semibold  py-8 text-blue-950'>Begin your ID-Verification</h1>
                 <p className='text-center text-lg text-gray-600 md:w-1/2 mx-auto pb-12'>Verify your identity to participate in tokensale.</p>
