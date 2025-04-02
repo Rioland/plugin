@@ -11,6 +11,7 @@ import { Chart1 } from "./Components/Chart1";
 
 
 export default function Page() {
+  
   const user = Cookies.get("currentUser") as string;
   const [showOnboarding, setshowOnboarding] = useState(false);
   const currentUser = user ? JSON.parse(user) : null;
@@ -25,7 +26,7 @@ export default function Page() {
     } else if (currentUser.bio == null ||  !currentUser.bio ) {
       setOnboardingState('Bio');
       setshowOnboarding(true);
-    } else if (currentUser.skills==null || !currentUser.skills){
+    } else if (currentUser.skills==null || !currentUser.skills || currentUser.skills.length == 0){
       setOnboardingState('Skills');
       setshowOnboarding(true);
     }else{

@@ -23,7 +23,9 @@ import ReactFlagsSelect from "react-flags-select";
 import PhoneInput from "react-phone-number-input/input";
 
 export default function SellerProfile() {
-    const [profile, setProfile] = useState(null);
+    const user = Cookies.get("currentUser") as string;
+    const currentUser = user ? JSON.parse(user) : null;
+    const [profile, setProfile] = useState(currentUser);
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -32,31 +34,12 @@ export default function SellerProfile() {
     const [addAward, setAddAward] = useState(false);
     const [selected, setSelected] = useState("");
       const [phoneNUmber, setPhoneNumber] = useState()
-    // const user = Cookies.get("currentUser") as string;
-    // const currentUser = user ? JSON.parse(user) : null;
+  
     console.log(profile);
 
 
     const [loading, setLoading] = useState(false);
-    useEffect(() => {
-        async function fetchProfile() {
-            try {
-                const res = await fetch(`${ApiBaseUrl}/seller/get-profile`, {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get("token")}`, // Only this header
-                    },
-                });
-                const data = await res.json();
-                setSelected(data.data.country)
-                setPhoneNumber(data.data.phone_number)
-                setProfile(data.data);
-            } catch (error) {
-                console.error(error);
-                toast.error("Failed to fetch profile data");
-            }
-        }
-        fetchProfile();
-    }, []);
+
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -158,7 +141,7 @@ export default function SellerProfile() {
             setLoading(false);
           });
     };
-    if (!profile) return <p className="text-center py-10">Loading profile...</p>;
+    // if (!profile) return <p className="text-center py-10">Loading profile...</p>;
 
     return (
         <div className=" w-full p-6  ">

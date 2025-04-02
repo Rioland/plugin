@@ -35,8 +35,9 @@ export default function SetBio() {
         } else {
           toast.success('Biography uploaded successfully');
           setBiography('');
-          setOnboardingState('Skills');
-          fetchAndStoreUserProfile()
+          // setOnboardingState('Skills');
+        await  fetchAndStoreUserProfile()
+        window.location.reload();
         }
       } else {
         toast.error(data.message || 'Upload failed');
@@ -71,7 +72,7 @@ export default function SetBio() {
             onClick={handleSubmit}
             className="w-full bg-yellow-500 py-6 mt-10"
           >
-            Upload Image <i className="fal fa-arrow-right-long"></i>
+            Update My Biography <i className="fal fa-arrow-right-long"></i>
           </Button>
         )}
         {/* <Button

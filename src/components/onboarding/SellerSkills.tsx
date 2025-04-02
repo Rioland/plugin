@@ -45,7 +45,9 @@ const SellerSkills = () => {
           Authorization: `Bearer ${Cookies.get("token")}`, // Keep only this header
 
         },
-        body: JSON.stringify({ skills, category_id: categoryIds }),
+        body: JSON.stringify({ skills,
+          //  category_id: categoryIds
+           }),
       });
       const data = await response.json();
       if (data.status) {

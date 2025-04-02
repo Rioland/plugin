@@ -55,7 +55,7 @@ const UploadProfilePicture:React.FC<UpdateUserProfilePictureProps>=({onPrevious}
                     toast.error(data.message);
                   } else {
                     toast.success("Upload Successful!");
-                    fetchAndStoreUserProfile();
+                  await  fetchAndStoreUserProfile();
                     window.location.reload();
                 //     setOnboardingState('Bio');
                   }
