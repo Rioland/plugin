@@ -5,9 +5,11 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Toaster } from "sonner";
-import { StartKcProps } from "./StartKc";
 
-const UpgradeToleveltwo :React.FC<StartKcProps>= ({onContinue}) => {
+ interface UpgradeToleveltwoProps {
+        onContinue?: () => void
+}
+const UpgradeToleveltwo :React.FC<UpgradeToleveltwoProps>= ({onContinue}) => {
        
         const [selectedId, setSelectedId] = useState('passport')
         const [image, setImage] = useState<File | null>(null);

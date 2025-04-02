@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Toaster } from "sonner";
 
-export interface StartKcProps {
+ interface StartKcProps {
         onContinue?: () => void
 }
 const StartKc: React.FC<StartKcProps> = ({ onContinue }) => {
