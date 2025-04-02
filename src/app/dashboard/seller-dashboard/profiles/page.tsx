@@ -23,9 +23,14 @@ import ReactFlagsSelect from "react-flags-select";
 import PhoneInput from "react-phone-number-input/input";
 
 export default function SellerProfile() {
+
+    const [profile, setProfile] = useState(null);
+
+useEffect(() => {
     const user = Cookies.get("currentUser") as string;
     const currentUser = user ? JSON.parse(user) : null;
-    const [profile, setProfile] = useState(currentUser);
+    setProfile(currentUser);
+}, []);
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -141,7 +146,7 @@ export default function SellerProfile() {
             setLoading(false);
           });
     };
-    // if (!profile) return <p className="text-center py-10">Loading profile...</p>;
+    if (!profile) return <p className="text-center py-10">Loading profile...</p>;
 
     return (
         <div className=" w-full p-6  ">
