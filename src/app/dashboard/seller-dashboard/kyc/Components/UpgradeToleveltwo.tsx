@@ -2,10 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { ApiBaseUrl, fetchAndStoreUserProfile } from "@/helper/functions";
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { Toaster } from "sonner";
-
+import { toast, Toaster } from 'sonner'
+import Cookies from 'js-cookie';
  interface UpgradeToleveltwoProps {
         onContinue?: () => void
 }
@@ -29,6 +30,45 @@ const UpgradeToleveltwo :React.FC<UpgradeToleveltwoProps>= ({onContinue}) => {
                 accept: { "image/*": [] }, // Accept only images
                 multiple: false,
         });
+
+        const uploadkycTierone = async (e) => {
+                e.preventDefault();
+                if (!image) return toast.error("Please select an image");
+                if (!selectedId) return toast.error("Please select id type");
+                setUploading(true)
+                const formData = new FormData();
+                formData.append("selfie_photo", image);
+                formData.append("document_type", selectedId);
+                formData.append("tier", '1');
+                formData.append("document_file", image);
+
+                try {
+                        const response = await fetch(`${ApiBaseUrl}/seller/kyc/upload`, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                    Authorization: `Bearer ${Cookies.get("token")}`, 
+                            }
+                        });
+                        const data = await response.json();
+                        
+                        if (data.status) {
+                            toast.success("KYC Submitted Successfully! waiting for Verification");
+                            await fetchAndStoreUserProfile();
+                            onContinue && onContinue();
+                        } else {
+                            toast.error("KYC Submission Failed!");
+                        }
+                    } catch (error) {
+                            console.error(error);
+                
+                        toast.error("Error submitting KYC");
+                    } finally {
+                        setUploading(false);
+                    }
+              
+        }
+
         return (
                 <div>
                         <h1 className='text-center text-4xl  font-semibold  py-8 text-blue-950'>Begin your ID-Verification</h1>
@@ -44,6 +84,7 @@ const UpgradeToleveltwo :React.FC<UpgradeToleveltwoProps>= ({onContinue}) => {
                                         </div>
                                 </CardHeader>
                                 <CardContent className='px-8'>
+                                        <form onSubmit={uploadkycTierone}>
                                         <p className='text-gray-500  font-bold pb-6'>In order to complete, please upload any of the following personal document.</p>
 
                                         <div className='flex justify-center items-center gap-4 flex-col md:flex-row mb-5'>
@@ -100,12 +141,13 @@ const UpgradeToleveltwo :React.FC<UpgradeToleveltwoProps>= ({onContinue}) => {
                                                       <Button
                                                         type="submit"
                                                         // onClick={uploadImage}
-                                                        onClick={onContinue}
+                                                        
                                                         className="w-full bg-yellow-500 py-6 mt-10"
                                                       >
                                                         Proceed to Verification <i className="fal fa-arrow-right-long"></i>
                                                       </Button>
                                                     )}
+                                                    </form>
                                 </CardContent>
                         </Card>
                         <Toaster position="top-center" />

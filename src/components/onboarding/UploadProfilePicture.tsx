@@ -36,6 +36,7 @@ const UploadProfilePicture:React.FC<UpdateUserProfilePictureProps>=({onPrevious}
                 if (!image) return toast.error("Please select an image first!");
               
                 setUploading(true);
+                
               
                 const formData = new FormData();
                 formData.append("profile_picture", image); // Ensure the field name matches what the backend expects

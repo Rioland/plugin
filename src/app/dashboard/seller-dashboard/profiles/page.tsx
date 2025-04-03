@@ -21,9 +21,11 @@ import AddExperienceForm from "./Components/AddExperienceForm";
 import AddAword from "./Components/AddAword";
 import ReactFlagsSelect from "react-flags-select";
 import PhoneInput from "react-phone-number-input/input";
+import { useRouter } from "next/navigation";
+
 
 export default function SellerProfile() {
-
+const router = useRouter();
     const [profile, setProfile] = useState(null);
 
 useEffect(() => {
@@ -155,10 +157,17 @@ useEffect(() => {
             <p className="py-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae voluptates quo sit! Molestias, iusto ipsam!</p>
             {/* user profile */}
             <Card className="mt-8 p-4">
-                <CardHeader><h2 className="font-bold text-lg py-6 border-b border-gray-300">Profile Details</h2></CardHeader>
+                <CardHeader>
+                    <h2 className="font-bold text-lg py-6 border-b border-gray-300">Profile Details</h2></CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit}>
+                   <div className="flex  flex-col md:flex-row gap-4  justify-between items-center"> 
                     <h1 className="text-2xl font-bold">{profile.name}</h1>
+                    <div>
+                        <p className="text-lg">Current Tier :<span className="text-lg font-bold ps-2">{profile.kycverifications.length  <1?'0':1}</span> </p>
+                        <p className="text-lg font-bold rounded-2xl bg-red-200 text-center p-2 cursor-pointer" onClick={()=>{router.push("/dashboard/seller-dashboard/kyc")}}>Upgrade </p>
+                    </div>
+                   </div>
                     <div className="flex flex-col md:flex-row my-5">
                         <div className="relative w-24 h-24 rounded-full overflow-hidden ">
                             <img
@@ -189,9 +198,11 @@ useEffect(() => {
                                 </div>
                             </div>
                             <p className=" ps-5 pt-2">Max file size  not more 1MB, Minimum dimension: 330x300 And Suitable files are .jpg & .png</p>
+                            <p className="text-sm font-bold mt-2 ps-5 pt-3">Account Type : <span className=" ms-2 p-2 bg-red-100  rounded">{profile.account_type}</span> </p>
                         </div>
 
                     </div>
+                    </form>
                     {/*  */}
                     <div className=" flex flex-col md:flex-row gap-4">
                         <div className=" p-1">
@@ -275,7 +286,7 @@ useEffect(() => {
                     ) : <Button type="submit" className="w-fit bg-yellow-500 py-6 mt-10 text-lg font-bold ">
                         Save <i className="fal fa-arrow-right-long"></i>
                     </Button>}
-</form>
+
                 </CardContent>
             </Card>
             {/* skills */}
