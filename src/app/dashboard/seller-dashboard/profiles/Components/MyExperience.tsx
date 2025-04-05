@@ -29,7 +29,7 @@ export default function MyExperience({ type }: Props) {
         const [loading, setLoading] = useState(true)
         const [showUpdateModal, setShowUpdateModal] = useState(false)
         const [updateExperience, setUpdateExperience] = useState<Experience | null>(null)
-     
+
 
         useEffect(() => {
                 const fetchExperience = async () => {
@@ -96,7 +96,7 @@ export default function MyExperience({ type }: Props) {
                                                                                         toast.success("Experience deleted successfully!")
                                                                                 } else {
                                                                                         toast.error("Failed to delete experience")
-                                                                                     
+
                                                                                 }
                                                                         })
                                                                         .catch((error) => {
@@ -114,28 +114,28 @@ export default function MyExperience({ type }: Props) {
                                         onEdit={() => {
                                                 setUpdateExperience(exp)
                                                 setShowUpdateModal(true)
-                                              
+
                                         }}
                                 />
                         ))}
-                        <Toaster  position='top-center'/>
+                        <Toaster position='top-center' />
 
-<MyModal isOpen={showUpdateModal} onClose={() => {
-  setShowUpdateModal(false)
-  setUpdateExperience(null)
-}}>
-  {updateExperience && (
-    <UpdateExperienceForm
-      type={updateExperience.type}
-      start_year={`${updateExperience.start_year}`}
-      end_year={`${updateExperience.end_year}`}
-      title={updateExperience.title}
-      from={updateExperience.from}
-      desc={updateExperience.desc}
-      id={updateExperience.id}
-    />
-  )}
-</MyModal>
+                        <MyModal isOpen={showUpdateModal} onClose={() => {
+                                setShowUpdateModal(false)
+                                setUpdateExperience(null)
+                        }}>
+                                {updateExperience && (
+                                        <UpdateExperienceForm
+                                                type={updateExperience.type}
+                                                start_year={`${updateExperience.start_year}`}
+                                                end_year={`${updateExperience.end_year}`}
+                                                title={updateExperience.title}
+                                                from={updateExperience.from}
+                                                desc={updateExperience.desc}
+                                                id={updateExperience.id}
+                                        />
+                                )}
+                        </MyModal>
 
                 </div>
         )

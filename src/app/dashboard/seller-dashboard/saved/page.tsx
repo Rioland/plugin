@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
 import { Card } from '@/components/ui/card';
 import SavedUi from './Components/SavedUi';
-export default function page() {
+export default function Page() {
         const [profile, setProfile] = useState(null);
 
         useEffect(() => {
