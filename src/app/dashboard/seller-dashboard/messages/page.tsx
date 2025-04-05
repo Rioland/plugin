@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import ChatUI from "./Components/ChatUI";
 import { Card } from "@/components/ui/card";
 
-export default function page() {
+export default function Page() {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
