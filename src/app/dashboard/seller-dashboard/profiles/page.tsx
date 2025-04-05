@@ -301,11 +301,11 @@ useEffect(() => {
                     <h2 className="font-bold text-lg py-1 ">My Skills</h2>
                     <div className="flex items-center cursor-pointer " onClick={() => { setAddSkill(true) }}>
                         <div className="w-fit h-fit p-2 rounded-full bg-red-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
                         </div>
-                        <p className="text-blue-600 font-semibold  ms-3">Add Skills</p>
+                        <p className="text-blue-600  ms-3 ">Add Skills</p>
                     </div>
                 </CardHeader>
                 <CardContent>
@@ -318,11 +318,11 @@ useEffect(() => {
                     <h2 className="font-bold text-lg py-1 ">My Experience</h2>
                     <div className="flex items-center cursor-pointer " onClick={() => { setAddExperience(true) }}>
                         <div className="w-fit h-fit p-2 rounded-full bg-red-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
                         </div>
-                        <p className="text-blue-600 font-semibold  ms-3">Add Experience</p>
+                        <p className="text-blue-600  ms-3">Add Experience</p>
                     </div>
                 </CardHeader>
                 <CardContent>
@@ -335,11 +335,11 @@ useEffect(() => {
                     <h2 className="font-bold text-lg py-1 ">My Awards</h2>
                     <div className="flex items-center cursor-pointer " onClick={() => { setAddAward(true) }}>
                         <div className="w-fit h-fit p-2 rounded-full bg-red-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
                         </div>
-                        <p className="text-blue-600 font-semibold  ms-3">Add Award</p>
+                        <p className="text-blue-600  ms-3">Add Award</p>
                     </div>
                 </CardHeader>
                 <CardContent>
@@ -349,18 +349,18 @@ useEffect(() => {
             {/* Education */}
             <Card className="mt-8 p-4">
                 <CardHeader className="flex justify-between items-center border-b border-gray-300">
-                    <h2 className="font-bold text-lg py-1 ">My Education</h2>
+                    <h2 className="font-bold text-lg py-1 ">My Educations</h2>
                     <div className="flex items-center cursor-pointer " onClick={() => { setAddEducation(true) }}>
                         <div className="w-fit h-fit p-2 rounded-full bg-red-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
                         </div>
-                        <p className="text-blue-600 font-semibold  ms-3">Add Education</p>
+                        <p className="text-blue-600  ms-3">Add Education</p>
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <MyExperience type={'award'} />
+                    <MyExperience type={'education'} />
                 </CardContent>
             </Card>
             {/* change password */}

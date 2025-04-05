@@ -5,19 +5,25 @@ import { toast, Toaster } from "sonner";
 import Cookies from "js-cookie";
 import { Button } from "@/components/ui/button";
 
-interface AddExperienceFormProps {
+interface UpdateExperienceFormProps {
   type: string;
+  start_year: string;
+  end_year: string;
+  title: string;
+  from: string;
+  desc: string;
+  id:number
 }
 
-const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
+const UpdateExperienceForm: React.FC<UpdateExperienceFormProps> = ({ type, start_year, end_year, title, from, desc,id }) => {
 
   const [loading, setLoading] = useState(false);
   const [experience, setExperience] = useState({
-    start_year: "",
-    end_year: "",
-    title: "",
-    from: "",
-    desc: "",
+    start_year: start_year,
+    end_year: end_year,
+    title: title,
+    from: from,
+    desc: desc,
     type: type,
   });
 
@@ -32,7 +38,7 @@ const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch(`${ApiBaseUrl}/seller/credentials`, {
+      const response = await fetch(`${ApiBaseUrl}/seller/credentials/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,15 +49,8 @@ const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
 
       const data = await response.json();
       if (data.status) {
-        toast.success(` ${type === 'education' ? 'Education' : type === 'award' ? 'Award' : 'Experience'} added successfully!`);
-        setExperience({
-          start_year: "",
-          end_year: "",
-          title: "",
-          from: "",
-          desc: "",
-          type: type,
-        });
+        toast.success(` ${type === 'education' ? 'Education' : type === 'award' ? 'Award' : 'Experience'} updated successfully!`);
+       
       } else {
         toast.error("Failed to add experience");
       }
@@ -65,7 +64,7 @@ const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md max-w-lg mx-auto">
       <h2 className="text-xl font-semibold mb-4">
-        Add {type === 'education' ? 'Education' : type === 'award' ? 'Award' : 'Experience'}
+        Update {type === 'education' ? 'Education' : type === 'award' ? 'Award' : 'Experience'}
       </h2>
 
       <select name="start_year" value={experience.start_year} onChange={handleChange} className="border p-2 w-full mb-2 rounded" required>
@@ -99,4 +98,4 @@ const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
   );
 };
 
-export default AddExperienceForm;
+export default UpdateExperienceForm;
