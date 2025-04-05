@@ -3,10 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { ApiBaseUrl, fetchAndStoreUserProfile } from "@/helper/functions";
-import { useState, useCallback } from "react";
+import { useState, useCallback, Fragment } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast, Toaster } from 'sonner'
 import Cookies from 'js-cookie';
+import SuccefullKycUpload from "./SuccefullKycUpload";
  interface UpgradeToleveltwoProps {
         onContinue?: () => void
 }
@@ -16,6 +17,7 @@ const UpgradeToleveltwo :React.FC<UpgradeToleveltwoProps>= ({onContinue}) => {
         const [image, setImage] = useState<File | null>(null);
         const [preview, setPreview] = useState<string | null>(null);
         const [uploading, setUploading] = useState(false);
+        const [isSuccessfull, setisSuccessfull] = useState(false);
         const onDrop = useCallback((acceptedFiles: File[]) => {
                 const file = acceptedFiles[0]; // Get the first file
                 console.log(screen);
@@ -55,7 +57,8 @@ const UpgradeToleveltwo :React.FC<UpgradeToleveltwoProps>= ({onContinue}) => {
                         if (data.status) {
                             toast.success("KYC Submitted Successfully! waiting for Verification");
                             await fetchAndStoreUserProfile();
-                            onContinue && onContinue();
+                        //     onContinue && onContinue();
+                        setisSuccessfull(true)
                         } else {
                             toast.error("KYC Submission Failed!");
                         }
@@ -70,7 +73,9 @@ const UpgradeToleveltwo :React.FC<UpgradeToleveltwoProps>= ({onContinue}) => {
         }
 
         return (
-                <div>
+<Fragment>
+
+                {isSuccessfull?<SuccefullKycUpload />:<div>
                         <h1 className='text-center text-4xl  font-semibold  py-8 text-blue-950'>Begin your ID-Verification</h1>
                         <p className='text-center text-lg text-gray-600 md:w-1/2 mx-auto pb-12'>Verify your identity to participate in tokensale.</p>
 
@@ -151,7 +156,9 @@ const UpgradeToleveltwo :React.FC<UpgradeToleveltwoProps>= ({onContinue}) => {
                                 </CardContent>
                         </Card>
                         <Toaster position="top-center" />
-                </div>
+                </div>}
+                
+</Fragment>
         );
 }
 

@@ -18,10 +18,11 @@ import CloseAccount from "./Components/CloseAccount";
 
 import MyExperience from "./Components/MyExperience";
 import AddExperienceForm from "./Components/AddExperienceForm";
-import AddAword from "./Components/AddAword";
+
 import ReactFlagsSelect from "react-flags-select";
 import PhoneInput from "react-phone-number-input/input";
 import { useRouter } from "next/navigation";
+
 
 
 export default function SellerProfile() {
@@ -39,6 +40,7 @@ useEffect(() => {
     const [addSkill, setAddSkill] = useState(false);
     const [addExperience, setAddExperience] = useState(false);
     const [addAward, setAddAward] = useState(false);
+    const [addEducation, setAddEducation] = useState(false);
     const [selected, setSelected] = useState("");
       const [phoneNUmber, setPhoneNumber] = useState()
   
@@ -164,8 +166,12 @@ useEffect(() => {
                    <div className="flex  flex-col md:flex-row gap-4  justify-between items-center"> 
                     <h1 className="text-2xl font-bold">{profile.name}</h1>
                     <div>
-                        <p className="text-lg">Current Tier :<span className="text-lg font-bold ps-2">{profile.kycverifications.length  <1?'0':1}</span> </p>
-                        <p className="text-lg font-bold rounded-2xl bg-red-200 text-center p-2 cursor-pointer" onClick={()=>{router.push("/dashboard/seller-dashboard/kyc")}}>Upgrade </p>
+                        <p className="text-lg">Current Tier :<span className="text-lg font-bold ps-2">{!profile.kycverifications ?'0':profile.kycverifications[profile.kycverifications.length-1].tier}</span> </p>
+                        <p className="text-lg font-bold rounded-2xl bg-red-200 text-center p-2 cursor-pointer" onClick={()=>{
+                            if(! profile.kycverifications.length || profile.kycverifications[profile.kycverifications.length-1].status!="pending" && profile.kycverifications.length<3){
+                                router.push("/dashboard/seller-dashboard/kyc")
+                            }
+                        }}>  {profile.kycverifications.length>0 && profile.kycverifications[profile.kycverifications.length-1].status=="pending"?'Pending': profile.kycverifications.length>=3?profile.kycverifications[profile.kycverifications.length-1].status:"Upgrade"} </p>
                     </div>
                    </div>
                     <div className="flex flex-col md:flex-row my-5">
@@ -320,14 +326,14 @@ useEffect(() => {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <MyExperience />
+                    <MyExperience type={'experience'} />
                 </CardContent>
             </Card>
             {/* add award */}
             <Card className="mt-8 p-4">
                 <CardHeader className="flex justify-between items-center border-b border-gray-300">
                     <h2 className="font-bold text-lg py-1 ">My Awards</h2>
-                    <div className="flex items-center cursor-pointer " onClick={() => { setAddExperience(true) }}>
+                    <div className="flex items-center cursor-pointer " onClick={() => { setAddAward(true) }}>
                         <div className="w-fit h-fit p-2 rounded-full bg-red-100">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -337,7 +343,24 @@ useEffect(() => {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <MyExperience />
+                    <MyExperience type={'award'} />
+                </CardContent>
+            </Card>
+            {/* Education */}
+            <Card className="mt-8 p-4">
+                <CardHeader className="flex justify-between items-center border-b border-gray-300">
+                    <h2 className="font-bold text-lg py-1 ">My Education</h2>
+                    <div className="flex items-center cursor-pointer " onClick={() => { setAddEducation(true) }}>
+                        <div className="w-fit h-fit p-2 rounded-full bg-red-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </div>
+                        <p className="text-blue-600 font-semibold  ms-3">Add Education</p>
+                    </div>
+                </CardHeader>
+                <CardContent>
+                    <MyExperience type={'award'} />
                 </CardContent>
             </Card>
             {/* change password */}
@@ -366,10 +389,13 @@ useEffect(() => {
                 <SellerSkills />
             </MyModal>
             <MyModal isOpen={addExperience} onClose={() => { setAddExperience(false) }}>
-                <AddExperienceForm />
+                <AddExperienceForm type="experience" />
             </MyModal>
             <MyModal isOpen={addAward} onClose={() => { setAddAward(false) }}>
-                <AddAword />
+            <AddExperienceForm type="award" />
+            </MyModal>
+            <MyModal isOpen={addEducation} onClose={() => { setAddEducation(false) }}>
+            <AddExperienceForm type="education" />
             </MyModal>
             <Toaster position="top-center" />
         </div>

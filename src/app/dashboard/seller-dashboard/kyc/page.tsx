@@ -10,21 +10,18 @@ import { setCurrentPage } from '@/app/myslices';
 
 
 export default function Page() {  // Renamed to "Page"
-
+    const [kycCurrentPage, setkycCurrentPage] = React.useState('start');
     const [profile, setProfile] = useState(null);
 
     useEffect(() => {
         const user = Cookies.get("currentUser") as string;
         const currentUser = user ? JSON.parse(user) : null;
         setProfile(currentUser);
-        if (!currentUser.kycverifications) {
-            setCurrentPage('start')
-        } else {
-            setCurrentPage('level2')
-        }
+        console.log(currentUser);
+     
     }, []);
 
-    const [kycCurrentPage, setkycCurrentPage] = React.useState("start");
+
 
 
     if (!profile) return <p className="text-center py-10">Loading profile...</p>;
@@ -33,13 +30,11 @@ export default function Page() {  // Renamed to "Page"
         <div>
             {profile.account_type == 'individual' ?
                 <Fragment>
-                    {kycCurrentPage == 'start' ? (
+                    { !profile.kycverifications ? (
                         <StartKc onContinue={() => setkycCurrentPage('level2')} />
-                    ) : kycCurrentPage == 'level2' ? (
-                        <UpgradeToleveltwo onContinue={() => setkycCurrentPage('success')} />
                     ) : (
-                        <SuccefullKycUpload />
-                    )}
+                        <UpgradeToleveltwo onContinue={() => setkycCurrentPage('success')} />
+                    ) }
                 </Fragment> : <p> coming soon .......</p>
             }
         </div>
