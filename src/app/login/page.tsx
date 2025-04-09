@@ -143,7 +143,7 @@ export default function LoginForm() {
               </button>
             </div>
             <div className="text-right mt-1">
-              <a href="#" className="text-[oklch(0.79_0.18_86.03)] text-xs">Forgot password?</a>
+              <a href="/forgot-password" className="text-[oklch(0.79_0.18_86.03)] text-xs">Forgot password?</a>
             </div>
           </div>
 

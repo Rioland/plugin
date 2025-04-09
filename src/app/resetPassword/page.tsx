@@ -1,220 +1,172 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Suspense, useEffect, useState } from "react";
 
 import { toast, Toaster } from "sonner"
-import { ApiBaseUrl } from "../../helper/functions";
-import { useSearchParams } from "next/navigation";
-import Myheader from "@/components/header";
-import Footer from "@/components/Footer";
+import { ApiBaseUrl, fetchAndReturnUserProfile, fetchAndStoreUserProfile } from "@/helper/functions";
+import Cookies from "js-cookie";
 
-export default function Home() {
-      return (
-        <Suspense fallback={<div>Loading...</div>}>
-                <Myheader/>
-                <ForgotPasswordContent/>
-                <Footer/>
-      </Suspense>
-      );
+import { useDispatch } from "react-redux";
+import { updateSellersProfile } from "@/states/sellersProfileSlice";
+import React from "react";
+
+
+
+import { useState } from 'react';
+import { Eye, EyeOff, User, Lock } from 'lucide-react';
+import Link from "next/link";
+
+export default function LoginForm() {
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = React.useState(false);
+
+
+
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
+
+    if (!username || !password) {
+      toast.error("All fields must be provided",);
+
+    } else {
+      setLoading(true);
+      fetch(`${ApiBaseUrl}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      })
+        .then((res) => res.json())
+        .then(async (data) => {
+          console.log(data);
+          if (data.status === false) {
+            toast.error(data.message,);
+
+            setLoading(false);
+          } else {
+            setLoading(false);
+            toast.success("Login successful",);
+            // Set cookies instead of localStorage
+            Cookies.set("token", data.data.token, {
+              expires: 0.5,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "strict",
+            });
+            Cookies.set("role", data.data.role, {
+              expires: 0.5,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "strict",
+            });
+         await   fetchAndStoreUserProfile();
+            
+           
+
+            if (data.data.role == 1) {
+              const profile = await fetchAndReturnUserProfile();
+              if (profile && profile.id) {
+                dispatch(updateSellersProfile(profile));
+                window.location.href = `/dashboard/seller-dashboard`;
+              }else{
+                toast.error("Failed to fetch user profile",);
+                setLoading(false);
+              }
+             
+            } else {
+              window.location.href = `/dashboard/buyer-dashboard`;
+              setLoading(false);
+            }
+        
+
+          }
+        })
+        .catch((error) => {
+          console.error("Error during login:", error);
+          setLoading(false);
+        });
+    }
+
+  };
+  const [showPassword, setShowPassword] = useState(false);
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white">
+      <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-md shadow-xl border border-neutral-700">
+        <div className="text-center mb-6">
+          <div className="flex justify-center mb-4">
+           
+            <div className=" p-2 rounded-lg">
+            <img
+                src="/images/logo-white-single.svg"
+                alt="Logo"
+                className="w-18 h-auto mb-4"  />
+            </div>
+          </div>
+          <h1 className="text-xl font-semibold">Login to Plugin</h1>
+        </div>
+
+        <form>
+          <div className="mb-5">
+            <label className="block mb-1 text-sm">Username</label>
+            <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
+              <User className="h-4 w-4 text-purple-400" />
+              <input
+                type="text"
+                placeholder="Username"
+                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400"
+              />
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <label className="block mb-1 text-sm">Password</label>
+            <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md relative">
+              <Lock className="h-4 w-4 text-purple-400" />
+              <input
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Password"
+                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 text-purple-300"
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+            <div className="text-right mt-1">
+              <a href="#" className="text-[oklch(0.79_0.18_86.03)] text-xs">Forgot password?</a>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2 mb-5">
+            <input type="checkbox" id="remember" className="accent-purple-500" />
+            <label htmlFor="remember" className="text-sm">Remember Me</label>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition"
+          >
+            Log in
+          </button>
+
+          <p className="text-center text-sm mt-4">
+            Do not have an account?{' '}
+            <Link href="/" className="text-[oklch(0.79_0.18_86.03)] font-medium cursor-pointer" >Sign Up</Link>
+          </p>
+        </form>
+      </div>
+    </div>
+  );
 }
 
 
-const ForgotPasswordContent=()=>{
-        const searchParams = useSearchParams();
-        const email = searchParams.get('email');
-        // login form submission handler with user name and password
-        const [loading, setLoading] = useState(false);
-
-
-        const [countdown, setCountdown] = useState(60); // Initial countdown
-        const [isActive, setIsActive] = useState(true); // Disable button when active
-
-        useEffect(() => {
-                let timer: NodeJS.Timeout;
-
-                if (isActive && countdown > 0) {
-                        timer = setTimeout(() => {
-                                setCountdown((prev) => prev - 1);
-                        }, 1000);
-                } else if (countdown === 0) {
-                        setIsActive(false);
-                }
-
-                return () => clearTimeout(timer);
-        }, [countdown, isActive]);
-
-
-        const handleResendOTP = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-                e.preventDefault();
-
-                setLoading(true);
-                fetch(`${ApiBaseUrl}/resend-verification`, {
-                        method: "POST",
-                        headers: {
-                                "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                                email: email
-                        }),
-                })
-                        .then((res) => res.json())
-                        .then((data) => {
-                                console.log(data);
-                                if (data.status === false) {
-                                        toast.error(data.message,);
-                                        setLoading(false);
-                                } else {
-                                        toast.success(data.message);
-                                        setLoading(false);
-                                }
-                        });
-
-                setCountdown(60); // Reset countdown
-                setIsActive(true); // Disable button again
-
-                console.log("OTP Resent!");
-        };
-        const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-                event.preventDefault();
-                const formData = new FormData(event.currentTarget);
-                const verification_code = formData.get("verification_code") as string;
-                const password = formData.get("password") as string;
-                const password_confirmation = formData.get("password_confirmation") as string;
-
-                if (!verification_code || !password || !password_confirmation) {
-                        toast.error("All fields are required");
-                        return;
-                }
-                if (password!== password_confirmation) {
-                        toast.error("Passwords do not match");
-                        return;
-                }
-                setLoading(true);
-                fetch(`${ApiBaseUrl}/reset-password`, {
-                        method: "POST",
-                        headers: {
-                                "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                                email: email,
-                                password: password,
-                                password_confirmation: password_confirmation,
-                                verification_code: verification_code,
-
-
-                        }),
-                })
-                        .then((res) => res.json())
-                        .then((data) => {
-                                console.log(data);
-                                if (data.status == false) {
-                                        toast.error(data.message,);
-
-                                        setLoading(false);
-                                } else {
-                                        // window.location.href = `/`;
-                                        setLoading(false);
-
-                                }
-                        });
-
-
-        };
-
-        return (
-                <div className="pt-34 px-4"  >
-
-                        <h1 className="text-center text-5xl font-bold  mb-15">Create new password</h1>
-                        <div className="w-full lg:w-2/5 mx-auto ">
-                                {/* Your content goes here */}
-
-                                <Card className="border-none py-16">
-                                        <CardHeader>
-                                                <CardTitle className="pb-2">Set new password</CardTitle>
-                                                <CardDescription className="font-semibold text-sm mb-5">Enter the otp code sent to your email address and sent a new password </CardDescription>
-                                                <Toaster position="top-center" />
-
-                                        </CardHeader>
-                                        <CardContent>
-                                                <form className="space-y-6" onSubmit={handleSubmit}>
-                                                        <div className="mb-4">
-                                                                <Label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email Address</Label>
-                                                                <Input
-                                                                        type="text"
-                                                                        defaultValue={email}
-
-                                                                        name="email"
-                                                                        id="email"
-                                                                        required
-                                                                        readOnly
-                                                                        className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-7 rounded-md"
-                                                                />
-                                                        </div>
-
-                                                        <div className="mb-4">
-                                                                <Label htmlFor="verification_code" className="block text-sm font-medium text-gray-700 mb-2">Verification Code</Label>
-                                                                <Input
-                                                                        type="text"
-                                                                        // pattern="^[0-9]{6}"
-                                                                        name="verification_code"
-                                                                        id="verification_code"
-                                                                        required
-                                                                        placeholder="09998"
-
-                                                                        className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-7 rounded-md"
-                                                                />
-                                                        </div>
-
-                                                        <div className="mb-4">
-                                                                <Label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password</Label>
-                                                                <input
-                                                                        type="password"
-                                                                        name="password"
-                                                                        id="password"
-                                                                        required
-                                                                        placeholder="...."
-                                                                        className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-4 rounded-md"
-                                                                />
-                                                        </div>
-                                                        <div className="mb-4">
-                                                                <Label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</Label>
-                                                                <input
-                                                                        type="password"
-                                                                        name="password_confirmation"
-                                                                        id="password_confirmation"
-                                                                        required
-                                                                        placeholder="...."
-                                                                        className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-4 rounded-md"
-                                                                />
-                                                        </div>
-
-                                                        
-
-
-                                                                {loading ? (
-                                                                        <div className="flex items-center justify-center mx-auto">
-                                                                                <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
-                                                                        </div>
-                                                                ) : <Button type="submit" className="w-full bg-yellow-500 py-6 mt-10 ">
-                                                                        Log In <i className="fal fa-arrow-right-long"></i>
-                                                                </Button>}
-
-                                                </form>
-                                        </CardContent>
-                                        <div className="px-12">
-                                                {countdown > 0 ? <p className="text-gray-600">Resend OTP in {countdown}s</p> : <a href='"#'
-                                                        onClick={(e) => { handleResendOTP(e) }}
-                                                        // disabled={isActive}
-                                                        className='text-blue-800 text-lg '   >
-                                                        Resend OTP
-                                                </a>}
-                                        </div>
-                                </Card>
-                        </div>
-                </div>
-        );
-}

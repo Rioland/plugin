@@ -1,101 +1,146 @@
-'use client';
+"use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 
 import { toast, Toaster } from "sonner"
-import { Fragment, useState } from "react";
-import { ApiBaseUrl } from "../../helper/functions";
-import Footer from "@/components/Footer";
-import Myheader from "@/components/header";
+import { ApiBaseUrl, fetchAndReturnUserProfile, fetchAndStoreUserProfile } from "@/helper/functions";
+import Cookies from "js-cookie";
 
-export default function Home() {
+import { useDispatch } from "react-redux";
+import { updateSellersProfile } from "@/states/sellersProfileSlice";
+import React from "react";
 
-  const [loading, setLoading] = useState(false);
-  // login form submission handler with user name and password
+
+
+import { useState } from 'react';
+import { Eye, EyeOff, User, Lock } from 'lucide-react';
+import Link from "next/link";
+import { FaEnvelope } from "react-icons/fa";
+
+export default function LoginForm() {
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = React.useState(false);
+
+
+
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email") as string;
+    const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
 
-    if (!email) {
-      toast.error("Email field is required",);
-      return;  // stop the function execution here if email field is required
+    if (!username || !password) {
+      toast.error("All fields must be provided",);
+
     } else {
       setLoading(true);
-      fetch(`${ApiBaseUrl}/forget-password`, {
+      fetch(`${ApiBaseUrl}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: email,
+          username: username,
+          password: password,
         }),
       })
         .then((res) => res.json())
-        .then((data) => {
+        .then(async (data) => {
           console.log(data);
-          setLoading(false);
-          if (data.status == false) {
+          if (data.status === false) {
             toast.error(data.message,);
 
+            setLoading(false);
           } else {
-            window.location.href = `/resetPassword?email=${email}`;
+            setLoading(false);
+            toast.success("Login successful",);
+            // Set cookies instead of localStorage
+            Cookies.set("token", data.data.token, {
+              expires: 0.5,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "strict",
+            });
+            Cookies.set("role", data.data.role, {
+              expires: 0.5,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "strict",
+            });
+         await   fetchAndStoreUserProfile();
+            
+           
+
+            if (data.data.role == 1) {
+              const profile = await fetchAndReturnUserProfile();
+              if (profile && profile.id) {
+                dispatch(updateSellersProfile(profile));
+                window.location.href = `/dashboard/seller-dashboard`;
+              }else{
+                toast.error("Failed to fetch user profile",);
+                setLoading(false);
+              }
+             
+            } else {
+              window.location.href = `/dashboard/buyer-dashboard`;
+              setLoading(false);
+            }
+        
 
           }
+        })
+        .catch((error) => {
+          console.error("Error during login:", error);
+          setLoading(false);
         });
     }
 
-
   };
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
-    <Fragment>
-      <Myheader />
-      <div className="pt-34 px-4"  >
-
-        <h1 className="text-center text-5xl font-bold  mb-15">Forgot Your Password</h1>
-        <div className="w-full lg:w-2/5 mx-auto ">
-          {/* Your content goes here */}
-          <Card className="border-none py-16">
-            <CardHeader>
-              <CardTitle className="pb-2">Requesting Password Reset</CardTitle>
-              <CardDescription className="font-semibold text-sm mb-5">Enter your registerd email address to reset your password.</CardDescription>
-              <Toaster position="top-center" />
-              <CardContent>
-                <form className="space-y-6" onSubmit={handleSubmit}>
-                  <div className="mb-4">
-                    <Label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email Address</Label>
-                    <Input
-                      type="email"
-                      name="email"
-                      placeholder="Enter your email address"
-                      id="email"
-                      required
-                      className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-7 rounded-md"
-                    />
-                  </div>
-
-
-
-
-                  {loading ? (
-                    <div className="flex items-center justify-center mx-auto">
-                      <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
-                    </div>
-                  ) : <Button type="submit" className="w-full bg-yellow-500 py-6 mt-10 ">
-                    Reset Password <i className="fal fa-arrow-right-long"></i>
-                  </Button>}
-
-
-                </form>
-              </CardContent>
-            </CardHeader>
-          </Card>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white">
+      <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-md shadow-xl border border-neutral-700">
+        <div className="text-center mb-6">
+          <div className="flex justify-center mb-4">
+           
+            <div className=" p-2 rounded-lg">
+            <img
+                src="/images/logo-white-single.svg"
+                alt="Logo"
+                className="w-18 h-auto mb-4"  />
+            </div>
+          </div>
+          <h1 className="text-xl font-semibold">Forgot my Plugin Password</h1>
         </div>
+
+        <form>
+          <div className="mb-5">
+            <label className="block mb-1 text-sm">Email</label>
+            <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
+              <FaEnvelope className="h-4 w-4 text-purple-400" />
+              <input
+                type="email"
+                placeholder="e.g (qbcd@gmai..com)"
+                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400"
+              />
+            </div>
+          </div>
+
+       
+          
+
+          <button
+            type="submit"
+            className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition"
+          >
+            Confirm Account
+          </button>
+
+       
+        </form>
       </div>
-      <Footer />
-    </Fragment>
+    </div>
   );
 }
+
+
