@@ -1,171 +1,90 @@
-"use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
+import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, Info } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
-import { Suspense, useEffect, useState } from "react";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
-import { toast, Toaster } from "sonner"
-import { ApiBaseUrl } from "@/helper/functions";
-import { useSearchParams } from "next/navigation";
-import Myheader from "@/components/header";
-import Footer from "@/components/Footer";
+export default function OtpVerification() {
+  const [otp, setOtp] = useState(Array(6).fill(''));
+  const [timer, setTimer] = useState(60);
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  useEffect(() => {
+    if (timer > 0) {
+      const interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
+      return () => clearInterval(interval);
+    }
+  }, [timer]);
 
-export default function Home() {
-          return (
-                <Suspense fallback={<div>Loading...</div>}>
-               <Myheader/>
-               <OUPUI/>
-               <Footer/>
+  const handleChange = (value: string, index: number) => {
+    if (!/^[0-9]?$/.test(value)) return;
 
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
 
-              </Suspense>
-              );
-}
+    if (value && index < 5) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
 
-const OUPUI=()=>{
-        const searchParams = useSearchParams();
-        const email = searchParams.get('email');
-        const [countdown, setCountdown] = useState(60); // Initial countdown
-        const [isActive, setIsActive] = useState(true); // Disable button when active
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white">
+      {/* <div className="absolute top-6 left-6 flex items-center text-white space-x-2 cursor-pointer">
+        <ArrowLeft size={18} />
+        <span>Back</span>
+      </div> */}
 
-        useEffect(() => {
-                let timer: NodeJS.Timeout;
+      <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-md shadow-xl border border-neutral-700">
+        <div className="text-center mb-6">
+          <div className="flex justify-center mb-4">
+          <div className=" p-2 rounded-lg">
+            <img
+                src="/images/logo-white-single.svg"
+                alt="Logo"
+                className="w-18 h-auto mb-4"  />
+            </div>
+          </div>
+          <h1 className="text-xl font-semibold mb-2">OTP Verification</h1>
+          <p className="text-sm text-gray-400">Please enter the OTP sent to your device to continue</p>
+        </div>
 
-                if (isActive && countdown > 0) {
-                        timer = setTimeout(() => {
-                                setCountdown((prev) => prev - 1);
-                        }, 1000);
-                } else if (countdown === 0) {
-                        setIsActive(false);
-                }
+        <div className="flex justify-center space-x-3 mb-4">
+          {otp.map((digit, index) => (
+            <input
+              key={index}
+              type="text"
+              value={digit}
+              onChange={(e) => handleChange(e.target.value, index)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
+              maxLength={1}
+              ref={(el) => (inputRefs.current[index] = el)}
+              className="w-12 h-12 text-center text-lg bg-black border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[oklch(0.79_0.18_86.03)]"
+            />
+          ))}
+        </div>
 
-                return () => clearTimeout(timer);
-        }, [countdown, isActive]);
+        <div className="text-center text-xs text-gray-400 mb-5">
+          Didn’t get a code? Resending in <span className="text-[oklch(0.79_0.18_86.03)] font-medium">{`0:${timer < 10 ? '0' : ''}${timer}`}</span>
+        </div>
 
-        const handleResendOTP = (e) => {
+        <button
+          type="submit"
+          className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition mb-4"
+        >
+          Continue
+        </button>
 
-                e.preventDefault();
-                setLoading(true);
-                fetch(`${ApiBaseUrl}/resend-verification`, {
-                        method: "POST",
-                        headers: {
-                                "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                                email: email
-                        }),
-                })
-                        .then((res) => res.json()).then((data) => {
-                                console.log(data);
-                                if (data.status == false) {
-
-                                        toast.error(data.message,);
-
-                                        setLoading(false);
-                                } else {
-
-                                        toast.success(data.message);
-
-                                        setLoading(false);
-                                }
-                        });
-
-
-                setCountdown(60); // Reset countdown
-                setIsActive(true); // Disable button again
-
-                // Call your OTP resend API here
-                console.log("OTP Resent!");
-        };
-        // login form submission handler with user name and password
-        const [loading, setLoading] = useState(false);
-        const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-                event.preventDefault();
-                const formData = new FormData(event.currentTarget);
-                const otp = formData.get("otp") as string;
-                if (!otp) {
-                        toast.error("OTP field is required",);
-                        return;  // stop the function execution here if otp field is required
-                }
-                setLoading(true);
-                // api call
-                fetch(`${ApiBaseUrl}/register-step-two`, {
-                        method: "POST",
-                        headers: {
-                                "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                                email: email,
-                                verification_code: otp,
-                        }),
-                })
-                        .then((res) => res.json())
-                        .then((data) => {
-                                console.log(data);
-                                if (data.status == false) {
-                                        toast.error(data.message,);
-                                        setLoading(false);
-                                } else {
-                                        setLoading(false);
-                                        toast.success("Registration successful",);
-                                        window.location.href = "/";
-
-                                }
-                        });
-        };
-        return (
-                <div className="pt-34 px-4"  >
-
-                        <h1 className="text-center text-5xl font-bold  mb-15">Account Verification</h1>
-                        <div className="w-full lg:w-2/5 mx-auto ">
-                                {/* Your content goes here */}
-                                <Toaster position="top-center" />
-                                <Card className="border-none py-16">
-                                        <CardHeader>
-                                                <CardTitle className="pb-2"> Registration OTP has been sent to you email address{" "}</CardTitle>
-                                                <CardDescription className="font-semibold text-sm mb-5">Enter the OTP sent to you to verify your identity</CardDescription>
-                                        </CardHeader>
-                                        <CardContent>
-                                                <form className="space-y-6" onSubmit={handleSubmit}>
-                                                        <div className="mb-4">
-                                                                <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS} name="otp"
-                                                                        id="otp">
-                                                                        <InputOTPGroup className="flex space-x-4 mx-auto">
-                                                                                <InputOTPSlot index={0} className="text-center rounded-b-none " />
-                                                                                <InputOTPSlot index={1} />
-                                                                                <InputOTPSlot index={2} />
-                                                                                <InputOTPSlot index={3} />
-                                                                                <InputOTPSlot index={4} />
-                                                                                <InputOTPSlot index={5} />
-                                                                        </InputOTPGroup>
-                                                                </InputOTP>
-                                                        </div>
-
-
-                                                        {loading ? (
-                                                                <div className="flex items-center justify-center mx-auto">
-                                                                        <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
-                                                                </div>
-                                                        ) : <Button type="submit" className="w-full bg-yellow-500 py-6 mt-10 ">
-                                                                Verify OTP <i className="fal fa-arrow-right-long"></i>
-                                                        </Button>}
-                                                </form>
-                                        </CardContent>
-
-                                        <div className="px-12">
-                                                {countdown > 0 ? <p className="text-gray-600">Resend OTP in {countdown}s</p> : <a href='"#'
-                                                        onClick={(e) => { handleResendOTP(e) }}
-                                                        // disabled={isActive}
-                                                        className='text-blue-800 text-lg '   >
-                                                        Resend OTP
-                                                </a>}
-                                        </div>
-                                </Card>
-                        </div>
-                </div>
-        );
+        <div className="flex justify-center items-center text-xs text-gray-500 space-x-2">
+          <Info size={14} />
+          <span>Learn more about OTP & Security</span>
+        </div>
+      </div>
+    </div>
+  );
 }

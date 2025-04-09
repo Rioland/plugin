@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { Pencil, Trash2 } from "lucide-react";
 import Cookies from "js-cookie";
-// import { Card } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import ProposalTable from './Components/ProposalTable';
 export default function Page() {
         const [profile, setProfile] = useState(null);

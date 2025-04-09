@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { ApiBaseUrl, fetchAndStoreUserProfile } from "@/helper/functions";
+import { ApiBaseUrl, fetchAndReturnUserProfile, fetchAndStoreUserProfile } from "@/helper/functions";
 import { Button } from "@/components/ui/button";
 import { toast, Toaster } from "sonner";
 import Cookies from 'js-cookie';
+import { updateSellersProfile } from "@/states/sellersProfileSlice";
+import { useDispatch } from "react-redux";
 const SellerSkills = () => {
   const [categories, setCategories] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [loading, setLoading] = useState(false);
-
+const dispatcher = useDispatch();
   useEffect(() => {
     fetch(`${ApiBaseUrl}/categories`, {
       headers: {
@@ -52,7 +54,10 @@ const SellerSkills = () => {
       const data = await response.json();
       if (data.status) {
         toast.success("Skills updated successfully");
-        await fetchAndStoreUserProfile();
+          const profile = await fetchAndReturnUserProfile();
+                if (profile && profile.id) {
+                  dispatcher(updateSellersProfile(profile));
+                }
         window.location.reload();
       } else {
         toast.error("Failed to update skills");

@@ -1,116 +1,188 @@
 'use client'
-import React from 'react'
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
-import { useDropzone } from 'react-dropzone'
-import { Card } from '@/components/ui/card'
-
-const categories = [
-        { id: 1, name: "Business Registration", category: "Business, Corporate & Financial Services" },
-        { id: 3, name: "Business Plan Writing", category: "Business, Corporate & Financial Services" },
-        { id: 11, name: "Website Development", category: "Website, App & Software Development" },
-        { id: 13, name: "AI & Chatbot Development", category: "Website, App & Software Development" },
-        { id: 14, name: "Social Media Management", category: "Digital Marketing & E-Commerce" },
-        { id: 16, name: "Influencer Marketing", category: "Digital Marketing & E-Commerce" },
-]
-
-const englishLevels = ['Fluent', 'Mid level', 'Conversational', 'Others']
+import React, { useState } from "react";
 
 export default function Page() {
-        const { getRootProps, getInputProps, acceptedFiles } = useDropzone({ accept: { 'image/*': [] } })
+        const [preview, setPreview] = useState<string | null>(null);
+        const [loading, setLoading] = useState(false);
+        const [form, setForm] = useState({
+                title: "",
+                description: "",
+                category: "",
+                price: "",
+                previewLink: "",
+        });
+
+        const [files, setFiles] = useState<{
+                zipFile: File | null;
+                previewImage: File | null;
+        }>({
+                zipFile: null,
+                previewImage: null,
+        });
+
+        const handlePreviewChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                        setFiles(prev => ({ ...prev, previewImage: file }));
+                        const reader = new FileReader();
+                        reader.onloadend = () => setPreview(reader.result as string);
+                        reader.readAsDataURL(file);
+                }
+        };
+
+        const handleZipChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                const file = e.target.files?.[0];
+                if (file) setFiles(prev => ({ ...prev, zipFile: file }));
+        };
+
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+                setForm({ ...form, [e.target.name]: e.target.value });
+        };
+
+        const handleSubmit = async (e: React.FormEvent) => {
+                e.preventDefault();
+                setLoading(true);
+
+                const formData = new FormData();
+                formData.append("title", form.title);
+                formData.append("description", form.description);
+                formData.append("category", form.category);
+                formData.append("price", form.price);
+                if (files.zipFile) formData.append("zipFile", files.zipFile);
+                if (files.previewImage) formData.append("previewImage", files.previewImage);
+
+                try {
+                        const res = await fetch("/api/upload-product", {
+                                method: "POST",
+                                body: formData,
+                        });
+
+                        const result = await res.json();
+                        if (res.ok) {
+                                alert("Product uploaded successfully!");
+                                setForm({ title: "", description: "", category: "", price: "" ,previewLink: ""});
+                                setPreview(null);
+                                setFiles({ zipFile: null, previewImage: null });
+                        } else {
+                                alert(result.message || "Something went wrong!");
+                        }
+                } catch (err) {
+                        alert("Upload failed.");
+                } finally {
+                        setLoading(false);
+                }
+        };
 
         return (
-
                 <div className=" w-full p-6  ">
 
-                        <h1 className="font-bold text-3xl">Add New Service</h1>
+                        <h1 className="font-bold text-3xl">Upload New Service</h1>
                         <p className="py-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae voluptates quo sit! Molestias, iusto ipsam!</p>
+                        <div className="min-h-screen bg-gray-100 py-10 px-4 md:px-10">
+                                <div className="max-w-3xl mx-auto bg-white p-6 rounded-2xl shadow-md">
 
 
-                        <Card>
-                                <form className="p-4 md:p-6">
-                                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-
+                                        <form className="space-y-6" onSubmit={handleSubmit}>
                                                 <div>
-                                                        <label className="block mb-1 font-semibold">Service Title</label>
-                                                        <Input placeholder="Enter service title" />
-                                                </div>
-
-                                                <div>
-                                                        <label className="block mb-1 font-semibold">Price (₦)</label>
-                                                        <Input type="number" placeholder="Enter price" />
-                                                </div>
-
-                                                <div>
-                                                        <label className="block mb-1 font-semibold">Category</label>
-                                                        <Select>
-                                                                <SelectTrigger>
-                                                                        <SelectValue placeholder="Select category" />
-                                                                </SelectTrigger>
-                                                                <SelectContent>
-                                                                        {categories.map(cat => (
-                                                                                <SelectItem key={cat.id} value={cat.id.toString()}>
-                                                                                        {cat.name} — <span className="text-xs text-gray-500">{cat.category}</span>
-                                                                                </SelectItem>
-                                                                        ))}
-                                                                </SelectContent>
-                                                        </Select>
+                                                        <label className="block text-sm font-medium text-gray-700">Product Title</label>
+                                                        <input
+                                                                name="title"
+                                                                value={form.title}
+                                                                onChange={handleChange}
+                                                                type="text"
+                                                                placeholder="Enter title"
+                                                                className="mt-1 block w-full rounded-xl border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500 outline-none"
+                                                                required
+                                                        />
                                                 </div>
 
                                                 <div>
-                                                        <label className="block mb-1 font-semibold">English Level</label>
-                                                        <Select>
-                                                                <SelectTrigger>
-                                                                        <SelectValue placeholder="Select level" />
-                                                                </SelectTrigger>
-                                                                <SelectContent>
-                                                                        {englishLevels.map(level => (
-                                                                                <SelectItem key={level} value={level.toLowerCase()}>{level}</SelectItem>
-                                                                        ))}
-                                                                </SelectContent>
-                                                        </Select>
+                                                        <label className="block text-sm font-medium text-gray-700">Description</label>
+                                                        <textarea
+                                                                name="description"
+                                                                value={form.description}
+                                                                onChange={handleChange}
+                                                                rows={4}
+                                                                placeholder="Describe your product"
+                                                                className="mt-1 block w-full rounded-xl border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500 outline-none"
+                                                                required
+                                                        />
                                                 </div>
 
                                                 <div>
-                                                        <label className="block mb-1 font-semibold">Estimated Delivery Time (in days)</label>
-                                                        <Input type="number" placeholder="e.g., 3" />
-                                                </div>
-
-                                                <div>
-                                                        <label className="block mb-1 font-semibold">Response Time (in hours)</label>
-                                                        <Input type="number" placeholder="e.g., 12" />
-                                                </div>
-
-                                                <div className="lg:col-span-2">
-                                                        <label className="block mb-1 font-semibold">Service Details</label>
-                                                        <Textarea placeholder="Enter service description..." rows={5} />
-                                                </div>
-
-                                                <div className="lg:col-span-2">
-                                                        <label className="block mb-1 font-semibold">Service Image</label>
-                                                        <div
-                                                                {...getRootProps()}
-                                                                className="mt-1 p-6 border-2 border-dashed border-gray-300 rounded-xl text-center cursor-pointer hover:border-gray-400"
+                                                        <label className="block text-sm font-medium text-gray-700">Category</label>
+                                                        <select
+                                                                name="category"
+                                                                value={form.category}
+                                                                onChange={handleChange}
+                                                                className="mt-1 block w-full rounded-xl border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500 outline-none"
+                                                                required
                                                         >
-                                                                <input {...getInputProps()} />
-                                                                {acceptedFiles.length > 0 ? (
-                                                                        <p className="text-green-600">{acceptedFiles[0].name}</p>
-                                                                ) : (
-                                                                        <p className="text-gray-500">Drag and drop an image here, or click to select</p>
-                                                                )}
-                                                        </div>
+                                                                <option value="">Choose category</option>
+                                                                <option>Website Template</option>
+                                                                <option>Mobile App</option>
+                                                                <option>Plugin</option>
+                                                                <option>Graphics</option>
+                                                        </select>
                                                 </div>
-                                        </div>
+                                                <div>
+                                                        <label className="block text-sm font-medium text-gray-700">Preview Link</label>
+                                                        <input
+                                                                name="previewLink"
+                                                                value={form.previewLink}
+                                                                
+                                                                onChange={handleChange}
+                                                                type="url"
+                                                                placeholder="Enter Preview Link"
+                                                                className="mt-1 block w-full rounded-xl border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500 outline-none"
+                                                                required
+                                                        />
+                                                </div>
 
-                                        <div className="mt-6">
-                                                <button type="submit" className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">
-                                                        Submit Service
+                                                <div>
+                                                        <label className="block text-sm font-medium text-gray-700">Price ($)</label>
+                                                        <input
+                                                                name="price"
+                                                                value={form.price}
+                                                                onChange={handleChange}
+                                                                type="number"
+                                                                min="0"
+                                                                placeholder="e.g. 25"
+                                                                className="mt-1 block w-full rounded-xl border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500 outline-none"
+                                                                required
+                                                        />
+                                                </div>
+
+                                                <div>
+                                                        <label className="block text-sm font-medium text-gray-700">Upload File (.zip)</label>
+                                                        <input
+                                                                type="file"
+                                                                accept=".zip"
+                                                                onChange={handleZipChange}
+                                                                className="mt-1 block w-full"
+                                                                required
+                                                        />
+                                                </div>
+
+                                                <div>
+                                                        <label className="block text-sm font-medium text-gray-700">Preview Image</label>
+                                                        <input type="file" accept="image/*" onChange={handlePreviewChange} className="mt-1 block w-full" required />
+                                                        {preview && (
+                                                                <img src={preview} alt="Preview" className="mt-4 w-full h-48 object-cover rounded-xl" />
+                                                        )}
+                                                </div>
+
+                                                <button
+                                                        type="submit"
+                                                        disabled={loading}
+                                                        className="w-full bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition duration-200 disabled:opacity-50"
+                                                >
+                                                        {loading ? "Uploading..." : "Submit Product"}
                                                 </button>
-                                        </div>
-                                </form>
-                        </Card>
+                                        </form>
+                                </div>
+                        </div>
                 </div>
 
-        )
+        );
 }

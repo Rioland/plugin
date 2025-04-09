@@ -8,14 +8,14 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/s
 import { Separator } from '@radix-ui/react-separator'
 
 // import { useState, useEffect } from "react";
-import {  store } from '@/app/store'
+import {  store } from '@/states/store'
 import { Provider } from 'react-redux'
 
 export default function layout({ children}) {
    
       
   return (
-    <Provider store={store}>
+   
        <SidebarProvider>
         <SellerAppSidebar />
         <SidebarInset>
@@ -43,7 +43,7 @@ export default function layout({ children}) {
           </div>
         </SidebarInset>
       </SidebarProvider>
-    </Provider>
+
  
   )
 }

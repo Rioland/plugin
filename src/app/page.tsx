@@ -1,158 +1,54 @@
-"use client"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Fragment, useState } from "react";
-import { toast, Toaster } from "sonner"
-import { ApiBaseUrl, fetchAndStoreUserProfile } from "@/helper/functions";
-import Cookies from "js-cookie";
-import Myheader from "@/components/header";
-import Footer from "@/components/Footer";
+'use client';
+import React from 'react';
 
-
-export default function Home() {
-
-
-  const [loading, setLoading] = useState(false);
-
-
-
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const username = formData.get("username") as string;
-    const password = formData.get("password") as string;
-
-    if (!username || !password) {
-      toast.error("All fields must be provided",);
-
-    } else {
-      setLoading(true);
-      fetch(`${ApiBaseUrl}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
-      })
-        .then((res) => res.json())
-        .then(async (data) => {
-          console.log(data);
-          if (data.status === false) {
-            toast.error(data.message,);
-
-            setLoading(false);
-          } else {
-            setLoading(false);
-            toast.success("Login successful",);
-            // Set cookies instead of localStorage
-            Cookies.set("token", data.data.token, {
-              expires: 0.5,
-              secure: process.env.NODE_ENV === "production",
-              sameSite: "strict",
-            });
-            Cookies.set("role", data.data.role, {
-              expires: 0.5,
-              secure: process.env.NODE_ENV === "production",
-              sameSite: "strict",
-            });
-         await   fetchAndStoreUserProfile();
-            
-            setLoading(false);
-
-            if (data.data.role == 1) {
-              window.location.href = `/dashboard/seller-dashboard`;
-            } else {
-              window.location.href = `/dashboard/buyer-dashboard`;
-            }
-
-
-          }
-        })
-        .catch((error) => {
-          console.error("Error during login:", error);
-          setLoading(false);
-        });
-    }
-
-  };
+const PluginPage = () => {
   return (
-   <Fragment>
-    <Myheader/>
-    <div className="pt-34 px-4"  >
-
-<h1 className="text-center text-5xl font-bold  mb-15">Log In</h1>
-<div className="w-full lg:w-2/5 mx-auto ">
-  {/* Your content goes here */}
-  <Card className="border-none py-16">
-    <CardHeader>
-      <CardTitle className="pb-2">We&apos;re glad to see you again!</CardTitle>
-      <CardDescription className="font-semibold text-sm mb-5">Don&apos;t have an account?  <a href="/signup" className="text-yellow-500">Sign Up!</a></CardDescription>
-
-      <CardContent>
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <Label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">Username</Label>
-            <Input
-              type="text"
-              name="username"
-              id="username"
-              required
-              className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-7 rounded-md"
-            />
+    <div className="min-h-screen bg-gradient-to-b from-yellow-500 to-black flex flex-col items-center justify-center">
+      <div className="text-center mb-8">
+  
+        <div className=" p-2 rounded-lg">
+            <img
+                src="/images/logo-white-single.svg"
+                alt="Logo"
+                className="w-18 h-auto mb-4 mx-auto"  />
+           
+        </div>
+        <h1 className="text-white text-3xl">What brings you to Plugin?</h1>
+      </div>
+      <div className="flex flex-col md:flex-row justify-center items-center gap-6 px-6">
+        <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-sm cursor-pointer" onClick={() => window.location.href = '/get-started'}>
+          <div className="flex justify-center mb-4">
+          <img
+                src="/images/ineedsservice.svg"
+                alt="Logo"
+                className="w-25 h-auto mb-4 mx-auto"  />
+            {/* <div className="text-6xl">&#129300;&#128161;</div> Thinking face and lightbulb */}
           </div>
-          <Toaster position="top-center"  />
-
-          <div className="mb-4">
-            <Label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password</Label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              required
-              className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-4 rounded-md"
-            />
+          <h2 className="text-xl font-bold mb-4">I Need a Service</h2>
+          <p>
+            I'm looking for trusted professionals to handle tasks like home repairs, beauty treatments, event planning, or fitness coaching. I want convenience and quality at my fingertips.
+          </p>
+        </div>
+        <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-sm cursor-pointer" onClick={() => window.location.href = '/signup/register-seller'}>
+          <div className="flex justify-center mb-4">
+            {/* <div className="text-6xl">&#128682;&#129309;</div> Door and handshake
+             */}
+            <img
+                src="/images/offer-service.svg"
+                alt="Logo"
+                className="w-38 h-auto mb-4 mx-auto"  />
           </div>
-          {/* remember me checkbox and forgot password  */}
-          <div className="flex items-center justify-between my-4">
-            <div className="flex items-center justify-content-center">
-              <input
-                type="checkbox"
-                name="rememberPassword"
-                id="rememberPassword" />
-              <Label htmlFor="rememberPassword" className="block text-sm font-medium text-gray-700 ms-2">Remember me</Label>
-
-
-
-            </div>
-            <a href="/forgot-password" className="text-sm text-blue-500 hover:text-blue-600">Lost your password?</a>
-
-          </div>
-         
-     
-            {loading ? (
-            <div className="flex items-center justify-center">
-                  <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
-            </div>
-            ) : <Button type="submit" className="w-full bg-yellow-500 py-6 mt-10 ">
-              Log In <i className="fal fa-arrow-right-long"></i>
-            </Button>}
-
-
-    
-        </form>
-      </CardContent>
-    </CardHeader>
-  </Card>
-</div>
-</div>
-<Footer/>
-    
-   </Fragment>
+          <h2 className="text-xl font-bold mb-4">I Offer a Service</h2>
+          <p>
+            I'm a professional or business ready to connect with more clients, showcase my skills, and grow my brand. I need a platform to manage bookings and gain visibility.
+          </p>
+        </div>
+      </div>
+      <div className="mt-8">
+        <a href="/login" className="text-white ">Already have an account? <span className='text-yellow-500'> Login</span></a>
+      </div>
+    </div>
   );
-}
+};
+
+export default PluginPage;

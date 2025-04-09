@@ -22,18 +22,14 @@ import AddExperienceForm from "./Components/AddExperienceForm";
 import ReactFlagsSelect from "react-flags-select";
 import PhoneInput from "react-phone-number-input/input";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/states/store";
 
 
 
 export default function SellerProfile() {
 const router = useRouter();
-    const [profile, setProfile] = useState(null);
-
-useEffect(() => {
-    const user = Cookies.get("currentUser") as string;
-    const currentUser = user ? JSON.parse(user) : null;
-    setProfile(currentUser);
-}, []);
+const profile = useSelector((state: RootState) => state.sellersProfileReducer);
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -44,7 +40,7 @@ useEffect(() => {
     const [selected, setSelected] = useState("");
       const [phoneNUmber, setPhoneNumber] = useState()
   
-    console.log(profile);
+
 
 
     const [loading, setLoading] = useState(false);
@@ -150,8 +146,7 @@ useEffect(() => {
             setLoading(false);
           });
     };
-    if (!profile) return <p className="text-center py-10">Loading profile...</p>;
-
+  
     return (
         <div className=" w-full p-6  ">
 

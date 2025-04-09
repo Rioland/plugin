@@ -1,7 +1,5 @@
 
 
-
-import Swal from 'sweetalert2'
 import React, { Fragment } from 'react'
 
 
