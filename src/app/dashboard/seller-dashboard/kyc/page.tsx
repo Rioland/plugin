@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import SuccefullKycUpload from './Components/SuccefullKycUpload';
 import StartKc from './Components/StartKc';
 import UpgradeToleveltwo from './Components/UpgradeToleveltwo';
-import { setCurrentPage } from '@/app/myslices';
+
 
 
 export default function Page() {  // Renamed to "Page"
