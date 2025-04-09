@@ -26,7 +26,7 @@ const PluginPage = () => {
           </div>
           <h2 className="text-xl font-bold mb-4">I Need a Service</h2>
           <p>
-            I'm looking for trusted professionals to handle tasks like home repairs, beauty treatments, event planning, or fitness coaching. I want convenience and quality at my fingertips.
+          I&#39;m looking for trusted professionals to handle tasks like home repairs, beauty treatments, event planning, or fitness coaching. I want convenience and quality at my fingertips.
           </p>
         </div>
         <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-sm cursor-pointer" onClick={() => window.location.href = '/select-bussiness-type'}>
@@ -40,7 +40,7 @@ const PluginPage = () => {
           </div>
           <h2 className="text-xl font-bold mb-4">I Offer a Service</h2>
           <p>
-            I'm a professional or business ready to connect with more clients, showcase my skills, and grow my brand. I need a platform to manage bookings and gain visibility.
+          I&#39;m a professional or business ready to connect with more clients, showcase my skills, and grow my brand. I need a platform to manage bookings and gain visibility.
           </p>
         </div>
       </div>

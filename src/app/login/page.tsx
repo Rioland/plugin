@@ -13,6 +13,7 @@ import React from "react";
 
 import { useState } from 'react';
 import { Eye, EyeOff, User, Lock } from 'lucide-react';
+import Link from "next/link";
 
 export default function LoginForm() {
   const dispatch = useDispatch();
@@ -160,7 +161,7 @@ export default function LoginForm() {
 
           <p className="text-center text-sm mt-4">
             Do not have an account?{' '}
-            <a href="/" className="text-[oklch(0.79_0.18_86.03)] font-medium cursor-pointer" >Sign Up</a>
+            <Link href="/" className="text-[oklch(0.79_0.18_86.03)] font-medium cursor-pointer" >Sign Up</Link>
           </p>
         </form>
       </div>
