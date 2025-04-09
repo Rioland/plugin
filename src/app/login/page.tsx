@@ -160,7 +160,7 @@ export default function LoginForm() {
 
           <p className="text-center text-sm mt-4">
             Do not have an account?{' '}
-            <a href="#" className="text-[oklch(0.79_0.18_86.03)] font-medium">Sign Up</a>
+            <a href="/" className="text-[oklch(0.79_0.18_86.03)] font-medium cursor-pointer" >Sign Up</a>
           </p>
         </form>
       </div>

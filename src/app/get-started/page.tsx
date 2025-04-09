@@ -1,3 +1,5 @@
+'use client';
+
 import { Card } from '@/components/ui/card';
 import React from 'react';
 
@@ -23,7 +25,7 @@ const PluginPromo = () => {
           Discover and book top-rated service providers to meet all your needs in one place.
         </p>
         {/* Get Started Button */}
-        <button className="bg-yellow-500 text-black font-bold py-2 px-6 rounded">
+        <button className="bg-yellow-500 text-black font-bold py-2 px-6 rounded cursor-pointer hover:bg-yellow-600 transition duration-300" onClick={() => window.location.href = '/signup/register-buyer'}>
           Get Started
         </button>
       </div>
