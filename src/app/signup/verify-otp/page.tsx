@@ -77,7 +77,7 @@ export default function OtpVerification() {
 
         {/* Resend Timer */}
         <div className="text-center text-xs text-gray-400 mb-5">
-          Didn’t get a code? Resending in <span className="text-[oklch(0.79_0.18_86.03)] font-medium">{`0:${timer < 10 ? '0' : ''}${timer}`}</span>
+          Didn’t get a code? Resending in <span className="text-[oklch(0.79_0.18_86.03)] font-medium">{timer<1 ? <p className='cursor-pointer'>Resend otp</p>:`0:${timer < 10 ? '0' : ''}${timer}`}</span>
         </div>
 
         {/* Continue Button */}
