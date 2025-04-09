@@ -104,7 +104,7 @@ import { Eye, EyeOff } from "lucide-react";
 
 function MyComponentLeft() {
   return (
-    <div className="flex flex-col flex-1 p-10 left-[section] max-md:p-6 bg-[#FBBC05] w-full md:w-1/2">
+    <div className=" flex-col flex-1 p-10 left-[section] max-md:p-6 bg-[#FBBC05] w-full md:w-1/2 hidden md:flex">
       <div className="mb-16">
         <div>
                 <img
@@ -185,7 +185,12 @@ const SignupForm = () => {
           </div>
 
           <div className="relative mb-4">
-            <FaEnvelope className="absolute left-3 top-3 text-gray-400" />
+            
+            <FaUser className="absolute left-3 top-3 text-gray-400" />
+            <Input placeholder="Username" className="pl-10  bg-[#1a1a1a] text-white border-gray-700"  name="username"/>
+          </div>
+          <div className="relative mb-4">
+          <FaEnvelope className="absolute left-3 top-3 text-gray-400" />
             <Input placeholder="Email" className="pl-10 bg-[#1a1a1a] text-white border-gray-700" />
           </div>
 

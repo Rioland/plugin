@@ -1,12 +1,14 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Info } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
 export default function OtpVerification() {
   const inputRefs = useRef<Array<HTMLInputElement | null>>(Array(6).fill(null));
   const [otp, setOtp] = useState(Array(6).fill(''));
   const [timer, setTimer] = useState(60);
-
+   const searchParams = useSearchParams();
+        const email = searchParams.get('email');
   useEffect(() => {
     if (timer > 0) {
       const interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
@@ -35,10 +37,10 @@ export default function OtpVerification() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white">
       {/* Back button */}
-      <div className="absolute top-6 left-6 flex items-center text-white space-x-2 cursor-pointer">
+      {/* <div className="absolute top-6 left-6 flex items-center text-white space-x-2 cursor-pointer">
         <ArrowLeft size={18} />
         <span>Back</span>
-      </div>
+      </div> */}
 
       {/* OTP Container */}
       <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-md shadow-xl border border-neutral-700">
