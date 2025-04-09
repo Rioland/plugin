@@ -24,7 +24,10 @@ const KYCVerification = () => {
       {/* Options */}
       <div className="flex flex-col md:flex-row  space-x-8 gap-4 md:gap-0">
         {/* Registered Business Card */}
-        <div className="bg-black text-white p-6 rounded-lg shadow-lg w-80">
+        <div className="bg-black text-white p-6 rounded-lg shadow-lg w-80 cursor-pointer" onClick={()=>{
+          localStorage.setItem('account_type', 'business');
+          window.location.href = '/signup/register-seller';
+        }}>
           <div className="mb-4">
             {/* Illustration placeholder */}
             <img
@@ -41,7 +44,10 @@ const KYCVerification = () => {
         </div>
 
         {/* Unregistered Business Card */}
-        <div className="bg-black text-white p-6 rounded-lg shadow-lg w-80">
+        <div className="bg-black text-white p-6 rounded-lg shadow-lg w-80 cursor-pointer" onClick={()=>{
+          localStorage.setItem('account_type', 'individual');
+          window.location.href = '/signup/register-seller';
+        }}>
           <div className="mb-4">
             {/* Illustration placeholder */}
             <img

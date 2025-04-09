@@ -73,8 +73,8 @@ const profile = useSelector((state: RootState) => state.sellersProfileReducer);
 
             const data = await response.json();
             if (data.status) {
-                setProfile((prev) => ({ ...prev, profile_picture: data.url }));
-                fetchAndStoreUserProfile();
+                // setProfile((prev) => ({ ...prev, profile_picture: data.url }));
+                // fetchAndStoreUserProfile();
                 toast.success("Profile picture updated successfully!");
             } else {
                 toast.error("Upload failed!");
