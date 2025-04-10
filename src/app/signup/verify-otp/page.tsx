@@ -2,11 +2,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Info } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import { ApiBaseUrl } from '@/helper/functions';
+import { toast, Toaster } from "sonner"
 
 export default function OtpVerification() {
   const inputRefs = useRef<Array<HTMLInputElement | null>>(Array(6).fill(null));
   const [otp, setOtp] = useState(Array(6).fill(''));
   const [timer, setTimer] = useState(60);
+  const [loading, setLoading] = useState(false);
    const searchParams = useSearchParams();
         const email = searchParams.get('email');
   useEffect(() => {
@@ -34,8 +37,77 @@ export default function OtpVerification() {
     }
   };
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const otp = formData.get("otp") as string;
+    if (!otp) {
+            toast.error("OTP field is required",);
+            return;  // stop the function execution here if otp field is required
+    }
+    setLoading(true);
+    // api call
+    fetch(`${ApiBaseUrl}/register-step-two`, {
+            method: "POST",
+            headers: {
+                    "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                    email: email,
+                    verification_code: otp,
+            }),
+    })
+            .then((res) => res.json())
+            .then((data) => {
+                    console.log(data);
+                    if (data.status == false) {
+                            toast.error(data.message,);
+                            setLoading(false);
+                    } else {
+                            setLoading(false);
+                            toast.success("Registration successful",);
+                            window.location.href = "/";
+
+                    }
+            });
+};
+  const handleResendOTP = (e) => {
+
+    e.preventDefault();
+    setLoading(true);
+    fetch(`${ApiBaseUrl}/resend-verification`, {
+            method: "POST",
+            headers: {
+                    "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                    email: email
+            }),
+    })
+            .then((res) => res.json()).then((data) => {
+                    console.log(data);
+                    if (data.status == false) {
+
+                            toast.error(data.message,);
+
+                            setLoading(false);
+                    } else {
+
+                            toast.success(data.message);
+
+                            setLoading(false);
+                    }
+            });
+
+
+            setTimer(60); // Reset countdown
+   // Disable button again
+
+    // Call your OTP resend API here
+    console.log("OTP Resent!");
+};
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white px-3">
       {/* Back button */}
       {/* <div className="absolute top-6 left-6 flex items-center text-white space-x-2 cursor-pointer">
         <ArrowLeft size={18} />
@@ -43,7 +115,8 @@ export default function OtpVerification() {
       </div> */}
 
       {/* OTP Container */}
-      <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-md shadow-xl border border-neutral-700">
+    <form onSubmit={handleSubmit}>
+    <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-md shadow-xl border border-neutral-700">
         <div className="text-center mb-6">
           {/* Logo */}
           <div className="flex justify-center mb-4">
@@ -57,6 +130,7 @@ export default function OtpVerification() {
           </div>
           <h1 className="text-xl font-semibold mb-2">OTP Verification</h1>
           <p className="text-sm text-gray-400">Please enter the OTP sent to your device to continue</p>
+          <Toaster position="top-center" />
         </div>
 
         {/* OTP Input Fields */}
@@ -65,6 +139,7 @@ export default function OtpVerification() {
             <input
               key={index}
               type="text"
+          
               value={digit}
               onChange={(e) => handleChange(e.target.value, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
@@ -78,17 +153,18 @@ export default function OtpVerification() {
         </div>
 
         {/* Resend Timer */}
-        <div className="text-center text-xs text-gray-400 mb-5">
-          Didn’t get a code? Resending in <span className="text-[oklch(0.79_0.18_86.03)] font-medium">{timer<1 ? <p className='cursor-pointer'>Resend otp</p>:`0:${timer < 10 ? '0' : ''}${timer}`}</span>
+        <div className="text-center text-lg text-gray-400 mb-5">
+          Didn’t get a code? Resending in <span className="text-[oklch(0.79_0.18_86.03)] ">{timer<1 ? <p className='cursor-pointer text-lg font-semibold' onClick={(()=>{handleResendOTP})} >Resend otp</p>:`0:${timer < 10 ? '0' : ''}${timer}`}</span>
         </div>
 
         {/* Continue Button */}
-        <button
+        {loading?<img src="/images/preloader.gif" className="mx-auto" />: <button
           type="submit"
           className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition mb-4"
         >
           Continue
-        </button>
+        </button>}
+       
 
         {/* Info Link */}
         <div className="flex justify-center items-center text-xs text-gray-500 space-x-2">
@@ -96,6 +172,7 @@ export default function OtpVerification() {
           <span>Learn more about OTP & Security</span>
         </div>
       </div>
+    </form>
     </div>
   );
 }
