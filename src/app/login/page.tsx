@@ -48,41 +48,67 @@ export default function LoginForm() {
         .then(async (data) => {
           console.log(data);
           if (data.status === false) {
+           
             toast.error(data.message,);
 
             setLoading(false);
           } else {
-            setLoading(false);
-            toast.success("Login successful",);
-            // Set cookies instead of localStorage
-            Cookies.set("token", data.data.token, {
-              expires: 0.5,
-              secure: process.env.NODE_ENV === "production",
-              sameSite: "strict",
-            });
-            Cookies.set("role", data.data.role, {
-              expires: 0.5,
-              secure: process.env.NODE_ENV === "production",
-              sameSite: "strict",
-            });
-         await   fetchAndStoreUserProfile();
-            
-           
-
-            if (data.data.role == 1) {
-              const profile = await fetchAndReturnUserProfile();
-              if (profile && profile.id) {
-                dispatch(updateSellersProfile(profile));
-                window.location.href = `/dashboard/seller-dashboard`;
-              }else{
-                toast.error("Failed to fetch user profile",);
+            if(data.data.verified==true){
+              setLoading(false);
+              toast.success("Login successful",);
+              // Set cookies instead of localStorage
+              Cookies.set("token", data.data.token, {
+                expires: 0.5,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+              });
+              Cookies.set("role", data.data.role, {
+                expires: 0.5,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+              });
+      
+              if (data.data.role == 1) {
+                const profile = await fetchAndReturnUserProfile();
+                if (profile && profile.id) {
+                  dispatch(updateSellersProfile(profile));
+                  // window.location.href = `/dashboard/seller-dashboard`;
+                }else{
+                  toast.error("Failed to fetch user profile",);
+                  setLoading(false);
+                }
+               
+              } else {
+                // window.location.href = `/dashboard/buyer-dashboard`;
                 setLoading(false);
               }
-             
-            } else {
-              window.location.href = `/dashboard/buyer-dashboard`;
-              setLoading(false);
+            }else{
+              fetch(`${ApiBaseUrl}/resend-verification`, {
+                method: "POST",
+                headers: {
+                        "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                        email: data.data.user.email
+                }),
+        })
+                .then((res) => res.json()).then((data) => {
+                        console.log(data);
+                        if (data.status == false) {
+                          
+                                toast.error(data.message,);
+  
+                                // setLoading(false);
+                        } else {
+                           
+                                toast.success(data.message);
+                                window.location.href = "/signup/verify-otp";
+    
+                                // setLoading(false);
+                        }
+                });
             }
+        
         
 
           }
@@ -101,6 +127,7 @@ export default function LoginForm() {
       <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-md shadow-xl border border-neutral-700">
         <div className="text-center mb-6">
           <div className="flex justify-center mb-4">
+            <Toaster  position="top-center"  />
            
             <div className=" p-2 rounded-lg">
             <img
@@ -112,15 +139,23 @@ export default function LoginForm() {
           <h1 className="text-xl font-semibold">Login to Plugin</h1>
         </div>
 
-        <form>
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="mb-5">
             <label className="block mb-1 text-sm">Username</label>
             <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
               <User className="h-4 w-4 text-purple-400" />
               <input
                 type="text"
+                name="username"
+                id="username"
+                required
+                autoComplete="username"
+                autoFocus
+                autoCorrect="off"
+                autoCapitalize="none"
+                spellCheck="false"
                 placeholder="Username"
-                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400"
+                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
               />
             </div>
           </div>
@@ -132,7 +167,11 @@ export default function LoginForm() {
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
-                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400"
+                autoComplete="current-password"
+                required
+                name="password"
+                id="password"
+                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 py-3"
               />
               <button
                 type="button"
@@ -151,13 +190,13 @@ export default function LoginForm() {
             <input type="checkbox" id="remember" className="accent-purple-500" />
             <label htmlFor="remember" className="text-sm">Remember Me</label>
           </div>
-
-          <button
+{loading?<img src="/images/preloader.gif" className="mx-auto" />:    <button
             type="submit"
             className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition"
           >
             Log in
-          </button>
+          </button>}
+       
 
           <p className="text-center text-sm mt-4">
             Do not have an account?{' '}

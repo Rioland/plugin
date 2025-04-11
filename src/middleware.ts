@@ -14,7 +14,7 @@ export function middleware(request) {
 
   // Check if the current route is protected and the token is missing
   if (protectedRoutes.some((route) => pathname.startsWith(route)) && !token) {
-    return NextResponse.redirect(new URL('/', request.url));
+    return NextResponse.redirect(new URL('/login', request.url));
   }else{
         try {
        
