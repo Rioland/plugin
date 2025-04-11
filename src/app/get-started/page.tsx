@@ -5,7 +5,7 @@ import React from 'react';
 
 const PluginPromo = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black text-white"
+    <div className="min-h-screen flex items-center justify-center bg-black text-white px-4 md:px-0"
     style={{ backgroundImage: 'url(/images/getstarted.png)', backgroundSize: 'cover', backgroundPosition: 'center',backgroundRepeat: 'no-repeat' }}>
     
       <Card className='bg-black text-white p-8 rounded-lg shadow-2xl w-full md:w-fit border-0 py-20 px-16'>
@@ -21,7 +21,7 @@ const PluginPromo = () => {
         {/* <h1 className="text-5xl font-bold mb-4">Plugin</h1> */}
         <p className="text-xl mb-6">Access Services Instantly</p>
         {/* Description */}
-        <p className="text-sm mb-8 w-100  mx-auto">
+        <p className="text-sm mb-8 w-100  mx-auto  ">
           Discover and book top-rated service providers to meet all your needs in one place.
         </p>
         {/* Get Started Button */}

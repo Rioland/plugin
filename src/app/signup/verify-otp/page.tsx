@@ -8,7 +8,7 @@ import { toast, Toaster } from "sonner"
 export default function OtpVerification() {
   const inputRefs = useRef<Array<HTMLInputElement | null>>(Array(6).fill(null));
   const [otp, setOtp] = useState(Array(6).fill(''));
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(7);
   const [loading, setLoading] = useState(false);
    const searchParams = useSearchParams();
         const email = searchParams.get('email');
@@ -66,15 +66,18 @@ export default function OtpVerification() {
                     } else {
                             setLoading(false);
                             toast.success("Registration successful",);
-                            window.location.href = "/";
+                            window.location.href = "/signup/register-seller/onboarding";
 
                     }
             });
 };
-  const handleResendOTP = (e) => {
+  const handleResendOTP = () => {
 
-    e.preventDefault();
-    setLoading(true);
+    if (timer > 0) {
+      toast.error("Please wait for the timer to finish before resending OTP.");
+      return;
+    }
+    setTimer(60); 
     fetch(`${ApiBaseUrl}/resend-verification`, {
             method: "POST",
             headers: {
@@ -87,23 +90,19 @@ export default function OtpVerification() {
             .then((res) => res.json()).then((data) => {
                     console.log(data);
                     if (data.status == false) {
-
+                      
                             toast.error(data.message,);
 
-                            setLoading(false);
+                            // setLoading(false);
                     } else {
-
+                       
                             toast.success(data.message);
 
-                            setLoading(false);
+                            // setLoading(false);
                     }
             });
 
 
-            setTimer(60); // Reset countdown
-   // Disable button again
-
-    // Call your OTP resend API here
     console.log("OTP Resent!");
 };
   return (
@@ -154,7 +153,7 @@ export default function OtpVerification() {
 
         {/* Resend Timer */}
         <div className="text-center text-lg text-gray-400 mb-5">
-          Didn’t get a code? Resending in <span className="text-[oklch(0.79_0.18_86.03)] ">{timer<1 ? <p className='cursor-pointer text-lg font-semibold' onClick={(()=>{handleResendOTP})} >Resend otp</p>:`0:${timer < 10 ? '0' : ''}${timer}`}</span>
+          Didn’t get a code? Resending in <span className="text-[oklch(0.79_0.18_86.03)] ">{timer<1 ? <div className='cursor-pointer text-lg font-semibold' onClick={(()=>{handleResendOTP()})} >Resend otp</div> :`0:${timer < 10 ? '0' : ''}${timer}`}</span>
         </div>
 
         {/* Continue Button */}

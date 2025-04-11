@@ -151,91 +151,147 @@ function MyComponentLeft() {
 
 
 
+
 const SignupForm = () => {
-  const [showPassword, setShowPassword] = React.useState(false);
+     
+        const [loading, setLoading] = React.useState(false);
+        // login form submission handler with user name and password
+        const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+                event.preventDefault();
 
-  return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4 w-full md:w-1/2">
-      <Card className="w-full max-w-md bg-black border border-gray-800">
-        <CardContent className="p-6">
-          <h2 className="text-center text-lg font-semibold mb-4 text-white">Register with:</h2>
+                const formData = new FormData(event.currentTarget);
+                const lastName = formData.get("lastName") as string;
+                const firstName = formData.get("firstName") as string;
+                const username = formData.get("username") as string;
+                const password = formData.get("password") as string;
+                const phoneNumber = formData.get("phoneNumber") as string;
+                const email = formData.get("email") as string;
 
-          <Button
-            variant="outline"
-            className="w-full flex items-center justify-center gap-2 mb-4 bg-[#0d0d0d] text-white border-gray-700"
-          >
-            <FaGoogle /> Google
-          </Button>
+                const account_type = formData.get("account_type") as string;
+         console.log(phoneNumber, email, localStorage.getItem("account_type"), firstName, lastName, username, password)
+                if (!lastName || !username || !password || !phoneNumber || !email || !firstName || !localStorage.getItem("account_type")) {
+                        toast.error("All fields must be provided",);
+                        return;
+                }
 
-          <div className="flex items-center gap-2 my-4">
-            <div className="flex-1 h-px bg-gray-700"></div>
-            <span className="text-sm text-gray-400">Or</span>
-            <div className="flex-1 h-px bg-gray-700"></div>
-          </div>
+                setLoading(true);
+                // api call
+                fetch(`${ApiBaseUrl}/seller/register-step-one`, {
+                        method: "POST",
+                        headers: {
+                                "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                                firstname: firstName,
+                                lastname: lastName,
+                                phone_number: phoneNumber,
+                                password: password,
+                                username: username,
+                                email: email,
+                                account_type: localStorage.getItem("account_type")
+                        }),
+                })
+                        .then((res) => res.json())
+                        .then((data) => {
+                                console.log(data);
+                                if (data.status == false) {
+                                        toast.error(data.message,);
+                                        setLoading(false);
+                                } else {
+                                        setLoading(false);
+                                        toast.success("Registration successful",);
+                                        window.location.href = `/signup/verify-otp?email=${email}`;
+                                }
+                        });
 
-          <div className="grid grid-cols-2 gap-2 mb-4">
-            <div className="relative">
-              <FaUser className="absolute left-3 top-3 text-gray-400" />
-              <Input placeholder="First Name" className="pl-10 bg-[#1a1a1a] text-white border-gray-700" />
-            </div>
-            <div className="relative">
-              <FaUser className="absolute left-3 top-3 text-gray-400" />
-              <Input placeholder="Last Name" className="pl-10 bg-[#1a1a1a] text-white border-gray-700" />
-            </div>
-          </div>
+        };
 
-          <div className="relative mb-4">
-            
-            <FaUser className="absolute left-3 top-3 text-gray-400" />
-            <Input placeholder="Username" className="pl-10  bg-[#1a1a1a] text-white border-gray-700"  name="username"/>
-          </div>
-          <div className="relative mb-4">
-          <FaEnvelope className="absolute left-3 top-3 text-gray-400" />
-            <Input placeholder="Email" className="pl-10 bg-[#1a1a1a] text-white border-gray-700" />
-          </div>
+        const [showPassword, setShowPassword] = React.useState(false);
 
-          <div className="relative mb-4">
-            <FaPhone className="absolute left-3 top-3 text-gray-400" />
-            <Input placeholder="Phone Number" className="pl-10 bg-[#1a1a1a] text-white border-gray-700" />
-          </div>
+        return (
 
-          <div className="relative mb-2">
-            <FaLock className="absolute left-3 top-3 text-gray-400" />
-            <Input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              className="pl-10 pr-10 bg-[#1a1a1a] text-white border-gray-700"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-2 text-gray-400"
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
+                <div className="min-h-screen bg-black text-white flex items-center justify-center px-4 w-full md:w-1/2">
+                        <Card className="w-full max-w-md bg-black border border-gray-800">
+                              <form onSubmit={handleSubmit}>
+                                <Toaster  position="top-center" />
+                              <CardContent className="p-6">
+                                        <h2 className="text-center text-lg font-semibold mb-4 text-white">Register with:</h2>
 
-          <p className="text-sm text-gray-400 mb-4">Minimum length is 8 characters.</p>
+                                        <Button
+                                                variant="outline"
+                                                className="w-full flex items-center justify-center gap-2 mb-4 bg-[#0d0d0d] text-white border-gray-700 py-6 md:py-0"
+                                        >
+                                                <FaGoogle /> Google
+                                        </Button>
 
-          <Button className="w-full bg-[oklch(0.79_0.18_86.03)] text-black hover:bg-[oklch(0.79_0.18_86.03)]">
-            Sign Up
-          </Button>
+                                        <div className="flex items-center gap-2 my-4">
+                                                <div className="flex-1 h-px bg-gray-700"></div>
+                                                <span className="text-sm text-gray-400">Or</span>
+                                                <div className="flex-1 h-px bg-gray-700"></div>
+                                        </div>
 
-          <p className="text-xs text-gray-500 text-center mt-4">
-            By creating an account, you agree to the
-            <span className="text-white underline ml-1">Terms of Service</span>. We’ll occasionally send you account-related emails.
-          </p>
+                                        <div className="grid md:grid-cols-2 gap-4 mb-4 ">
+                                                <div className="relative">
+                                                        <FaUser className="absolute left-3 top-3 text-gray-400"  />
+                                                        <Input placeholder="First Name" name="firstName" id="firstName" className="pl-10 bg-[#1a1a1a] text-white border-gray-700 py-6 md:py-0" />
+                                                </div>
+                                                <div className="relative">
+                                                        <FaUser className="absolute left-3 top-3 text-gray-400"  />
+                                                        <Input placeholder="Last Name" name="lastName" id="lastName" className="pl-10 bg-[#1a1a1a] text-white border-gray-700 py-6 md:py-0" />
+                                                </div>
+                                        </div>
+                                        <div className="relative mb-4">
+                                                <FaUser className="absolute left-3 top-3 text-gray-400" />
+                                                <Input placeholder="Username" className="pl-10  bg-[#1a1a1a] text-white border-gray-700 py-6 md:py-0" name="username" id="username" />
+                                        </div>
+                                        <div className="relative mb-4">
+                                                <FaEnvelope className="absolute left-3 top-3 text-gray-400" />
+                                                <Input placeholder="Email" name="email" id="email" className="pl-10 bg-[#1a1a1a] text-white border-gray-700 py-6 md:py-0" />
+                                        </div>
+                                        <div className="relative mb-4">
+                                                <FaPhone className="absolute left-3 top-3 text-gray-400" />
+                                                <Input placeholder="Phone Number"  name="phoneNumber"
+                                                        id="phoneNumber" className="pl-10 bg-[#1a1a1a] text-white border-gray-700 py-6 md:py-0" />
 
-          <p className="text-center mt-4 text-sm text-white">
-            Already have an account?
-            <span className="text-[oklch(0.79_0.18_86.03)] ml-1 cursor-pointer" onClick={()=>window.location.href='/login'}>Login</span>
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  );
+                                        </div>
+
+                                        <div className="relative mb-2">
+                                                <FaLock className="absolute left-3 top-3 text-gray-400" />
+                                                <Input
+                                                        type={showPassword ? "text" : "password"}
+                                                        placeholder="Password" name="password" id="password"
+                                                        className="pl-10 pr-10 bg-[#1a1a1a] text-white border-gray-700  py-6 md:py-0"
+                                                />
+                                                <button
+                                                        type="button"
+                                                        onClick={() => setShowPassword(!showPassword)}
+                                                        className="absolute right-3 top-2 text-gray-400"
+                                                >
+                                                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                                </button>
+                                        </div>
+
+                                        <p className="text-lg text-gray-400 mb-4">Minimum length is 8 characters.</p>
+
+                                    {loading?<img src="/images/preloader.gif" className="mx-auto" />:<Button type="submit"  className="w-full bg-[oklch(0.79_0.18_86.03)] text-black hover:bg-[oklch(0.79_0.18_86.03)] py-6 md:py-0">
+                                                Sign Up
+                                        </Button>}    
+
+                                        <p className="text-lg text-gray-500 text-center mt-4">
+                                                By creating an account, you agree to the
+                                                <span className="text-white underline ml-1">Terms of Service</span>. We’ll occasionally send you account-related emails.
+                                        </p>
+
+                                        <p className="text-center mt-4 text-lg text-white">
+                                                Already have an account?
+                                                <span className="text-[oklch(0.79_0.18_86.03)] ml-1 cursor-pointer" onClick={() => window.location.href = '/login'}>Login</span>
+                                        </p>
+                                </CardContent>
+                              </form>
+                        </Card>
+                </div>
+        );
 };
-
 
 
 

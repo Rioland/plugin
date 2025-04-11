@@ -3,7 +3,7 @@ import React from 'react';
 
 const PluginPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-yellow-500 to-black flex flex-col items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-b from-yellow-500 to-black flex flex-col items-center justify-center py-6 md:py-0 ">
       <div className="text-center mb-8">
   
         <div className=" p-2 rounded-lg">
@@ -13,7 +13,7 @@ const PluginPage = () => {
                 className="w-18 h-auto mb-4 mx-auto"  />
            
         </div>
-        <h1 className="text-white text-3xl">What brings you to Plugin?</h1>
+        <h1 className="text-white text-3xl px-3 md:px-0">What brings you to Plugin?</h1>
       </div>
       <div className="flex flex-col md:flex-row justify-center items-center gap-6 px-6">
         <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-sm cursor-pointer" onClick={() => window.location.href = '/get-started'}>
