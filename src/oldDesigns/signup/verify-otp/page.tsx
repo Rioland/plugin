@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import { ApiBaseUrl } from '@/helper/functions';
 import { toast, Toaster } from "sonner"
 
-
 export default function OtpVerification() {
   const inputRefs = useRef<Array<HTMLInputElement | null>>(Array(6).fill(null));
   const [otp, setOtp] = useState(Array(6).fill(''));
@@ -41,8 +40,7 @@ export default function OtpVerification() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    
- const otpString = otp.join('');
+    const otp = formData.get("otp") as string;
     if (!otp) {
             toast.error("OTP field is required",);
             return;  // stop the function execution here if otp field is required
@@ -56,7 +54,7 @@ export default function OtpVerification() {
             },
             body: JSON.stringify({
                     email: email,
-                    verification_code: otpString,
+                    verification_code: otp,
             }),
     })
             .then((res) => res.json())
