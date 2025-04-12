@@ -1,0 +1,90 @@
+import { Input } from "@/components/ui/input";
+import { MoreVertical, Search, Settings } from "lucide-react";
+import Image from "next/image";
+
+export default function MessagesPage() {
+  return (
+    <div className="min-h-screen bg-black text-white flex">
+      {/* Sidebar */}
+      <aside className="w-80 bg-[#0e0e0e] border-r border-yellow-600 p-4 flex flex-col">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold">Messages</h2>
+          <MoreVertical className="w-5 h-5 text-white" />
+        </div>
+        <div className="relative mb-4">
+          <Input
+            placeholder="Search"
+            className="bg-[#1a1a1a] text-sm text-white placeholder-gray-400 pl-10"
+          />
+          <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+        </div>
+        <div className="flex flex-col gap-3 overflow-y-auto">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 p-2 hover:bg-[#1f1f1f] cursor-pointer rounded"
+            >
+              <Image
+                src="/avatar.png"
+                alt="Avatar"
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+              <div className="flex-1">
+                <p className="text-sm font-medium">Wade Warren</p>
+                <p className="text-xs text-gray-400">I can pay $665</p>
+              </div>
+              <div className="w-2 h-2 rounded-full bg-yellow-400" />
+            </div>
+          ))}
+        </div>
+      </aside>
+
+      {/* Chat Area */}
+      <main className="flex-1 flex flex-col">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-yellow-600">
+          <h3 className="text-lg font-semibold">Wade Warren</h3>
+          <MoreVertical className="w-5 h-5 text-white" />
+        </div>
+
+        <div className="flex-1 p-6 flex flex-col gap-6 overflow-y-auto">
+          {/* Incoming message */}
+          <div className="flex items-start gap-3">
+            <Image
+              src="/avatar.png"
+              alt="User"
+              width={32}
+              height={32}
+              className="rounded-full"
+            />
+            <div className="bg-[#1f1f1f] text-sm px-4 py-3 rounded-3xl max-w-xl">
+              Hi! Thanks for taking the time to chat. I need help designing an app interface,
+              but I'm not sure where to start.
+            </div>
+          </div>
+
+          {/* Outgoing message */}
+          <div className="flex items-end gap-3 self-end">
+            <div className="bg-[#1f1f1f] text-sm px-4 py-3 rounded-3xl max-w-xl">
+              Of course! I'd love to help. Can you tell me a bit about your app? What's its main purpose?
+            </div>
+            <Image
+              src="/avatar.png"
+              alt="You"
+              width={32}
+              height={32}
+              className="rounded-full"
+            />
+          </div>
+        </div>
+
+        <div className="p-4">
+          <div className="bg-[#1a1a1a] text-sm text-gray-400 rounded-full px-6 py-3 w-full">
+            Click here to chat
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}

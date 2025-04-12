@@ -56,7 +56,7 @@ const KYBUnregisterCard = () => {
         </ul>
       </div>
 
-      <Button className="bg-yellow-500 text-black w-full font-semibold py-2 rounded-md hover:bg-yellow-600" onClick={() => router.push('/signup/register-seller/onboarding/kyb-form')}>
+      <Button className="bg-yellow-500 text-black w-full font-semibold py-2 rounded-md hover:bg-yellow-600" onClick={() => router.push('/dashboard/seller-dashboard/onboarding/kyb-form')}>
         Get started
       </Button>
     </CardContent>
@@ -89,7 +89,7 @@ function KYBRegisterCard() {
         </ul>
       </div>
 
-      <Button className="bg-yellow-500 text-black w-full font-semibold py-2 rounded-md hover:bg-yellow-600" onClick={() => router.push('/signup/register-seller/onboarding/kyb-form')}>
+      <Button className="bg-yellow-500 text-black w-full font-semibold py-2 rounded-md hover:bg-yellow-600" onClick={() => router.push('/dashboard/seller-dashboard/onboarding/kyb-form')}>
         Get started
       </Button>
     </CardContent>
