@@ -51,7 +51,8 @@ export interface SellersProfileType {
   username: string;
   role: string;
   account_type: string;
-  name: string;
+  firstname: string;
+  lastname: string;
   phone_number: string | null;
   country: string;
   bio: string;

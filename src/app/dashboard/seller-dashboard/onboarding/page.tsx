@@ -3,26 +3,29 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/states/store';
 // import { useNavigate } from 'react-router-dom';
 // import { Icon } from 'lucide-react'; // Placeholder, replace with actual icon if needed
 
 const KYBIntroScreen = () => {
-  console.log(localStorage.getItem('account_type'))
+  const profile=useSelector((state:RootState)=>(state.sellersProfileReducer));
+
   return (
     <div className='bg-black text-white  px-4 h-screen ' style={{ backgroundImage: '/images/Wrapper.png', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
-  <div className='flex justify-between items-center w-full  px-5 py-5 '>
-                                <div className="">
-                                        <img src='/images/Logo-yellow.png' className=' h-9' />
+      <div className='flex justify-between items-center w-full  px-5 py-5 '>
+        <div className="">
+          <img src='/images/Logo-yellow.png' className=' h-9' />
 
-                                </div>
+        </div>
 
-                                <div className="">
-                                        <Button variant="outline" className="bg-white text-black text-sm font-medium px-4 py-2 rounded-md">
-                                                Skip for now
-                                        </Button>
-                                </div>
-                        </div>
-      {localStorage.getItem('account_type') === 'individual' ? <KYBUnregisterCard /> : <KYBRegisterCard />}
+        <div className="">
+          <Button variant="outline" className="bg-white text-black text-sm font-medium px-4 py-2 rounded-md">
+            Skip for now
+          </Button>
+        </div>
+      </div>
+      {profile.account_type === 'individual' ? <KYBUnregisterCard /> : <KYBRegisterCard />}
 
     </div>
   );

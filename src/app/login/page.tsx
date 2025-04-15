@@ -70,8 +70,14 @@ export default function LoginForm() {
       
               if (data.data.role == 1) {
                 const profile = await fetchAndReturnUserProfile();
+                console.log(profile);
                 if (profile && profile.id) {
                   dispatch(updateSellersProfile(profile));
+                  if(!profile.kycverifications || profile.kycverifications.length==0){
+                    window.location.href = `/dashboard/seller-dashboard/onboarding`;
+                  }else{
+                    window.location.href = `/dashboard/seller-dashboard`;
+                  }
                   // window.location.href = `/dashboard/seller-dashboard`;
                 }else{
                   toast.error("Failed to fetch user profile",);
