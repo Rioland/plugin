@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { MoreVertical, Search, Settings } from "lucide-react";
+import { MoreVertical, Search, } from "lucide-react";
 import Image from "next/image";
 
 export default function MessagesPage() {
@@ -60,14 +60,14 @@ export default function MessagesPage() {
             />
             <div className="bg-[#1f1f1f] text-sm px-4 py-3 rounded-3xl max-w-xl">
               Hi! Thanks for taking the time to chat. I need help designing an app interface,
-              but I'm not sure where to start.
+              but I&apos;m not sure where to start.
             </div>
           </div>
 
           {/* Outgoing message */}
           <div className="flex items-end gap-3 self-end">
             <div className="bg-[#1f1f1f] text-sm px-4 py-3 rounded-3xl max-w-xl">
-              Of course! I'd love to help. Can you tell me a bit about your app? What's its main purpose?
+              Of course! I&apos;d love to help. Can you tell me a bit about your app? What&apos;s its main purpose?
             </div>
             <Image
               src="/avatar.png"

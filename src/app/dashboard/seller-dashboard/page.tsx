@@ -146,10 +146,12 @@ import { Menu, Search, LogOut, HelpCircle, Settings, Wallet, Briefcase } from 'l
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/states/store';
 
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const profile = useSelector((state: RootState) => state.sellersProfileReducer)
   return (
     <div className="min-h-screen bg-black text-white flex flex-col md:flex-row">
   
@@ -182,7 +184,8 @@ export default function DashboardPage() {
 
     <div>
       <div className="mt-10">
-        <UserCard name="Babajide Felix" email="fbabajide@zoomfix.org" />
+        <UserCard profile_picture={profile?.profile_picture} name={`${profile?.firstname} ${profile?.lastname}`} email={profile?.email} />
+
       </div>
       <div className="mt-4 flex items-center space-x-2 text-sm text-gray-400">
         <HelpCircle size={16} /> <span>Help</span>
@@ -232,7 +235,7 @@ export default function DashboardPage() {
                 width={300}
                 height={300}
               />
-              <h2 className="text-lg font-bold mt-6 text-white">Welcome to your dashboard, Babajide!</h2>
+              <h2 className="text-lg font-bold mt-6 text-white">Welcome to your dashboard, {profile?.firstname}!</h2>
               <p className="text-gray-400 mt-2 text-sm">
                 You’re all set to start managing your business on Plugin. Explore your dashboard to track orders, update products, and grow your sales!
               </p>
@@ -258,11 +261,12 @@ function SidebarItem({ icon, text }: { icon: React.ReactNode; text: string }) {
   );
 }
 
-function UserCard({ name, email }: { name: string; email: string }) {
+function UserCard({ name, email,profile_picture }: { name: string; email: string,profile_picture:string }) {
+
   return (
     <div className="flex items-center space-x-3 p-2 border border-gray-700 rounded-lg">
       <Image
-        src="/images/avarter.png"
+        src={ profile_picture?? "/images/avarter.png"}
         alt="User Avatar"
         width={40}
         height={40}

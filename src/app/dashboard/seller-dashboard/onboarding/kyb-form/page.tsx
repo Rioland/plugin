@@ -291,7 +291,7 @@ const UploadBox = ({ label, handleChange, name }: { name: string, label: string,
         <div className="mb-8">
                 <h3 className="text-lg text-white font-medium mb-4">{label}</h3>
                 <p className="text-sm text-gray-400 mb-2">
-                        Only an international Passport, NIN Slip, or Driver’s License is accepted. The document must be in good condition (not torn or damaged), clear in colour, unexpired, and fully visible with all corners intact.
+                        Only an international Passport, NIN Slip, or Driver&apos;s License is accepted. The document must be in good condition (not torn or damaged), clear in colour, unexpired, and fully visible with all corners intact.
                 </p>
                 <label className="w-full border border-gray-700 bg-[#1E1E1E] rounded-lg p-6 flex flex-col items-center text-lg text-gray-400 cursor-pointer hover:border-yellow-500">
                         <UploadCloud className="mb-2 text-yellow-500" />
@@ -807,7 +807,7 @@ const UnRegisterBusinessUi = () => {
                                                         <div className="mb-8">
                                                                 <h3 className="text-lg text-white font-medium mb-4">Proof of Identification</h3>
                                                                 <p className="text-sm text-gray-400 mb-2">
-                                                                        Only an international Passport, NIN Slip, or Driver’s License is accepted. The document must be in good condition (not torn or damaged), clear in colour, unexpired, and fully visible with all corners intact.
+                                                                        Only an international Passport, NIN Slip, or Driver&apos;s License is accepted. The document must be in good condition (not torn or damaged), clear in colour, unexpired, and fully visible with all corners intact.
                                                                 </p>
                                                                 <label className="w-full border border-gray-700 bg-[#1E1E1E] rounded-lg p-6 flex flex-col items-center text-lg text-gray-400 cursor-pointer hover:border-yellow-500">
                                                                         <UploadCloud className="mb-2 text-yellow-500" />
