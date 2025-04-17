@@ -22,6 +22,7 @@ const dispatcher = useDispatch();
       .then((data) => setCategories(data.data))
       .catch(() => toast.error("Failed to load skills"));
   }, []);
+  
 
   const handleSelectSkill = (skillId, categoryId) => {
     setSelectedSkills((prev) => {
@@ -36,7 +37,7 @@ const dispatcher = useDispatch();
     }
 
     const skills = selectedSkills.map((s) => s.skillId);
-    const categoryIds = selectedSkills.map((s) => s.categoryId);
+    // const categoryIds = selectedSkills.map((s) => s.categoryId);
 
     setLoading(true);
     try {
@@ -72,9 +73,10 @@ const dispatcher = useDispatch();
 
   return (
     <div className="p-4 border rounded-lg">
-      <h2 className="text-lg font-semibold mb-2">Select Your Skills</h2>
+      <h2 className="text-lg font-semibold mb-2 text-black">Select Your Skills</h2>
       <div className="flex flex-wrap gap-2 mb-4">
         <Toaster position="top-center" className='bg-amber-200' />
+        
         {categories.map((category) => (
           <div key={category.id} className="mb-3">
             <h3 className="font-medium">{category.name}</h3>
@@ -83,8 +85,8 @@ const dispatcher = useDispatch();
                 <button
                   key={skill.id}
                   className={`px-3 py-1 border rounded-md cursor-pointer transition-all ${selectedSkills.some((s) => s.skillId === skill.id)
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200"
+                      ? "bg-yellow-500 text-black"
+                      : "bg-gray-500"
                     }`}
                   onClick={() => handleSelectSkill(skill.id, skill.category_id)}
                 >

@@ -202,7 +202,7 @@ const AppbarItem: React.FC<AppbarItemProps> = ({ children, text }) => {
                                                 <div className="mt-4 flex items-center space-x-2 text-sm text-gray-400">
                                                         <HelpCircle size={16} /> <span>Help</span>
                                                 </div>
-                                                <div className="mt-2 text-yellow-400 text-sm cursor-pointer flex items-center space-x-2">
+                                                <div className="mt-2 text-yellow-400 text-sm cursor-pointer flex items-center space-x-2" onClick={() => { window.location.href = '/logout'} }>
                                                         <LogOut size={16} /> <span>Logout</span>
                                                 </div>
                                         </div>
@@ -275,17 +275,17 @@ type SidebarItemProps = {
 function UserCard({ name, email, profile_picture,selected }: { name: string; email: string, profile_picture: string,selected?:boolean }) {
 
         return (
-                <div className={`flex items-center space-x-3 p-2 border  ${selected ? 'border-yellow-500' : 'border-gray-700'}  rounded-lg cursor-pointer hover:border-yellow-500 `} onClick={() => { window.location.href = '/dashboard/seller-dashboard/profile' }}>
+                <div className={`flex items-center space-x-3 p-2 border  ${selected ? 'border-yellow-500' : 'border-gray-700'}  rounded-lg cursor-pointer hover:border-yellow-500 pe-2 `} onClick={() => { window.location.href = '/dashboard/seller-dashboard/profile' }}>
                         <Image
-                                src={profile_picture ?? "/images/avarter.png"}
+                                src={profile_picture ?? "/images/avatar.jpg"}
                                 alt="User Avatar"
                                 width={40}
                                 height={40}
                                 className="rounded-full cursor-pointer"
                         />
                         <div>
-                                <p className="text-sm font-semibold cursor-pointer">{name}</p>
-                                <p className="text-xs text-gray-400 cursor-pointer">{email}</p>
+                                <p className="text-sm font-semibold cursor-pointer text-warning-emphasis">{name}</p>
+                                <p className="text-xs text-gray-400 cursor-pointer text-warning-emphasis">{email}</p>
                         </div>
                 </div>
         );
