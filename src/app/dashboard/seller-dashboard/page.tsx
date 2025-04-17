@@ -166,7 +166,7 @@ export default function DashboardPage() {
             <p className="text-gray-400 mt-2 text-sm">
               You’re all set to start managing your business on Plugin. Explore your dashboard to track orders, update products, and grow your sales!
             </p>
-            <Button className="mt-6 bg-yellow-500 text-black hover:bg-yellow-600">
+            <Button className="mt-6 bg-yellow-500 text-black hover:bg-yellow-600" onClick={() => { window.location.href = '/dashboard/seller-dashboard/choose-category' }}>
               Get Started
             </Button>
           </CardContent>

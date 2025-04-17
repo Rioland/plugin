@@ -6,12 +6,15 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Menu, X } from "lucide-react";
+import App from "next/app";
+import AppbarItem from "../Components/AppbarOne";
 
 export default function JobDashboard() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="bg-black min-h-screen text-white font-sans">
+   <AppbarItem   text="Jobs">
+     <div className="bg-black min-h-screen text-white font-sans">
       <header className="flex justify-between items-center px-6 py-4 border-b border-gray-800 relative">
         <div className="flex items-center gap-2">
           <Image src="/images/Logo-yellow.png" alt="Plugin Logo" width={100} height={100} />
@@ -148,6 +151,7 @@ export default function JobDashboard() {
         </aside>
       </main>
     </div>
+   </AppbarItem>
   );
 }
 

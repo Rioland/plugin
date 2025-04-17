@@ -1,6 +1,8 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import App from "next/app";
+import AppbarItem from "../Components/AppbarOne";
 
 const categories = [
   {
@@ -87,7 +89,8 @@ const categories = [
 
 export default function ChooseCategoryPage() {
   return (
-    <div className="min-h-screen bg-black text-white px-6 py-12">
+ <AppbarItem text="Choose Category">
+     <div className="min-h-screen bg-black text-white px-6 py-12">
       <div className="max-w-6xl mx-auto text-center">
         <h1 className="text-3xl font-semibold mb-2">Choose A Category</h1>
         <p className="text-gray-300 mb-8">Pick a category that fits what you offer</p>
@@ -124,5 +127,6 @@ export default function ChooseCategoryPage() {
         </div>
       </div>
     </div>
+ </AppbarItem>
   );
 }

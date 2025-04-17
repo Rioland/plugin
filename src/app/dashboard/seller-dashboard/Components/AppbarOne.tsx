@@ -142,7 +142,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Home, Search, LogOut, HelpCircle, Settings, Wallet, Briefcase ,Menu} from 'lucide-react';
+import { Home, Search, LogOut, HelpCircle, Settings, Wallet, Briefcase ,Menu,MessageSquare} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
@@ -186,10 +186,11 @@ const AppbarItem: React.FC<AppbarItemProps> = ({ children, text }) => {
                                                 </div>
 
                                                 <nav className="space-y-4 pt-5">
-                                                        <SidebarItem icon={<Home />} text="Dashboard"  selected={pathname.endsWith('seller-dashboard')}  onClick={() => { window.location.href = '/dashboard/seller-dashboard' }}/>
+                                                        <SidebarItem icon={<Home />} text="Dashboard"  selected={pathname.endsWith('seller-dashboard')||pathname.endsWith('choose-category')}  onClick={() => { window.location.href = '/dashboard/seller-dashboard' }}/>
                                                         <SidebarItem icon={<Wallet />} text="Wallet" selected={pathname.endsWith('wallet')} onClick={() => { window.location.href = '/dashboard/seller-dashboard/wallet' }} />
-                                                        <SidebarItem icon={<Briefcase />} text="Jobs"  selected={pathname.endsWith('jobs')}  onClick={() => { window.location.href = '/dashboard/seller-dashboard/jobs' }} />
+                                                        <SidebarItem icon={<Briefcase />} text="Jobs"  selected={pathname.endsWith('jobs') || pathname.endsWith('more-jobs')}  onClick={() => { window.location.href = '/dashboard/seller-dashboard/jobs' }} />
                                                         <SidebarItem icon={<Settings />} text="Settings" selected={pathname.endsWith('settings')} onClick={() => { window.location.href = '/dashboard/seller-dashboard/settings' }} />
+                                                        <SidebarItem icon={<MessageSquare />} text="Messages" selected={pathname.endsWith('messages')} onClick={() => { window.location.href = '/dashboard/seller-dashboard/messages' }} />
                                                 </nav>
                                         </div>
 
