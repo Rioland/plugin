@@ -6,6 +6,7 @@ const initialState: SellersProfileType = {
   profile_picture: null,
   email: null,
   username: null,
+
   role: null,
   account_type: null,
   phone_number: null,
@@ -18,7 +19,8 @@ const initialState: SellersProfileType = {
   educations: [],
   languages: [],
   firstname: null,
-  lastname: null
+  lastname: null,
+  name: null,
 };
 
 const sellersProfileSlice = createSlice({

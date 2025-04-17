@@ -49,6 +49,7 @@ export interface SellersProfileType {
   profile_picture: string;
   email: string;
   username: string;
+  name: string;
   role: string;
   account_type: string;
   firstname: string;
