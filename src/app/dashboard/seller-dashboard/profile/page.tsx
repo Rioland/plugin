@@ -4,10 +4,12 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Share2, Pencil, Star, Bookmark, Eye } from "lucide-react";
 import Image from "next/image";
+import AppbarItem from "../Components/AppbarOne";
 
 export default function ProfilePage() {
   return (
-    <div className="min-h-screen bg-[#0C0C0C] text-white p-4 md:p-10">
+  <AppbarItem  text="Profile"  >
+  <div className=" bg-[#0C0C0C] text-white p-4 md:p-10">
       <div className="w-full mx-auto">
         <div className="bg-[#141414] p-6 md:p-10 rounded-2xl border border-[#2A2A2A]">
           {/* Header */}
@@ -160,5 +162,6 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
+  </AppbarItem>
   );
 }

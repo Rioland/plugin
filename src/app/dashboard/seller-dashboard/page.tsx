@@ -141,141 +141,40 @@
 
 'use client';
 
-import { useState } from 'react';
-import { Menu, Search, LogOut, HelpCircle, Settings, Wallet, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { RootState } from '@/states/store';
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/states/store';
+import AppbarItem from './Components/AppbarOne';
+
 
 export default function DashboardPage() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const profile = useSelector((state: RootState) => state.sellersProfileReducer)
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col md:flex-row">
-  
-{/* Sidebar */}
-<div className={`min-h-screen bg-black border-r border-gray-800 w-64 p-4 md:block fixed md:relative z-20 transform transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
-  {/* Close button for mobile */}
-  <div className="flex justify-end md:hidden mb-4">
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={() => setSidebarOpen(false)}
-    >
-      ✕
-    </Button>
-  </div>
-
-  <div className="flex flex-col justify-between h-full">
-    <div>
-      <div className="text-3xl font-bold mb-6 flex items-center space-x-2">
-        <Image src="/images/Logo-yellow.png" alt="Plugin Logo" width={100} height={100} />
-      </div>
-
-      <nav className="space-y-4">
-        <SidebarItem icon={<Menu />} text="Dashboard" />
-        <SidebarItem icon={<Wallet />} text="Wallet" />
-        <SidebarItem icon={<Briefcase />} text="Jobs" />
-        <SidebarItem icon={<Settings />} text="Settings" />
-      </nav>
-    </div>
-
-    <div>
-      <div className="mt-10">
-        <UserCard profile_picture={profile?.profile_picture} name={`${profile?.firstname} ${profile?.lastname}`} email={profile?.email} />
-
-      </div>
-      <div className="mt-4 flex items-center space-x-2 text-sm text-gray-400">
-        <HelpCircle size={16} /> <span>Help</span>
-      </div>
-      <div className="mt-2 text-yellow-400 text-sm cursor-pointer flex items-center space-x-2">
-        <LogOut size={16} /> <span>Logout</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col md:ml-7">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border-b border-gray-800">
-          <div className="flex items-center space-x-4 w-full justify-between">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden mb-4"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              <Menu />
+    <AppbarItem text="Dashboard">
+      <div className="flex-grow flex items-center justify-center p-6">
+        <Card className="bg-black border border-gray-800 max-w-lg w-full text-center">
+          <CardContent className="p-6 flex flex-col items-center">
+            <Image
+              src="/images/designer-working.png"
+              alt="Illustration"
+              width={300}
+              height={300}
+            />
+            <h2 className="text-lg font-bold mt-6 text-white">Welcome to your dashboard, {profile?.firstname}!</h2>
+            <p className="text-gray-400 mt-2 text-sm">
+              You’re all set to start managing your business on Plugin. Explore your dashboard to track orders, update products, and grow your sales!
+            </p>
+            <Button className="mt-6 bg-yellow-500 text-black hover:bg-yellow-600">
+              Get Started
             </Button>
-            <h1 className="text-xl font-bold">Dashboard</h1>
-            <div className="relative w-full sm:w-1/3">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 text-sm"
-              />
-              <Search className="absolute right-3 top-2.5 h-4 w-4 text-gray-400" />
-            </div>
-          </div>
-        </div>
-
-        {/* Main Card */}
-        <div className="flex-grow flex items-center justify-center p-6">
-          <Card className="bg-black border border-gray-800 max-w-lg w-full text-center">
-            <CardContent className="p-6 flex flex-col items-center">
-              <Image
-                src="/images/designer-working.png"
-                alt="Illustration"
-                width={300}
-                height={300}
-              />
-              <h2 className="text-lg font-bold mt-6 text-white">Welcome to your dashboard, {profile?.firstname}!</h2>
-              <p className="text-gray-400 mt-2 text-sm">
-                You’re all set to start managing your business on Plugin. Explore your dashboard to track orders, update products, and grow your sales!
-              </p>
-              <Button className="mt-6 bg-yellow-500 text-black hover:bg-yellow-600">
-                Get Started
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+          </CardContent>
+        </Card>
       </div>
 
+    </AppbarItem>
 
-    </div>
   );
 }
 
-function SidebarItem({ icon, text }: { icon: React.ReactNode; text: string }) {
-  return (
-    <div className="flex items-center space-x-3 cursor-pointer hover:text-yellow-500">
-      {icon}
-      <span>{text}</span>
-    </div>
-  );
-}
-
-function UserCard({ name, email,profile_picture }: { name: string; email: string,profile_picture:string }) {
-
-  return (
-    <div className="flex items-center space-x-3 p-2 border border-gray-700 rounded-lg">
-      <Image
-        src={ profile_picture?? "/images/avarter.png"}
-        alt="User Avatar"
-        width={40}
-        height={40}
-        className="rounded-full"
-      />
-      <div>
-        <p className="text-sm font-semibold">{name}</p>
-        <p className="text-xs text-gray-400">{email}</p>
-      </div>
-    </div>
-  );
-}

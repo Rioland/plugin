@@ -20,7 +20,7 @@ const KYBIntroScreen = () => {
         </div>
 
         <div className="">
-          <Button variant="outline" className="bg-white text-black text-sm font-medium px-4 py-2 rounded-md">
+          <Button variant="outline" className="bg-white text-black text-sm font-medium px-4 py-2 rounded-md" onClick={()=>{window.location.href='/dashboard/seller-dashboard/'}}>
             Skip for now
           </Button>
         </div>

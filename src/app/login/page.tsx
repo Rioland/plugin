@@ -19,7 +19,7 @@ export default function LoginForm() {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = React.useState(false);
-
+const[rememberMe,setRememberMe]=useState(localStorage.getItem('rememberMe')=='true'?true:false)
 
 
 
@@ -53,6 +53,11 @@ export default function LoginForm() {
 
             setLoading(false);
           } else {
+            if(rememberMe==true){
+              localStorage.setItem("rememberMe", "true");
+              localStorage.setItem("username", username);
+              localStorage.setItem("password", password);
+            }
             if(data.data.verified==true){
               setLoading(false);
               toast.success("Login successful",);
@@ -155,6 +160,7 @@ export default function LoginForm() {
                 name="username"
                 id="username"
                 required
+                defaultValue={localStorage.getItem('username')??""}
                 autoComplete="username"
                 autoFocus
                 autoCorrect="off"
@@ -173,6 +179,7 @@ export default function LoginForm() {
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
+                defaultValue={localStorage.getItem('password')??''}
                 autoComplete="current-password"
                 required
                 name="password"
@@ -193,7 +200,7 @@ export default function LoginForm() {
           </div>
 
           <div className="flex items-center space-x-2 mb-5">
-            <input type="checkbox" id="remember" className="accent-purple-500" />
+            <input type="checkbox" id="remember" className="accent-purple-500" checked={rememberMe}  onChange={(e)=>setRememberMe(e.target.checked)}/>
             <label htmlFor="remember" className="text-sm">Remember Me</label>
           </div>
 {loading?<img src="/images/preloader.gif" className="mx-auto" />:    <button
