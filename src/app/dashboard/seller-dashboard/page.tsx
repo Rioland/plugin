@@ -150,7 +150,7 @@ import AppbarItem from './Components/AppbarOne';
 
 
 export default function DashboardPage() {
-  const profile = useSelector((state: RootState) => state.sellersProfileReducer)
+  const profile = useSelector((state: RootState) => state.  sellersProfileReducer)
   return (
     <AppbarItem text="Dashboard">
       <div className="flex-grow flex items-center justify-center p-6">

@@ -50,6 +50,7 @@ const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
         if (profile && profile.id) {
           dispatcher(updateSellersProfile(profile));
         }
+        
         toast.success(` ${type === 'education' ? 'Education' : type === 'award' ? 'Award' : 'Experience'} added successfully!`);
         setExperience({
           start_year: "",

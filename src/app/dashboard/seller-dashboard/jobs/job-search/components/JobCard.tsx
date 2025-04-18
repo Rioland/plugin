@@ -1,49 +1,12 @@
+// components/JobCard.tsx
+import { Briefcase, Clock, Clock3, Heart, MapPin, ThumbsDown } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ThumbsDown, Heart, MapPin, Clock3, Briefcase } from "lucide-react";
-import Link from "next/link";
-import App from "next/app";
-import AppbarItem from "../../Components/AppbarOne";
-import JobCard from "../job-search/components/JobCard";
 
-const jobs = [1, 2, 3];
-
-export default function JobListPage() {
+export default function JobCard() {
   return (
-   <AppbarItem text="More Jobs">
-     <div className="min-h-screen bg-black text-white px-6 md:px-24 py-10">
-      <header className="flex items-center justify-end mb-6">
-        {/* <Link href="#" className="text-yellow-500 text-sm font-medium hover:underline">
-          &lt; return to search
-        </Link> */}
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="bg-[#1E1E1E] border border-gray-700 text-white px-4 py-2 rounded-full text-sm pl-10 focus:outline-none"
-          />
-          <div className="absolute top-2.5 left-3 text-gray-400">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1116.65 6.65a7.5 7.5 0 010 10.6z" />
-            </svg>
-          </div>
-        </div>
-      </header>
-    <section className="flex-1 space-y-6">
-          {[1, 2, 3].map((_, idx) => (
-            <JobCard key={idx} />
-          ))}
-        </section>
-      {/* <div className="space-y-6">
-        {jobs.map((_, i) => (
-          <Card key={i} className="bg-[#111] border border-gray-800">
+    <Card className="bg-[#111] border border-gray-800">
             <CardContent className="p-6">
               <p className="text-xs text-gray-400 mb-2">Posted 2hrs ago</p>
               <h2 className="text-xl font-semibold mb-4 text-white">
@@ -93,9 +56,5 @@ export default function JobListPage() {
               </div>
             </CardContent>
           </Card>
-        ))}
-      </div> */}
-    </div>
-     </AppbarItem>
   );
-} 
+}

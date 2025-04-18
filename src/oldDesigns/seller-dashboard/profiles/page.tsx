@@ -148,6 +148,7 @@ const profile = useSelector((state: RootState) => state.sellersProfileReducer);
           });
     };
   
+    
     return (
         <div className=" w-full p-6  ">
 

@@ -16,7 +16,7 @@ import { Eye, EyeOff, User, Lock } from 'lucide-react';
 import Link from "next/link";
 
 export default function LoginForm() {
-  const dispatch = useDispatch();
+  const dispatcher = useDispatch();
 
   const [loading, setLoading] = React.useState(false);
 const[rememberMe,setRememberMe]=useState(localStorage.getItem('rememberMe')=='true'?true:false)
@@ -77,7 +77,7 @@ const[rememberMe,setRememberMe]=useState(localStorage.getItem('rememberMe')=='tr
                 const profile = await fetchAndReturnUserProfile();
                 console.log(profile);
                 if (profile && profile.id) {
-                  dispatch(updateSellersProfile(profile));
+                  dispatcher(updateSellersProfile(profile));
                   if(!profile.kycverifications || profile.kycverifications.length==0){
                     window.location.href = `/dashboard/seller-dashboard/onboarding`;
                   }else{
