@@ -4,6 +4,8 @@ import SidebarFilter from "./components/SidebarFilter";
 import TopSearchBar from "./components/TopSearchBar";
 
 
+
+
 export default function JobSearchPage() {
   return (
     <AppbarItem text="Job Search">

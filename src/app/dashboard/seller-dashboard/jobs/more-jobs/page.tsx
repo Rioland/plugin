@@ -1,11 +1,8 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ThumbsDown, Heart, MapPin, Clock3, Briefcase } from "lucide-react";
-import Link from "next/link";
-import App from "next/app";
+
+
 import AppbarItem from "../../Components/AppbarOne";
 import JobCard from "../job-search/components/JobCard";
+
 
 const jobs = [1, 2, 3];
 

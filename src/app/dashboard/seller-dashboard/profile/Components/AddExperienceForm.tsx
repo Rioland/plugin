@@ -72,35 +72,35 @@ const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md max-w-lg mx-auto">
-      <h2 className="text-xl font-semibold mb-4 text-black">
+    <form onSubmit={handleSubmit} className="bg-black p-6 rounded-lg shadow-2xl max-w-lg mx-auto">
+      <h2 className="text-xl font-semibold mb-4 text-white">
         Add {type === 'education' ? 'Education' : type === 'award' ? 'Award' : 'Experience'}
       </h2>
 
-      <select name="start_year" value={experience.start_year} onChange={handleChange} className="border p-2 w-full mb-2 rounded text-black" required>
-        <option value="text-black">Select Start Year</option>
+      <select name="start_year" value={experience.start_year} onChange={handleChange} className="border p-2 w-full mb-2 rounded text-white" required>
+        <option value="text-white">Select Start Year</option>
         {years.map((year) => (
           <option key={year} value={year} >{year}</option>
         ))}
       </select>
 
-      <select name="end_year" value={experience.end_year} onChange={handleChange} className="border p-2 w-full mb-2 rounded text-black" required>
-        <option value="text-black">Select End Year</option>
+      <select name="end_year" value={experience.end_year} onChange={handleChange} className="border p-2 w-full mb-2 rounded text-white" required>
+        <option value="text-white">Select End Year</option>
         {years.map((year) => (
           <option key={year} value={year}>{year}</option>
         ))}
       </select>
 
-      <input type="text" name="title" value={experience.title} onChange={handleChange} placeholder={` ${type === 'education' ? 'Education' : type === 'award' ? 'Award' : 'Experience'} Title`} className="border p-2 w-full mb-2 rounded text-black" required />
-      <input type="text" name="from" value={experience.from} onChange={handleChange} placeholder={`${type === 'education' ? 'School' : "Company"} Name`} className="border p-2 w-full mb-2 rounded text-black" required />
+      <input type="text" name="title" value={experience.title} onChange={handleChange} placeholder={` ${type === 'education' ? 'Education' : type === 'award' ? 'Award' : 'Experience'} Title`} className="border p-2 w-full mb-2 rounded text-white" required />
+      <input type="text" name="from" value={experience.from} onChange={handleChange} placeholder={`${type === 'education' ? 'School' : "Company"} Name`} className="border p-2 w-full mb-2 rounded text-white" required />
       <input type="hidden" name="type" value={type} />
-      <textarea name="desc" value={experience.desc} onChange={handleChange} placeholder="Description" className="border p-2 w-full mb-2 rounded text-black" required></textarea>
+      <textarea name="desc" value={experience.desc} onChange={handleChange} placeholder="Description" className="border p-2 w-full mb-2 rounded text-white" required></textarea>
 
       {loading ? (
         <div className="flex items-center justify-center">
          <img src="/images/preloader.gif" />
         </div>
-      ) : <Button type="submit" className="w-full bg-yellow-500 py-6 mt-10 ">
+      ) : <Button type="submit" className="w-full bg-yellow-500 py-6 mt-10 hover:border hover:border-yellow-500 hover:bg-transparent hover:text-yellow-500 ">
         Submit<i className="fal fa-arrow-right-long"></i>
       </Button>}
       <Toaster position="top-center" />

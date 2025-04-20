@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Share2, Pencil, Star, Bookmark, PlusCircleIcon, Trash, EditIcon } from "lucide-react";
-import Image from "next/image";
+
 import AppbarItem from "../Components/AppbarOne";
 import { RootState } from "@/states/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -91,7 +91,7 @@ export default function ProfilePage() {
 
                   <div className="flex items-center">
                     <div className=" relative w-24 h-24 rounded-full overflow-hidden ">
-                      <Image
+                      <img
                         src={preview || profile.profile_picture || "/images/avatar.jpg"}
                         // {profile.profile_picture || "https://picsum.photos/200/300"}
                         alt="User Avatar"

@@ -73,7 +73,7 @@ const dispatcher = useDispatch();
 
   return (
     <div className="p-4 border rounded-lg">
-      <h2 className="text-lg font-semibold mb-2 text-black">Select Your Skills</h2>
+      <h2 className="text-lg font-semibold mb-2 text-white">Select Your Skills</h2>
       <div className="flex flex-wrap gap-2 mb-4">
         <Toaster position="top-center" className='bg-amber-200' />
         
@@ -85,7 +85,7 @@ const dispatcher = useDispatch();
                 <button
                   key={skill.id}
                   className={`px-3 py-1 border rounded-md cursor-pointer transition-all ${selectedSkills.some((s) => s.skillId === skill.id)
-                      ? "bg-yellow-500 text-black"
+                      ? "bg-yellow-500 text-white"
                       : "bg-gray-500"
                     }`}
                   onClick={() => handleSelectSkill(skill.id, skill.category_id)}
@@ -97,7 +97,7 @@ const dispatcher = useDispatch();
           </div>
         ))}
       </div>
-      <Button onClick={handleSubmit} disabled={loading}>
+      <Button onClick={handleSubmit} disabled={loading} className='bg-yellow-500 py-6 mt-10 hover:border hover:border-yellow-500 hover:bg-transparent hover:text-yellow-500'>
         {loading ? "Updating..." : "Update Skills"}
       </Button>
     </div>

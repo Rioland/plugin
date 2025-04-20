@@ -14,7 +14,7 @@ const MyModal: React.FC<MyModalProps> = ({ isOpen, onClose, children }) => {
            <button onClick={onClose} className="absolute top-4 right-4 text-xl  ms-4">
             &times;
           </button>
-        <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] md:w-[50%] relative ">
+        <div className=" p-6 rounded-lg shadow-lg w-[90%] md:w-[50%] relative ">
           {/* Close Button */}
          
           {/* Modal Content */}
