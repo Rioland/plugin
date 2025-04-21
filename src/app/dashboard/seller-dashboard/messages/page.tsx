@@ -1,12 +1,20 @@
 
 'use client'
-import { Input } from "@/components/ui/input";
-import { MoreVertical, Search, } from "lucide-react";
+
+import ChatHeader from "../Components/Messages/ChatHeader";
+import ChatInput from "../Components/Messages/ChatInput";
+import ChatMessages from "../Components/Messages/ChatMessages";
+import Sidebar from "../Components/Messages/Sidebar";
+import PluginNavbar from "../Components/NavBar";
+
+// import { Input } from "@/components/ui/input";
+// import { MoreVertical, Search, } from "lucide-react";
+// import PluginNavbar from "../Components/NavBar";
 
 
 // export default function MessagesPage() {
 //   return (
-//     <AppbarItem text="Messages"  >
+//     <PluginNavbar  >
 
 // <div className="min-h-screen bg-black text-white flex">
 //       {/* Sidebar */}
@@ -28,7 +36,7 @@ import { MoreVertical, Search, } from "lucide-react";
 //               key={i}
 //               className="flex items-center gap-3 p-2 hover:bg-[#1f1f1f] cursor-pointer rounded"
 //             >
-//               <Image
+//               <img
 //                 src="/avatar.png"
 //                 alt="Avatar"
 //                 width={40}
@@ -55,7 +63,7 @@ import { MoreVertical, Search, } from "lucide-react";
 //         <div className="flex-1 p-6 flex flex-col gap-6 overflow-y-auto">
 //           {/* Incoming message */}
 //           <div className="flex items-start gap-3">
-//             <Image
+//             <img
 //               src="/avatar.png"
 //               alt="User"
 //               width={32}
@@ -73,7 +81,7 @@ import { MoreVertical, Search, } from "lucide-react";
 //             <div className="bg-[#1f1f1f] text-sm px-4 py-3 rounded-3xl max-w-xl">
 //               Of course! I&apos;d love to help. Can you tell me a bit about your app? What&apos;s its main purpose?
 //             </div>
-//             <Image
+//             <img
 //               src="/avatar.png"
 //               alt="You"
 //               width={32}
@@ -90,73 +98,92 @@ import { MoreVertical, Search, } from "lucide-react";
 //         </div>
 //       </main>
 //     </div>
-//     </AppbarItem>
+//     </PluginNavbar>
 //   );
 // }
 
 
 
-import { useState } from 'react';
+// // import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import PluginNavbar from "../Components/NavBar";
+// // import { Button } from '@/components/ui/button';
+// // import { ScrollArea } from '@/components/ui/scroll-area';
+// // import PluginNavbar from "../Components/NavBar";
 
-type Message = {
-  id: number;
-  sender: 'user' | 'other';
-  content: string;
-};
+// // type Message = {
+// //   id: number;
+// //   sender: 'user' | 'other';
+// //   content: string;
+// // };
+
+// // export default function MessagesPage() {
+// //   const [messages, setMessages] = useState<Message[]>([
+// //     { id: 1, sender: 'other', content: 'Hi, I’m interested in your service!' },
+// //     { id: 2, sender: 'user', content: 'Thanks! How can I help you today?' },
+// //     { id: 3, sender: 'other', content: 'Can we schedule a quick call?' },
+// //   ]);
+
+// //   const [newMessage, setNewMessage] = useState('');
+
+// //   const handleSend = () => {
+// //     if (newMessage.trim()) {
+// //       setMessages([...messages, { id: messages.length + 1, sender: 'user', content: newMessage }]);
+// //       setNewMessage('');
+// //     }
+// //   };
+
+// //   return (
+// //     <PluginNavbar  >
+// //     <div className="flex flex-col h-screen">
+// //       {/* Messages List */}
+// //       <ScrollArea className="h-10/12 overflow-y-auto px-4 py-6 space-y-4 bg-[#0f0f0f]">
+// //         {messages.map((msg) => (
+// //           <div
+// //             key={msg.id}
+// //             className={`max-w-xs md:max-w-md lg:max-w-lg px-4 py-3 rounded-lg text-sm my-4 ${
+// //               msg.sender === 'user'
+// //                 ? 'ml-auto bg-yellow-500 text-black'
+// //                 : 'mr-auto bg-[#1E1E1E] text-white'
+// //             }`}
+// //           >
+// //             {msg.content}
+// //           </div>
+// //         ))}
+// //       </ScrollArea>
+
+// //       {/* Message Input */}
+// //       <div className="border-t border-gray-800 p-4 bg-[#0f0f0f] flex items-center gap-2">
+// //         <Input
+// //           className="flex-1 bg-[#1E1E1E] text-white placeholder-gray-400 border-gray-700"
+// //           placeholder="Type your message..."
+// //           value={newMessage}
+// //           onChange={(e) => setNewMessage(e.target.value)}
+// //           onKeyDown={(e) => {
+// //             if (e.key === 'Enter') handleSend();
+// //           }}
+// //         />
+// //         <Button className="bg-yellow-500 text-black hover:bg-yellow-600" onClick={handleSend}>
+// //           Send
+// //         </Button>
+// //       </div>
+// //     </div>
+// //     </PluginNavbar>
+// //   );
+// // }
+
+
+// app/messages/page.tsx
+
 
 export default function MessagesPage() {
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 1, sender: 'other', content: 'Hi, I’m interested in your service!' },
-    { id: 2, sender: 'user', content: 'Thanks! How can I help you today?' },
-    { id: 3, sender: 'other', content: 'Can we schedule a quick call?' },
-  ]);
-
-  const [newMessage, setNewMessage] = useState('');
-
-  const handleSend = () => {
-    if (newMessage.trim()) {
-      setMessages([...messages, { id: messages.length + 1, sender: 'user', content: newMessage }]);
-      setNewMessage('');
-    }
-  };
-
   return (
-    <PluginNavbar  >
-    <div className="flex flex-col h-screen">
-      {/* Messages List */}
-      <ScrollArea className="h-10/12 overflow-y-auto px-4 py-6 space-y-4 bg-[#0f0f0f]">
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`max-w-xs md:max-w-md lg:max-w-lg px-4 py-3 rounded-lg text-sm my-4 ${
-              msg.sender === 'user'
-                ? 'ml-auto bg-yellow-500 text-black'
-                : 'mr-auto bg-[#1E1E1E] text-white'
-            }`}
-          >
-            {msg.content}
-          </div>
-        ))}
-      </ScrollArea>
-
-      {/* Message Input */}
-      <div className="border-t border-gray-800 p-4 bg-[#0f0f0f] flex items-center gap-2">
-        <Input
-          className="flex-1 bg-[#1E1E1E] text-white placeholder-gray-400 border-gray-700"
-          placeholder="Type your message..."
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') handleSend();
-          }}
-        />
-        <Button className="bg-yellow-500 text-black hover:bg-yellow-600" onClick={handleSend}>
-          Send
-        </Button>
+    <PluginNavbar>
+    <div className="h-screen flex flex-col md:flex-row bg-black text-white">
+      <Sidebar />
+      <div className="flex-1 flex flex-col">
+        <ChatHeader />
+        <ChatMessages />
+        <ChatInput />
       </div>
     </div>
     </PluginNavbar>
