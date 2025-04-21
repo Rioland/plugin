@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import AppbarItem from "../Components/AppbarOne"
 import { TabsContent } from "@radix-ui/react-tabs"
+import PluginNavbar from "../Components/NavBar"
 
 
 
@@ -11,8 +12,8 @@ import { TabsContent } from "@radix-ui/react-tabs"
 
 export default function ProposalsPage() {
         return (
-                <AppbarItem text="My Proposals">
-
+                <div>
+                        <PluginNavbar />
 
                         <div className="min-h-screen px-4 md:px-10 py-6 bg-black text-white">
                                 <h1 className="text-2xl font-semibold mb-6">Proposals</h1>
@@ -23,17 +24,17 @@ export default function ProposalsPage() {
                                         </TabsList>
                                         <TabsContent value="active">
                                                 <ActiveProposal />
-                                             
+
                                         </TabsContent>
                                         <TabsContent value="archived">
                                                 <ArchivedProposal />
-                                             
+
                                         </TabsContent>
                                 </Tabs>
 
-                             
+
                         </div>
-                </AppbarItem>
+                </div>
         )
 }
 
@@ -103,38 +104,38 @@ const ArchivedProposal = () => {
         return (
 
 
-                                <Card className="bg-neutral-950 rounded-xl border border-neutral-800">
-                                        <div className="p-5 text-white font-semibold text-base border-b border-neutral-800">Submitted proposals</div>
-                                        <div className="divide-y divide-neutral-800">
-                                                {proposals.map((proposal, i) => (
-                                                        <div key={i} className="flex flex-col md:flex-row md:items-center justify-between px-5 py-4 text-sm">
-                                                                <div className="mb-2 md:mb-0">
-                                                                        <div className="text-neutral-400">Submitted {proposal.date}</div>
-                                                                        <div className="text-xs text-neutral-500">{proposal.daysAgo}</div>
-                                                                </div>
-                                                                <div className="text-yellow-400 font-medium cursor-pointer hover:underline">
-                                                                        {proposal.title}
-                                                                </div>
-                                                                <div className={cn("text-sm", statusColor[proposal.status])}>{proposal.status}</div>
-                                                        </div>
-                                                ))}
+                <Card className="bg-neutral-950 rounded-xl border border-neutral-800">
+                        <div className="p-5 text-white font-semibold text-base border-b border-neutral-800">Submitted proposals</div>
+                        <div className="divide-y divide-neutral-800">
+                                {proposals.map((proposal, i) => (
+                                        <div key={i} className="flex flex-col md:flex-row md:items-center justify-between px-5 py-4 text-sm">
+                                                <div className="mb-2 md:mb-0">
+                                                        <div className="text-neutral-400">Submitted {proposal.date}</div>
+                                                        <div className="text-xs text-neutral-500">{proposal.daysAgo}</div>
+                                                </div>
+                                                <div className="text-yellow-400 font-medium cursor-pointer hover:underline">
+                                                        {proposal.title}
+                                                </div>
+                                                <div className={cn("text-sm", statusColor[proposal.status])}>{proposal.status}</div>
                                         </div>
-                                        <div className="flex justify-end items-center p-4 gap-2">
-                                                {[1, 2, 3].map((num) => (
-                                                        <Button
-                                                                key={num}
-                                                                variant="ghost"
-                                                                className={cn(
-                                                                        "h-9 w-9 p-0 border border-yellow-400 text-yellow-400",
-                                                                        num === 1 && "bg-yellow-400 text-black"
-                                                                )}
-                                                        >
-                                                                {num}
-                                                        </Button>
-                                                ))}
-                                                <Button variant="ghost" className="h-9 w-9 p-0 text-yellow-400">&gt;</Button>
-                                        </div>
-                                </Card>
-                      
+                                ))}
+                        </div>
+                        <div className="flex justify-end items-center p-4 gap-2">
+                                {[1, 2, 3].map((num) => (
+                                        <Button
+                                                key={num}
+                                                variant="ghost"
+                                                className={cn(
+                                                        "h-9 w-9 p-0 border border-yellow-400 text-yellow-400",
+                                                        num === 1 && "bg-yellow-400 text-black"
+                                                )}
+                                        >
+                                                {num}
+                                        </Button>
+                                ))}
+                                <Button variant="ghost" className="h-9 w-9 p-0 text-yellow-400">&gt;</Button>
+                        </div>
+                </Card>
+
         );
 }
