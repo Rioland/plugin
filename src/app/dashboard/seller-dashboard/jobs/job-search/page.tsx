@@ -1,4 +1,5 @@
-import AppbarItem from "../../Components/AppbarOne";
+
+import PluginNavbar from "../../Components/NavBar";
 import JobCard from "./components/JobCard";
 import SidebarFilter from "./components/SidebarFilter";
 import TopSearchBar from "./components/TopSearchBar";
@@ -8,7 +9,7 @@ import TopSearchBar from "./components/TopSearchBar";
 
 export default function JobSearchPage() {
   return (
-    <AppbarItem text="Job Search">
+    <PluginNavbar >
   <main className="min-h-screen bg-black text-white p-4 md:p-8">
       <TopSearchBar />
 
@@ -23,7 +24,7 @@ export default function JobSearchPage() {
         </section>
       </div>
     </main>
-    </AppbarItem>
+    </PluginNavbar>
   
   );
 }

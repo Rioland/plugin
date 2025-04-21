@@ -1,5 +1,5 @@
 // // components/Navbar.tsx
-// 'use client';
+'use client';
 
 // import { Input } from '@/components/ui/input';
 // import { Bell, Settings } from 'lucide-react';
@@ -139,7 +139,7 @@
 
 
 
-'use client';
+// 'use client';
 
 import { useState } from 'react';
 import { Home, Search, LogOut, HelpCircle, Settings, Wallet, Briefcase ,Menu,MessageSquare} from 'lucide-react';

@@ -1,8 +1,8 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import App from "next/app";
-import AppbarItem from "../Components/AppbarOne";
+import PluginNavbar from "../Components/NavBar";
+
 
 const categories = [
   {
@@ -89,7 +89,7 @@ const categories = [
 
 export default function ChooseCategoryPage() {
   return (
- <AppbarItem text="Choose Category">
+ <PluginNavbar >
      <div className="min-h-screen bg-black text-white px-6 py-12">
       <div className="max-w-6xl mx-auto text-center">
         <h1 className="text-3xl font-semibold mb-2">Choose A Category</h1>
@@ -127,6 +127,6 @@ export default function ChooseCategoryPage() {
         </div>
       </div>
     </div>
- </AppbarItem>
+ </PluginNavbar>
   );
 }

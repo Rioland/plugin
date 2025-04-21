@@ -7,16 +7,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Paperclip, ArrowLeft } from "lucide-react";
-import AppbarItem from "../Components/AppbarOne";
-import Swal from "sweetalert2";
+
 import MyModal from "@/components/ui/MyModal";
 import { useState } from "react";
 import WorkSmart from "./WorkSmartDialog";
+import PluginNavbar from "../Components/NavBar";
 
 export default function SubmitProposalPage() {
   const [showSubitDialog, setShowSubmitDialog] = useState(false)
   return (
-    <AppbarItem text="Proposal">
+    <PluginNavbar >
 
       <div className="max-w-4xl mx-auto px-4 py-6 text-white">
         <div className="mb-4 flex items-center space-x-2 text-sm text-yellow-500 cursor-pointer">
@@ -145,6 +145,6 @@ export default function SubmitProposalPage() {
       <MyModal isOpen={showSubitDialog} onClose={() => { setShowSubmitDialog(false) }} >
         <WorkSmart onSubmit={() => {}} onCancle={() => {setShowSubmitDialog(false) }} />
       </MyModal>
-    </AppbarItem>
+    </PluginNavbar>
   );
 }

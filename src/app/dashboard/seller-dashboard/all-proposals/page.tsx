@@ -2,7 +2,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-import AppbarItem from "../Components/AppbarOne"
+
 import { TabsContent } from "@radix-ui/react-tabs"
 import PluginNavbar from "../Components/NavBar"
 
@@ -12,8 +12,8 @@ import PluginNavbar from "../Components/NavBar"
 
 export default function ProposalsPage() {
         return (
-                <div>
-                        <PluginNavbar />
+                <PluginNavbar>
+                  
 
                         <div className="min-h-screen px-4 md:px-10 py-6 bg-black text-white">
                                 <h1 className="text-2xl font-semibold mb-6">Proposals</h1>
@@ -34,7 +34,7 @@ export default function ProposalsPage() {
 
 
                         </div>
-                </div>
+                </PluginNavbar>
         )
 }
 

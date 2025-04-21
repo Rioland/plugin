@@ -146,13 +146,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import { RootState } from '@/states/store';
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
-import AppbarItem from './Components/AppbarOne';
+import PluginNavbar from './Components/NavBar';
+
 
 
 export default function DashboardPage() {
   const profile = useSelector((state: RootState) => state.  sellersProfileReducer)
   return (
-    <AppbarItem text="Dashboard">
+    <PluginNavbar >
       <div className="flex-grow flex items-center justify-center p-6">
         <Card className="bg-black border border-gray-800 max-w-lg w-full text-center">
           <CardContent className="p-6 flex flex-col items-center">
@@ -173,7 +174,7 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-    </AppbarItem>
+    </PluginNavbar>
 
   );
 }

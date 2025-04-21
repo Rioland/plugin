@@ -2,13 +2,14 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Star } from "lucide-react"
-import AppbarItem from "../../Components/AppbarOne"
+import PluginNavbar from "../../Components/NavBar"
+
 
 
 
 export default function UIUXJobPage() {
         return (
-              <AppbarItem >
+              <PluginNavbar >
                   <div className="bg-black text-white min-h-screen p-4 md:p-10">
                         <div className="w-full mx-auto space-y-6 flex md:flex-row flex-col gap-6 justify-center items-center">
                                 {/* <button className="text-yellow-400 text-sm">&lt; return to search</button> */}
@@ -122,6 +123,6 @@ export default function UIUXJobPage() {
 
                         </div>
                 </div>
-              </AppbarItem>
+              </PluginNavbar>
         )
 }

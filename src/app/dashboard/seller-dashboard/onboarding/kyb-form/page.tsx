@@ -286,6 +286,7 @@ import { toast, Toaster } from 'sonner';
 import { ApiBaseUrl, fetchAndReturnUserProfile } from '@/helper/functions';
 import Cookies from 'js-cookie';
 import { updateSellersProfile } from '@/states/sellersProfileSlice';
+import SkipNavBar from '../../Components/SkipNavBar';
 
 const UploadBox = ({ label, handleChange, name }: { name: string, label: string, handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
         <div className="mb-8">
@@ -307,7 +308,8 @@ const KybCompanyDocumentationForm = () => {
 
         const profile = useSelector((state: RootState) => (state.sellersProfileReducer));
         return (
-                <div>
+                <div >
+                     
                         {profile.account_type === 'individual' ? <UnRegisterBusinessUi /> : <RegisterBusinessUi />}
                 </div>
         );
@@ -738,6 +740,7 @@ const UnRegisterBusinessUi = () => {
         return (
                 <form onSubmit={handleSubmit}>
                         <div className="min-h-screen bg-black text-white py-10 px-6 md:px-20">
+                                
                                 {/* Left-side steps */}
                                 <Toaster position='top-center' />
                                 <div className="flex flex-col md:flex-row gap-10">

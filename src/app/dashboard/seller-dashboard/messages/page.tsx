@@ -2,8 +2,7 @@
 'use client'
 import { Input } from "@/components/ui/input";
 import { MoreVertical, Search, } from "lucide-react";
-import Image from "next/image";
-import AppbarItem from "../Components/AppbarOne";
+
 
 // export default function MessagesPage() {
 //   return (
@@ -101,6 +100,7 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import PluginNavbar from "../Components/NavBar";
 
 type Message = {
   id: number;
@@ -125,7 +125,7 @@ export default function MessagesPage() {
   };
 
   return (
-    <AppbarItem text="Messages"  >
+    <PluginNavbar  >
     <div className="flex flex-col h-screen">
       {/* Messages List */}
       <ScrollArea className="h-10/12 overflow-y-auto px-4 py-6 space-y-4 bg-[#0f0f0f]">
@@ -159,6 +159,6 @@ export default function MessagesPage() {
         </Button>
       </div>
     </div>
-    </AppbarItem>
+    </PluginNavbar>
   );
 }

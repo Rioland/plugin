@@ -1,11 +1,10 @@
 "use client"
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Share2, Pencil, Star, Bookmark, PlusCircleIcon, Trash, EditIcon } from "lucide-react";
 
-import AppbarItem from "../Components/AppbarOne";
 import { RootState } from "@/states/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
@@ -20,6 +19,7 @@ import Cookies from "js-cookie";
 import { updateSellersProfile } from "@/states/sellersProfileSlice";
 import { Experience } from "@/types/SellersProfileType";
 import UpdateExperienceForm from "./Components/UpdateExperienceForm";
+import PluginNavbar from "../Components/NavBar";
 
 export default function ProfilePage() {
   const profile = useSelector((state: RootState) => state.sellersProfileReducer)
@@ -80,7 +80,7 @@ export default function ProfilePage() {
 
   console.log(profile)
   return (
-    <AppbarItem text="Profile"  >
+    <PluginNavbar   >
       <div className=" bg-[#0C0C0C] text-white p-4 md:p-10">
         <div className="w-full mx-auto">
           <div className="bg-[#141414] p-6 md:p-10 rounded-2xl border border-[#2A2A2A]">
@@ -534,6 +534,6 @@ export default function ProfilePage() {
         <AddExperienceForm type="education" />
       </MyModal>
       <Toaster position="top-center" />
-    </AppbarItem>
+    </PluginNavbar>
   );
 }

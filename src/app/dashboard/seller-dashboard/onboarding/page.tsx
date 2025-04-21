@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/states/store';
+import SkipNavBar from '../Components/SkipNavBar';
 // import { useNavigate } from 'react-router-dom';
 // import { Icon } from 'lucide-react'; // Placeholder, replace with actual icon if needed
 
@@ -13,18 +14,7 @@ const KYBIntroScreen = () => {
 
   return (
     <div className='bg-black text-white  px-4 h-screen ' style={{ backgroundImage: '/images/Wrapper.png', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
-      <div className='flex justify-between items-center w-full  px-5 py-5 '>
-        <div className="">
-          <img src='/images/Logo-yellow.png' className=' h-9' />
-
-        </div>
-
-        <div className="">
-          <Button variant="outline" className="bg-white text-black text-sm font-medium px-4 py-2 rounded-md" onClick={()=>{window.location.href='/dashboard/seller-dashboard/'}}>
-            Skip for now
-          </Button>
-        </div>
-      </div>
+      <SkipNavBar/>
       {profile.account_type === 'individual' ? <KYBUnregisterCard /> : <KYBRegisterCard />}
 
     </div>

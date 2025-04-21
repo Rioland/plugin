@@ -5,51 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Menu, X } from "lucide-react";
+
+import PluginNavbar from "../Components/NavBar";
+
 // import App from "next/app";
-import AppbarItem from "../Components/AppbarOne";
 
 export default function JobDashboard() {
-  const [menuOpen, setMenuOpen] = useState(false);
+
 
   return (
-   <AppbarItem   text="Jobs">
-     <div className="bg-black min-h-screen text-white font-sans">
-      <header className="flex justify-between items-center px-6 py-4 border-b border-gray-800 relative">
-        <div className="flex items-center gap-2">
-          <Image src="/images/Logo-yellow.png" alt="Plugin Logo" width={100} height={100} />
-          {/* <span className="text-lg font-semibold">Plugin</span> */}
-        </div>
-
-        <nav className="hidden md:flex items-center gap-6 text-sm">
-          <div className="cursor-pointer">Find Jobs ▾</div>
-          <div className="cursor-pointer">Deliver Jobs ▾</div>
-          <div className="cursor-pointer">Wallet</div>
-          <div className="cursor-pointer">Messages</div>
-        </nav>
-
-        <div className="flex items-center gap-4">
-          <Input placeholder="Search..." className="bg-[#1f1f1f] border-none text-white placeholder:text-gray-400 hidden md:block" />
-          <div className="w-8 h-8 rounded-full bg-gray-600 hidden md:block" />
-          <button
-            className="md:hidden"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-        {menuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-[#111] text-white flex flex-col items-start px-6 py-4 gap-4 md:hidden z-50 border-t border-gray-700">
-            <Input placeholder="Search..." className="bg-[#1f1f1f] border-none text-white placeholder:text-gray-400" />
-            <div className="cursor-pointer">Find Jobs ▾</div>
-            <div className="cursor-pointer">Deliver Jobs ▾</div>
-            <div className="cursor-pointer">Wallet</div>
-            <div className="cursor-pointer">Messages</div>
-          </div>
-        )}
-      </header>
+   <PluginNavbar  >
+    
+  
 
       <main className="px-4 md:px-10 py-6 grid md:grid-cols-3 gap-6">
         <section className="md:col-span-2">
@@ -150,8 +117,8 @@ export default function JobDashboard() {
           </div>
         </aside>
       </main>
-    </div>
-   </AppbarItem>
+
+   </PluginNavbar>
   );
 }
 

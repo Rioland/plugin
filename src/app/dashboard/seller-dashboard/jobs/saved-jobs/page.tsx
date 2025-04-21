@@ -1,17 +1,11 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ThumbsDown, Heart, MapPin, Clock3, Briefcase } from "lucide-react";
-import Link from "next/link";
-import App from "next/app";
-import AppbarItem from "../../Components/AppbarOne";
+
+import PluginNavbar from "../../Components/NavBar";
 import JobCard from "../job-search/components/JobCard";
 
-const jobs = [1, 2, 3];
 
 export default function JobListPage() {
   return (
-   <AppbarItem text="More Jobs">
+   <PluginNavbar>
      <div className="min-h-screen bg-black text-white px-6 md:px-24 py-10">
       <header className="flex items-center justify-end mb-6">
         {/* <Link href="#" className="text-yellow-500 text-sm font-medium hover:underline">
@@ -96,6 +90,6 @@ export default function JobListPage() {
         ))}
       </div> */}
     </div>
-     </AppbarItem>
+     </PluginNavbar>
   );
 } 
