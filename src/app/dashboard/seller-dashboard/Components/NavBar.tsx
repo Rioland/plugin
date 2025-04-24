@@ -255,7 +255,9 @@ const PluginNavbar: React.FC<PluginNavbarProps> = ({ children }) => {
                                         </div>
                                 )}
                         </header>
-                        {children}
+                      <main className='mx-auto w-full'>
+                      {children}
+                      </main>
                 </div>
 
         )

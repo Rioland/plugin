@@ -4,11 +4,30 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 // import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import PluginNavbar from "../Components/NavBar";
+import { useState } from "react";
+import { Check, ChevronsUpDown, PencilIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
+
+
+import {
+  Command,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { FooterDivider } from "flowbite-react";
+
 
 const navLinks = [
   {
-    section: "Billing",
-    items: ["Billing & payments"],
+    section: "Wallets",
+    items: ["Bank Details"],
   },
   {
     section: "User Settings",
@@ -25,120 +44,233 @@ const navLinks = [
 ];
 
 export default function BillingSettingsPage() {
-        const [currentPage,setCurrentPage]=useState('Billing & payments');
+  const [currentPage, setCurrentPage] = useState('Bank Details');
 
   return (
-   <AppbarItem text="settings"  >
-     <div className="min-h-screen bg-black text-white">
-      <div className="w-full mx-auto px-4 py-8 md:py-12">
-        <div className="md:flex space-y-8 md:space-y-0 md:space-x-8">
-          {/* Sidebar */}
-          <aside className="w-full md:w-1/4">
-            <h2 className="text-2xl font-bold mb-6">Settings</h2>
-            {navLinks.map((section) => (
-              <div key={section.section} className="mb-6" >
-                <p className="text-sm uppercase text-gray-400 mb-2" onClick={()=>setCurrentPage('Billing & payments')}>
-                  {section.section}
-                </p>
-                <ul className="space-y-2 text-gray-300">
-                  {section.items.map((item) => (
-                    <li
-                      key={item}
-                      onClick={()=>{
-                        if(item==='My Profile'){
-                                window.location.href='/dashboard/seller-dashboard/profile'
-                        }else{
-                                setCurrentPage(item)
-                        }
-                      }}
-                      className={cn(
-                        "hover:text-yellow-500 cursor-pointer",
-                        item === currentPage &&
+    <PluginNavbar   >
+      <div className="min-h-screen bg-black text-white">
+        <div className="w-full mx-auto px-4 py-8 md:py-12">
+          <div className="md:flex space-y-8 md:space-y-0 md:space-x-8">
+            {/* Sidebar */}
+            <aside className="w-full md:w-1/5 md:h-screen md:border-r md:border-yellow-500">
+              <h2 className="text-2xl font-bold mb-6">Settings</h2>
+              {navLinks.map((section) => (
+                <div key={section.section} className="mb-6" >
+                  <p className="text-sm uppercase text-gray-400 mb-2" onClick={() => setCurrentPage('Bank Details')}>
+                    {section.section}
+                  </p>
+                  <ul className="space-y-2 text-gray-300">
+                    {section.items.map((item) => (
+                      <li
+                        key={item}
+                        onClick={() => {
+                          if (item === 'My Profile') {
+                            window.location.href = '/dashboard/seller-dashboard/profile'
+                          } else {
+                            setCurrentPage(item)
+                          }
+                        }}
+                        className={cn(
+                          "hover:text-yellow-500 cursor-pointer",
+                          item === currentPage &&
                           "text-yellow-500 font-medium border-l-2 border-yellow-500 pl-2"
-                      )}
-                    >
-                      {item}
-                    </li>
-                    
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </aside>
+                        )}
+                      >
+                        {item}
+                      </li>
 
-          {/* Main Content */}
-         <BillPayment/>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </aside>
+
+            {/* Main Content */}
+            <ProfileSettings />
+          </div>
         </div>
       </div>
-    </div>
-   </AppbarItem>
+    </PluginNavbar>
   );
 }
 
 
-const BillPayment=()=>{
-    return    <main className="w-full md:flex-1">
-        <h2 className="text-2xl font-semibold mb-6">Billing & payments</h2>
-        <Card className="bg-[#121212] border border-gray-700">
-          <CardContent className="p-6">
-            <h3 className="text-lg font-medium mb-3 text-white">
-              Billing methods
-            </h3>
-            <p className="text-sm text-gray-400 mb-4">
-              You haven’t set up any billing methods yet. Your billing method will be
-              charged only when your available balance from Plugin earnings is not
-              sufficient to pay for your monthly membership and/or Connects.
-            </p>
-            <Button className="text-yellow-500 hover:underline px-0" variant="ghost">
-              <span className="mr-1">➕</span> Add a billing method
-            </Button>
-          </CardContent>
-        </Card>
-      </main>
+
+
+const BillPayment = () => {
+  return <main className="w-full md:w-2/4 md:flex-1">
+    <h2 className="text-2xl font-semibold mb-6">Bank Details</h2>
+    <Card className="bg-[#121212] border border-gray-700 md:w-2/3 rounded-lg">
+      <CardContent className="p-6">
+        <h3 className="text-lg font-medium mb-3 text-white">
+          Bank Accounts
+        </h3>
+        <p className="text-sm text-gray-400 mb-4">
+          Add your bank details to securely withdraw your earnings from your  wallet anytime you need.
+        </p>
+        <p className="text-sm text-gray-400 mb-4 mx-auto my-20 w-100 ">
+          Opps! We have no record of your bank account
+          Click add new to input withdrawal account.
+        </p>
+
+        <div className="flex justify-end">
+
+          <Button className="bg-yellow-500 hover:border hover:border-yellow-500 hover:bg-transparent px-3 w-fit" variant="default">
+            Add a billing method
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  </main>
+}
+const ProfileSettings = () => {
+  return <main className="w-full md:w-2/4 md:flex-1">
+    <h2 className="text-2xl font-semibold mb-6">Profile Setting</h2>
+    <Card className="bg-[#121212] border border-gray-700 md:w-2/3 rounded-lg">
+      <CardContent className="px-6">
+       <div className=" flex justify-between "> 
+        <h3 className="text-lg font-medium mb-3 text-white">
+        My Profile
+        </h3>
+        <p className="text-lg text-yellow-500 cursor-pointer">View my profile as others can see it </p>
+        </div>
+        <p className="text-sm text-gray-400 mb-4">
+          Add your bank details to securely withdraw your earnings from your  wallet anytime you need.
+        </p>
+        <p className="text-sm text-gray-400 mb-4 mx-auto my-20 w-100 ">
+          Opps! We have no record of your bank account
+          Click add new to input withdrawal account.
+        </p>
+
+        <div className="flex justify-end">
+
+          <Button className="bg-yellow-500 hover:border hover:border-yellow-500 hover:bg-transparent px-3 w-fit" variant="default">
+            Add a billing method
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  </main>
+}
+const AddBillPayment = () => {
+  const banks = [
+    { label: "GTBank", value: "gtb" },
+    { label: "Access Bank", value: "ac" },
+    { label: "Polaris", value: "po" },
+  ]
+  const [open, setOpen] = useState(false)
+  const [selected, setSelected] = useState("")
+
+  return <main className="w-full md:w-2/4 md:flex-1">
+    <h2 className="text-2xl font-semibold mb-6">Bank Details</h2>
+    <Card className="bg-[#121212] border border-gray-700 md:w-2/3 rounded-lg">
+      <CardContent className="p-6">
+        <h3 className="text-lg font-medium mb-3 text-white">
+          Bank Accounts
+        </h3>
+        <p className="text-sm text-gray-400 mb-4">
+          Add your bank details to securely withdraw your earnings from your  wallet anytime you need.
+        </p>
+        <div className="mb-5 w-full">
+          <label className="text-lg  text-white mb-3 font-semibold" >Account number</label>
+          <Input placeholder="0993744556" />
+        </div>
+        <div className="flex flex-col mb-5 w-full">
+          <label className="text-lg  text-white mb-3 font-semibold" >Bank name</label>
+          <Popover open={open} onOpenChange={setOpen} >
+            <PopoverTrigger asChild className="w-full">
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="w-full justify-between"
+              >
+                {selected
+                  ? banks.find((bank) => bank.value === selected)?.label
+                  : "Select Bank"}
+                <ChevronsUpDown className="ml-2 h-4 w-4  opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className=" p-0">
+              <Command>
+                <CommandInput placeholder="Search bank..." className="w-full" />
+                <CommandList className="w-full">
+                  {banks.map((bank) => (
+                    <CommandItem className="w-full"
+                      key={bank.value}
+                      value={bank.value}
+                      onSelect={() => {
+                        setSelected(bank.value)
+                        setOpen(false)
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          selected === bank.value ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                      {bank.label}
+                    </CommandItem>
+                  ))}
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+
+        </div>
+        <div className="flex gap-4 mb-5 w-full">
+          <img src="/images/preloader.gif" width={20} height={20} />
+          <p className="text-lg  text-white font-semibold">Dapo Samuel Garuba</p>
+        </div>
+        <FooterDivider />
+        <div className="flex justify-end">
+
+          <Button className="bg-yellow-500 hover:border hover:border-yellow-500 hover:bg-transparent px-3 w-fit" variant="default">
+           Confirm
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  </main>
 }
 
-
-
-import { PencilIcon } from "@heroicons/react/24/solid";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import AppbarItem from "../Components/AppbarOne";
-
 const ContactInfo = () => {
-        return (
-          <div className="flex justify-center items-center min-h-screen bg-black text-white p-4">
-            <Card className="w-full max-w-md sm:max-w-lg bg-gray-900 rounded-lg">
-              <CardHeader className="flex justify-between items-center">
-                <CardTitle className="text-2xl font-bold">Contact info</CardTitle>
-                <PencilIcon className="h-6 w-6 text-yellow-500 cursor-pointer" />
-              </CardHeader>
-              <CardContent>
-                <h3 className="text-lg font-semibold mb-4">Accounts</h3>
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-sm font-medium">User ID</p>
-                    <p className="text-base">909302</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Name</p>
-                    <p className="text-base">David S.</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Email</p>
-                    <p className="text-base">David********@gmail.com</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Phone number</p>
-                    <p className="text-base">+234704539233</p>
-                  </div>
-                  <Button className="bg-yellow-500 text-black w-full mt-6">
-                    Close account
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        );
-      };
+  return <main className="w-full md:w-2/4 md:flex-1">
+    <h2 className="text-2xl font-semibold mb-6">Contact info</h2>
+    <Card className="bg-[#121212] border border-gray-700 md:w-2/3 rounded-lg">
+      <CardContent className="px-6">
+        <div className=" flex justify-between ">
+          <h3 className="text-lg font-medium mb-3 text-white">
+            Accounts
+          </h3>
+          <PencilIcon className="text-yellow-500 cursor-pointer" size={20} />
+
+
+        </div>
+
+        <div className="text-white mb-3">
+          <p className="text-lg font-bold">UserID</p>
+          <p>787167856</p>
+        </div>
+        <div className="text-white mb-3">
+          <p className="text-lg font-bold">Name</p>
+          <p>Adedamola RIoland</p>
+        </div>
+        <div className="text-white mb-3">
+          <p className="text-lg font-bold">Name</p>
+          <p>riol**********@gmail.com</p>
+        </div>
+        <div className="text-white mb-3">
+          <p className="text-lg font-bold">Phone</p>
+          <p>08283686287</p>
+        </div>
+
+        <p className="text-lg font-bold text-red-600">Close Account</p>
+
+      </CardContent>
+    </Card>
+  </main>
+}
 
 
