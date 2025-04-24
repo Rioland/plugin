@@ -20,12 +20,12 @@ export function middleware(request) {
        
         
                 // Role-based redirection
-                if (
-                  (userRole === '1' && pathname.startsWith('/dashboard/buyer-dashboard')) ||
-                  (userRole === '2' && pathname.startsWith('/dashboard/seller-dashboard'))
-                ) {
-                  return NextResponse.redirect(new URL('/', request.url));
-                }
+                // if (
+                //   (userRole === '1' && pathname.startsWith('/dashboard/buyer-dashboard')) ||
+                //   (userRole === '2' && pathname.startsWith('/dashboard/seller-dashboard'))
+                // ) {
+                //   return NextResponse.redirect(new URL('/', request.url));
+                // }
               } catch (error) {
                 // Handle invalid token
                 console.log('Error during authentication:', error);
