@@ -14,7 +14,7 @@ export default function UIUXJobPage() {
                         <div className="w-full mx-auto space-y-6 flex md:flex-row flex-col gap-6 justify-center items-center">
                                 {/* <button className="text-yellow-400 text-sm">&lt; return to search</button> */}
 
-                                <div className="w-full  md:w-2/3">
+                                <div className="w-full  md:w-3/4">
                                         <div>
                                                 <h1 className="text-xl md:text-2xl font-bold">UI/UX Designer Needed for Fintech Company</h1>
                                                 <p className="text-sm text-gray-400 mt-1">Posted 2hrs ago <span className="mx-2">•</span> Lagos, Nigeria (Remote)</p>

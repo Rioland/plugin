@@ -278,7 +278,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 // import { Label } from '@/components/ui/label';
-import { UploadCloud } from 'lucide-react';
+import { UploadCloud, UploadCloudIcon, User } from 'lucide-react';
 import PhoneInput from 'react-phone-number-input/input';
 import { RootState } from '@/states/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -309,7 +309,7 @@ const KybCompanyDocumentationForm = () => {
         const profile = useSelector((state: RootState) => (state.sellersProfileReducer));
         return (
                 <div >
-                     
+
                         {profile.account_type === 'individual' ? <UnRegisterBusinessUi /> : <RegisterBusinessUi />}
                 </div>
         );
@@ -320,7 +320,7 @@ export default KybCompanyDocumentationForm;
 
 
 const RegisterBusinessUi = () => {
-
+        const [showPassword, setShowPassword] = useState(false);
 
         // const [activeStep, setActiveStep] = useState(1);
         const [activeStepList, setActiveStepList] = useState([1]);
@@ -594,9 +594,138 @@ const RegisterBusinessUi = () => {
 }
 
 
-
-
 const UnRegisterBusinessUi = () => {
+        const profile = useSelector((state: RootState) => (state.sellersProfileReducer));
+        // const [activeStep, setActiveStep] = useState(1);
+        const [activeStepList, setActiveStepList] = useState([1]);
+        const [uploading, setUploading] = useState(false);
+        const [verificationType, setVerificationType] = useState('nin');
+        const dispatch = useDispatch();
+        const [formData, setFormData] = useState({
+                bvn: '',
+                ownerId: null,
+                proof_of_address: null,
+                passport: null,
+                socialLink: null,
+
+
+        });
+
+        const handleChange = (e) => {
+                const { name, type, checked, files, value } = e.target;
+                const updatedValue =
+                        type === 'file'
+                                ? files[0]
+                                : type === 'checkbox'
+                                        ? checked
+                                        : value;
+
+                setFormData((prev) => {
+                        const updatedForm = { ...prev, [name]: updatedValue };
+                        console.log("Updated formData:", updatedForm); // ✅ logs the right data
+                        return updatedForm;
+                });
+        };
+
+        const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+                event.preventDefault();
+                // const formData = new FormData(event.currentTarget);
+
+
+        };
+
+        return (<div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white">
+                <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-2xl shadow-xl border border-neutral-700">
+                        <div className="text-center mb-6">
+                                <div className="flex justify-center mb-4">
+                                        <Toaster position="top-center" />
+
+                                        <div className=" p-2 rounded-lg">
+                                                <img
+                                                        src="/images/logo-white-single.svg"
+                                                        alt="Logo"
+                                                        className="w-10 h-auto mb-4" />
+                                        </div>
+                                </div>
+                                <h1 className="text-xl font-semibold">KYB for Unregistered Business</h1>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="mb-5">
+                                        <label className="block mb-1 text-sm">Bank verification number</label>
+                                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
+                                                {/* <User className="h-4 w-4 text-purple-400" /> */}
+                                                <input
+                                                        type="text"
+                                                        name="bvn"
+                                                        id="bvn"
+                                                        required
+
+                                                        placeholder="BVN"
+                                                        className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
+                                                />
+                                        </div>
+                                </div>
+
+                                <div className="mb-5">
+                                        <label className="block mb-1 text-sm">Business Owner ID</label>
+                                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
+                                                <UploadCloudIcon className="h-4 w-4 text-purple-400" />
+                                                <input
+                                                        type="file"
+                                                        name="id"
+                                                        id="id"
+                                                        required
+                                                        placeholder='Valid ID (International Passport, National ID Card, or Driver’s License)*'
+                                                        className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
+                                                />
+                                        </div>
+                                </div>
+                                <div className="mb-5">
+                                        <label className="block mb-1 text-sm">Passport Photograph</label>
+                                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
+                                                <UploadCloudIcon className="h-4 w-4 text-purple-400" />
+                                                <input
+                                                        type="file"
+                                                        name="id"
+                                                        id="id"
+                                                        required
+                                                        placeholder='Valid ID (International Passport, National ID Card, or Driver’s License)*'
+                                                        className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
+                                                />
+                                        </div>
+                                </div>
+                                <div className="mb-5">
+                                        <label className="block mb-1 text-sm">Add Your Social Media Links</label>
+                                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
+                                                <UploadCloudIcon className="h-4 w-4 text-purple-400" />
+                                                <input
+                                                        type="url"
+                                                        name="id"
+                                                        id="id"
+                                                        required
+                                                        placeholder='Valid ID (International Passport, National ID Card, or Driver’s License)*'
+                                                        className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
+                                                />
+                                        </div>
+                                </div>
+
+
+                                {uploading ? <img src="/images/preloader.gif" className="mx-auto" /> : <button
+                                        type="submit"
+                                        className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition"
+                                >
+                                        Log in
+                                </button>}
+
+
+
+                        </form>
+                </div>
+        </div>);
+}
+
+const UnRegisterBusinessUiold = () => {
         const profile = useSelector((state: RootState) => (state.sellersProfileReducer));
         // const [activeStep, setActiveStep] = useState(1);
         const [activeStepList, setActiveStepList] = useState([1]);
@@ -704,12 +833,12 @@ const UnRegisterBusinessUi = () => {
                                 toast.error(uploadResult.message || 'Upload failed')
                         } else {
                                 toast.success('KYB form uploaded successfully!')
-                                 const profile = await fetchAndReturnUserProfile();
-                                 if (profile) {
-                                          dispatch(updateSellersProfile(profile));
-                                 }
+                                const profile = await fetchAndReturnUserProfile();
+                                if (profile) {
+                                        dispatch(updateSellersProfile(profile));
+                                }
                                 console.log('Upload success:', uploadResult)
-                                window.location.href='/dashboard/seller-dashboard'
+                                window.location.href = '/dashboard/seller-dashboard'
                         }
 
                 } catch (error) {
@@ -740,7 +869,7 @@ const UnRegisterBusinessUi = () => {
         return (
                 <form onSubmit={handleSubmit}>
                         <div className="min-h-screen bg-black text-white py-10 px-6 md:px-20">
-                                
+
                                 {/* Left-side steps */}
                                 <Toaster position='top-center' />
                                 <div className="flex flex-col md:flex-row gap-10">

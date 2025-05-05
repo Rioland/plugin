@@ -7,6 +7,7 @@ import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import PluginNavbar from "../Components/NavBar";
+import { ArrowRight, ArrowRightFromLineIcon, BriefcaseBusiness, UserCircle } from "lucide-react";
 
 // import App from "next/app";
 
@@ -14,9 +15,9 @@ export default function JobDashboard() {
 
 
   return (
-   <PluginNavbar  >
-    
-  
+    <PluginNavbar  >
+
+
 
       <main className="px-4 md:px-10 py-6 grid md:grid-cols-3 gap-6">
         <section className="md:col-span-2">
@@ -37,7 +38,7 @@ export default function JobDashboard() {
           <div className="mt-6 bg-[#111] rounded-xl p-4">
             <h3 className="text-lg font-semibold">Jobs you might like</h3>
             <div className="mt-4 flex gap-4">
-              <Button variant="secondary" className="bg-yellow-400 text-black" onClick={() => { window.location.href = '/dashboard/seller-dashboard/jobs/more-jobs'}}>More Jobs</Button>
+              <Button variant="secondary" className="bg-yellow-400 text-black" onClick={() => { window.location.href = '/dashboard/seller-dashboard/jobs/more-jobs' }}>More Jobs</Button>
               <Button variant="ghost" className="text-white border border-gray-700">Saved Jobs</Button>
             </div>
 
@@ -89,58 +90,70 @@ export default function JobDashboard() {
 
         <aside className="bg-[#111] p-4 rounded-xl space-y-6 h-fit">
           <div>
-            <p className="text-sm text-gray-400">Welcome back, David</p>
-            <p className="text-yellow-400 font-semibold">Plugs: <span className="text-white">275</span></p>
+            <p className="text-lg text-gray-400 mb-1">Welcome back, David</p>
+            <div className="text-yellow-400 font-semibold py-3 px-5 border border-gray-700 p-6 rounded-xl  flex flex-row gap-3 text-lg"> <img src="/images/logo-single-yellow.png" />  <span className="font-bold"> Plugs:</span> <span className="text-white">275</span></div>
           </div>
 
-          <div>
-            <h4 className="text-sm font-semibold mb-2">Proposals and offers</h4>
-            <div className="text-sm text-gray-300">
-              <p>Contract Offers <span className="float-right">2</span></p>
-              <p>Proposals <span className="float-right">2</span></p>
+          <div className="border border-gray-700 rounded-xl p-6">
+            <div className="flex items-center gap-2 mb-2">
+              <BriefcaseBusiness className="text-yellow-400" />
+
+              <h4 className="text-xl font-semibold ">Proposals and offers</h4>
+              <ArrowRight className="text-yellow-400 ms-auto" />
+            </div>
+            <div className="text-lg text-gray-300">
+              <p className="mb-2">Contract Offers <span className="float-right ">2</span></p>
+              <p className="mb-2">Proposals <span className="float-right">2</span></p>
             </div>
           </div>
 
-          <div>
-            <h4 className="text-sm font-semibold mb-2">Profile Completion</h4>
-            <div className="text-sm text-gray-300">Profile Visibility <span className="float-right">Public</span></div>
-            <div className="w-full h-1 bg-gray-700 mt-1 rounded">
+          <div className="border border-gray-700 rounded-xl p-6">
+
+            <div className="flex items-center gap-2 mb-2">
+              <UserCircle className="text-yellow-400" />
+
+              <h4 className="text-xl font-semibold ">Profile Completion</h4>
+              <ArrowRight className="text-yellow-400 ms-auto" />
+            </div>
+            <div className="text-lg text-gray-300 mb-2">Profile Visibility <span className="float-right">Public</span></div>
+            <div className="w-full h-1 bg-gray-700 mt-1 rounded mb-2">
               <div className="w-[70%] h-1 bg-yellow-400 rounded" />
             </div>
-            <p className="text-xs text-yellow-400 mt-1 cursor-pointer">Complete your profile</p>
+            <p className="text-lg text-yellow-400 mt-1 cursor-pointer">Complete your profile</p>
           </div>
 
-          <div>
-            <h4 className="text-sm font-semibold mb-2">Share your Vendor Link</h4>
-            <p className="text-xs text-gray-400">Share your vendor link and grow your business</p>
-            <p className="text-sm mt-1 text-yellow-400 cursor-pointer">Copy Link</p>
+          <div className="border border-gray-700 rounded-xl p-6">
+            <img src="/images/settinglinkimage.png" />
+            <h4 className="text-lg font-semibold mb-2">Share your Vendor Link</h4>
+            <p className="text-lg text-gray-400">Share your vendor link and grow your business</p>
+            <p className="text-lg mt-1 text-yellow-400 cursor-pointer">Copy Link</p>
           </div>
         </aside>
       </main>
 
-   </PluginNavbar>
+    </PluginNavbar>
   );
 }
 
 
 
-        //   {/* Category Section */}
-        //   <section className="mt-10">
-        //     <h3 className="text-lg font-semibold mb-4">Choose a category to get started</h3>
-        //     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        //       {[
-        //         { name: "Graphics Design", color: "bg-[#1a1a1a]" },
-        //         { name: "Web Development", color: "bg-[#1a1a1a]" },
-        //         { name: "Mobile App", color: "bg-[#1a1a1a]" },
-        //         { name: "Marketing", color: "bg-[#1a1a1a]" },
-        //       ].map((cat, index) => (
-        //         <div
-        //           key={index}
-        //           className={`${cat.color} hover:bg-[#222] p-4 rounded-lg cursor-pointer transition duration-300`}
-        //         >
-        //           <h4 className="font-semibold text-white text-sm">{cat.name}</h4>
-        //           <p className="text-xs text-gray-400 mt-1">Explore jobs in {cat.name}</p>
-        //         </div>
-        //       ))}
-        //     </div>
-        //   </section>
+//   {/* Category Section */}
+//   <section className="mt-10">
+//     <h3 className="text-lg font-semibold mb-4">Choose a category to get started</h3>
+//     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+//       {[
+//         { name: "Graphics Design", color: "bg-[#1a1a1a]" },
+//         { name: "Web Development", color: "bg-[#1a1a1a]" },
+//         { name: "Mobile App", color: "bg-[#1a1a1a]" },
+//         { name: "Marketing", color: "bg-[#1a1a1a]" },
+//       ].map((cat, index) => (
+//         <div
+//           key={index}
+//           className={`${cat.color} hover:bg-[#222] p-4 rounded-lg cursor-pointer transition duration-300`}
+//         >
+//           <h4 className="font-semibold text-white text-sm">{cat.name}</h4>
+//           <p className="text-xs text-gray-400 mt-1">Explore jobs in {cat.name}</p>
+//         </div>
+//       ))}
+//     </div>
+//   </section>

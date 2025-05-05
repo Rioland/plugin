@@ -6,97 +6,56 @@ import { ApiBaseUrl, fetchAndReturnUserProfile, fetchAndStoreUserProfile } from 
 import Cookies from "js-cookie";
 
 import { useDispatch } from "react-redux";
-import { updateSellersProfile } from "@/states/sellersProfileSlice";
+// import { updateSellersProfile } from "@/states/sellersProfileSlice";
 import React from "react";
 
 
 
 import { useState } from 'react';
-import { Eye, EyeOff, User, Lock } from 'lucide-react';
-import Link from "next/link";
+
 import { FaEnvelope } from "react-icons/fa";
 
 export default function LoginForm() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const [loading, setLoading] = React.useState(false);
-
-
-
-
+ 
+  const [loading, setLoading] = useState(false);
+  // login form submission handler with user name and password
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const username = formData.get("username") as string;
-    const password = formData.get("password") as string;
+    const email = formData.get("email") as string;
 
-    if (!username || !password) {
-      toast.error("All fields must be provided",);
-
+    if (!email) {
+      toast.error("Email field is required",);
+      return;  // stop the function execution here if email field is required
     } else {
       setLoading(true);
-      fetch(`${ApiBaseUrl}/login`, {
+      fetch(`${ApiBaseUrl}/forget-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: username,
-          password: password,
+          email: email,
         }),
       })
         .then((res) => res.json())
-        .then(async (data) => {
+        .then((data) => {
           console.log(data);
-          if (data.status === false) {
+          setLoading(false);
+          if (data.status == false) {
             toast.error(data.message,);
 
-            setLoading(false);
           } else {
-            setLoading(false);
-            toast.success("Login successful",);
-            // Set cookies instead of localStorage
-            Cookies.set("token", data.data.token, {
-              expires: 0.5,
-              secure: process.env.NODE_ENV === "production",
-              sameSite: "strict",
-            });
-            Cookies.set("role", data.data.role, {
-              expires: 0.5,
-              secure: process.env.NODE_ENV === "production",
-              sameSite: "strict",
-            });
-         await   fetchAndStoreUserProfile();
-            
-           
-
-            if (data.data.role == 1) {
-              const profile = await fetchAndReturnUserProfile();
-              if (profile && profile.id) {
-                dispatch(updateSellersProfile(profile));
-                window.location.href = `/dashboard/seller-dashboard`;
-              }else{
-                toast.error("Failed to fetch user profile",);
-                setLoading(false);
-              }
-             
-            } else {
-              window.location.href = `/dashboard/buyer-dashboard`;
-              setLoading(false);
-            }
-        
+            window.location.href = `/resetPassword?email=${email}`;
 
           }
-        })
-        .catch((error) => {
-          console.error("Error during login:", error);
-          setLoading(false);
         });
     }
 
-  };
-  const [showPassword, setShowPassword] = useState(false);
 
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white">
       <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-md shadow-xl border border-neutral-700">
@@ -113,13 +72,15 @@ export default function LoginForm() {
           <h1 className="text-xl font-semibold">Forgot my Plugin Password</h1>
         </div>
 
-        <form>
+        <form onSubmit={handleSubmit}>
+          <Toaster  position="top-center" />
           <div className="mb-5">
             <label className="block mb-1 text-sm">Email</label>
             <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
               <FaEnvelope className="h-4 w-4 text-purple-400" />
               <input
                 type="email"
+                name="email"
                 placeholder="e.g (qbcd@gmai..com)"
                 className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400"
               />
@@ -129,12 +90,12 @@ export default function LoginForm() {
        
           
 
-          <button
+          {loading?<img src="/images/preloader.gif" className="mx-auto" />:    <button
             type="submit"
             className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition"
           >
-            Confirm Account
-          </button>
+           Proceed
+          </button>}
 
        
         </form>

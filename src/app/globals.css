@@ -2,8 +2,16 @@
 @plugin "flowbite-react/plugin/tailwindcss";
 @source "../../.flowbite-react/class-list.json";
 @import "tw-animate-css";
-
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @custom-variant dark (&:is(.dark *));
+
+body {
+  font-family: "Outfit", sans-serif !important;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
 
 @theme inline {
   --color-background: var(--background);
