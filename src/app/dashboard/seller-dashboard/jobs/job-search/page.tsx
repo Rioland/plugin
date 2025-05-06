@@ -1,8 +1,10 @@
 
 import PluginNavbar from "../../Components/NavBar";
-import JobCard from "./components/JobCard";
-import SidebarFilter from "./components/SidebarFilter";
-import TopSearchBar from "./components/TopSearchBar";
+import JobCard from "@/app/dashboard/seller-dashboard/jobs/components/JobCard";
+
+
+import SidebarFilter from "../components/SidebarFilter";
+import TopSearchBar from "../components/TopSearchBar";
 
 
 

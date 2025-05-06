@@ -1,17 +1,18 @@
+import PluginNavbar from "../Components/NavBar";
 
-import PluginNavbar from "@/app/dashboard/seller-dashboard/Components/NavBar";
-import JobCard from "@/app/dashboard/seller-dashboard/jobs/components/JobCard";
+import OffersCard from "./components/OffersCard";
+
 
 
 
 export default function JobListPage() {
   return (
-   <PluginNavbar >
+   <PluginNavbar>
      <div className="min-h-screen bg-black text-white px-6 md:px-24 py-10">
-      <header className="flex items-center justify-end mb-6">
-        {/* <Link href="#" className="text-yellow-500 text-sm font-medium hover:underline">
+      {/* <header className="flex items-center justify-end mb-6">
+        <Link href="#" className="text-yellow-500 text-sm font-medium hover:underline">
           &lt; return to search
-        </Link> */}
+        </Link>
         <div className="relative">
           <input
             type="text"
@@ -30,10 +31,11 @@ export default function JobListPage() {
             </svg>
           </div>
         </div>
-      </header>
+      </header> */}
+      <p className="py-8 text-2xl font-bold text-white">Offers</p>
     <section className="flex-1 space-y-6">
           {[1, 2, 3].map((_, idx) => (
-            <JobCard key={idx} />
+            <OffersCard key={idx} />
           ))}
         </section>
       {/* <div className="space-y-6">

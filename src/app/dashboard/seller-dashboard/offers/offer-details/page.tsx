@@ -2,16 +2,23 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import {  Briefcase, Clock10Icon, Star } from "lucide-react"
+import { Briefcase, Clock10Icon, Star } from "lucide-react"
 import PluginNavbar from "../../Components/NavBar"
 import { useRouter } from "next/navigation"
+import MyModal from "@/components/ui/MyModal"
+import AcceptOfferDialog from "../components/AcceptOfferDialog"
+import { useState } from "react"
+import DeclineOffer from "../components/DeclineOffer"
 
 
 
 
 
 export default function UIUXJobPage() {
-        const router=useRouter();
+        const router = useRouter();
+        const [showAcceptDialog, setShowShowDialog] = useState(false)
+        const [showDeclineDialog, setShowDeclineDialog] = useState(false)
+
         return (
                 <PluginNavbar >
                         <div className="bg-black text-white min-h-screen p-4 md:p-10">
@@ -70,9 +77,9 @@ export default function UIUXJobPage() {
                                                                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
                                                                         <div className="flex items-center gap-2 text-sm text-gray-300">
                                                                                 <span className="flex items-center gap-1">
-                                                                                        <Clock10Icon className="text-yellow-400"/>
-                                                                                         1 month
-                                                                                        </span>
+                                                                                        <Clock10Icon className="text-yellow-400" />
+                                                                                        1 month
+                                                                                </span>
                                                                                 <span className="flex items-center gap-1"><Briefcase className="text-yellow-400" /> ₦250,000 Fixed</span>
                                                                         </div>
 
@@ -89,14 +96,14 @@ export default function UIUXJobPage() {
 
 
                                         <div className="w-full  md:w-1/4">
-                                                <div className="bg-[#111] border border-gray-700 p-4 rounded-xl flex items-center gap-2 w-full mb-2">
+                                                {/* <div className="bg-[#111] border border-gray-700 p-4 rounded-xl flex items-center gap-2 w-full mb-2">
                                                         <img src='/images/logo-single-yellow.png' alt='logo' />
                                                         <p className="">Plugs: </p>
                                                         <p className="text-yellow-400 font-semibold">200</p>
-                                                </div>
+                                                </div> */}
                                                 <div className="flex flex-col w-full  gap-2 mt-4 md:mt-0">
-                                                        <Button className="bg-yellow-400 text-black hover:bg-yellow-500 cursor-pointer" onClick={()=>router.push('/dashboard/seller-dashboard/submit-proposal')}>Apply for 10 Plugs</Button>
-                                                        <Button variant="outline" className="border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black bg-transparent">Save Job</Button>
+                                                        <Button className="bg-yellow-400 text-black hover:bg-yellow-500 cursor-pointer" onClick={() => { setShowShowDialog(true) }}>Accept Offer</Button>
+                                                        <Button variant="outline" className="border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black bg-transparent" onClick={()=>{ setShowDeclineDialog(true) }}>Decline Offer</Button>
                                                 </div>
                                                 <div className="space-y-4 mt-3">
                                                         <h2 className="font-semibold text-lg">Client Reviews</h2>
@@ -130,6 +137,20 @@ export default function UIUXJobPage() {
 
                                 </div>
                         </div>
+
+                        <MyModal isOpen={showAcceptDialog} onClose={() => { setShowShowDialog(false) }} >
+                                <AcceptOfferDialog onSubmit={() => {
+                                        setShowShowDialog(false)
+
+                                }} onCancle={() => { setShowShowDialog(false) }} />
+                        </MyModal>
+
+                        <MyModal isOpen={showDeclineDialog} onClose={() => { setShowDeclineDialog(false) }} >
+                                <DeclineOffer onSubmit={() => {
+                                        setShowDeclineDialog(false)
+
+                                }} onCancle={() => { setShowDeclineDialog(false) }} />
+                        </MyModal>
                 </PluginNavbar>
         )
 }

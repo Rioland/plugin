@@ -12,6 +12,10 @@ import {
 export default function SidebarFilter() {
   return (
     <div className="bg-[#0f0f0f] p-4 rounded-lg border border-[#1f1f1f]">
+           <div className="mb-3">
+            {/* <p className="text-lg text-gray-400 mb-1">Welcome back, David</p> */}
+            <div className="text-yellow-400 font-semibold py-3 px-5 border border-gray-700 p-6 rounded-xl  flex flex-row gap-3 text-lg"> <img src="/images/logo-single-yellow.png" />  <span className="font-bold"> Plugs:</span> <span className="text-white">275</span></div>
+          </div>
       <div className="text-sm mb-4">
         <p className="mb-1">Category</p>
         <Select>

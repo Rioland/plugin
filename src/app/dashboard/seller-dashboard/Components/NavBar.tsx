@@ -160,7 +160,7 @@ const PluginNavbar: React.FC<PluginNavbarProps> = ({ children }) => {
                                         if (item == 'Find Jobs') {
                                                 router.push('/dashboard/seller-dashboard/jobs')
                                         } else if (item == 'Saved Jobs') {
-                                                router.push('/dashboard/seller-dashboard/jobs')
+                                                router.push('/dashboard/seller-dashboard/jobs/saved-jobs')
                                         }
                                         else if (item == 'Proposals') {
                                                 router.push('/dashboard/seller-dashboard/all-proposals')
@@ -177,7 +177,7 @@ const PluginNavbar: React.FC<PluginNavbarProps> = ({ children }) => {
                                         else if (item == 'Contract History') {
                                                 router.push('/dashboard/seller-dashboard/contract-history')
                                         }
-
+                                       
                                 }}>
                                         {item}
                                 </div>
@@ -278,9 +278,9 @@ const PluginNavbar: React.FC<PluginNavbarProps> = ({ children }) => {
                                                         {hoveredMenu === 'deliver-jobs' &&
                                                                 renderDropdown(['My Deliveries', 'Active Jobs'])}
                                                 </div>
-                                                <div className="cursor-pointer">Wallet</div>
-                                                <div className="cursor-pointer">Messages</div>
-                                                <div className="cursor-pointer">Profile</div>
+                                                <div className="cursor-pointer"  onClick={() => { router.push('/dashboard/seller-dashboard/wallet') }}>Wallet</div>
+                                                <div className="cursor-pointer" onClick={() => { router.push('/dashboard/seller-dashboard/messages') }}>Messages</div>
+                                                <div className="cursor-pointer" onClick={() => { router.push('/dashboard/seller-dashboard/profile') }}>Profile</div>
                                                 <div
                                                         className="relative"
                                                         onMouseEnter={() => setHoveredMenu('Settings')}

@@ -1,16 +1,16 @@
 
 import PluginNavbar from "../../Components/NavBar";
-import JobCard from "../job-search/components/JobCard";
+import JobCard from "../components/JobCard";
 
 
 export default function JobListPage() {
   return (
    <PluginNavbar>
      <div className="min-h-screen bg-black text-white px-6 md:px-24 py-10">
-      <header className="flex items-center justify-end mb-6">
-        {/* <Link href="#" className="text-yellow-500 text-sm font-medium hover:underline">
+      {/* <header className="flex items-center justify-end mb-6">
+        <Link href="#" className="text-yellow-500 text-sm font-medium hover:underline">
           &lt; return to search
-        </Link> */}
+        </Link>
         <div className="relative">
           <input
             type="text"
@@ -29,7 +29,8 @@ export default function JobListPage() {
             </svg>
           </div>
         </div>
-      </header>
+      </header> */}
+      <p className="py-8 text-2xl font-bold text-white">Saved Jobs</p>
     <section className="flex-1 space-y-6">
           {[1, 2, 3].map((_, idx) => (
             <JobCard key={idx} />
