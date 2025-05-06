@@ -10,10 +10,10 @@ const DeclineInvite:React.FC<DeclineInviteProps>=({onSubmit,onCancle})=>{
 return (
         <Card className="p-3 bg-black text-white">
               <CardHeader className="">
-                  <CardTitle className="text-4xl font-semibold mb-4">Decline Offfer</CardTitle>
+                  <CardTitle className="text-4xl font-semibold mb-4">Decline interview</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="">If the offer doesn’t meet your expectations, you can decline it, renegotiate or keep exploring other options</p>
+                <p className="">If the role doesn’t feel right, you can simply decline and continue exploring other opportunities.</p>
                 {/* <ul className="list-disc mb-2">
                         <li className="mb-2">Check the scope, timeline, payment, and expectations before accepting to ensure everything aligns.</li>
                         <li > Check the scope, timeline, payment, and expectations before accepting to ensure everything aligns.</li>
