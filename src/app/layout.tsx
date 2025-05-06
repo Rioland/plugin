@@ -7,7 +7,7 @@ import "./css/fontawesome.css";
 import { Provider } from "react-redux";
 import { persistor, store } from "@/states/store";
 import { PersistGate } from "redux-persist/es/integration/react";
-import Preloader from "./loading";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +40,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${poppins.variable} antialiased`}
       >
-        {/* <Preloader/> */}
+
          <Provider store={store}>
          <PersistGate loading={null} persistor={persistor}>
         {children}
