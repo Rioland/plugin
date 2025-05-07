@@ -86,7 +86,8 @@ export default function BillingSettingsPage() {
             </aside>
 
             {/* Main Content */}
-            <ProfileSettings />
+            <ProfileSettings/>
+            {/* {currentPage=='Profile Setting' ?<ProfileSettings />:currentPage=='Contact info'    ?<ContactInfo/>:currentPage=='add bank'? <AddBillPayment/>:<BillPayment/>} */}
           </div>
         </div>
       </div>
