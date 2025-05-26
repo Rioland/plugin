@@ -95,18 +95,18 @@ const setProfile = useSellerProfile((state) => state.setProfile);
                 if (profile && profile.id) {
                   
                   if(!profile.kycverifications || profile.kycverifications.length==0){
-                    window.location.href = `/dashboard/seller-dashboard/onboarding`;
+                    window.location.href = `/dashboard/seller/onboarding`;
                   }else{
-                    window.location.href = `/dashboard/seller-dashboard`;
+                    window.location.href = `/dashboard/seller`;
                   }
-                  // window.location.href = `/dashboard/seller-dashboard`;
+                  // window.location.href = `/dashboard/seller`;
                 }else{
                   toast.error("Failed to fetch user profile",);
                   setLoading(false);
                 }
                
               } else {
-                // window.location.href = `/dashboard/buyer-dashboard`;
+                // window.location.href = `/dashboard/buyer`;
                 setLoading(false);
               }
             }else{

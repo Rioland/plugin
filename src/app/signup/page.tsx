@@ -227,7 +227,7 @@ const SignupForm = () => {
 
                                                 <p className="text-center mt-4 text-lg text-white">
                                                         Already have an account?
-                                                        <span className="text-[oklch(0.79_0.18_86.03)] ml-1 cursor-pointer" onClick={() => window.location.href = '/login'}>Login</span>
+                                                        <span className="text-[oklch(0.79_0.18_86.03)] ml-1 cursor-pointer" onClick={() => window.location.href = '/'}>Login</span>
                                                 </p>
                                         </CardContent>
                                 </form>

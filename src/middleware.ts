@@ -21,8 +21,8 @@ export function middleware(request) {
         
                 // Role-based redirection
                 if (
-                  (userRole === '1' && pathname.startsWith('/dashboard/buyer-dashboard')) ||
-                  (userRole === '2' && pathname.startsWith('/dashboard/seller-dashboard'))
+                  (userRole === '1' && pathname.startsWith('/dashboard/buyer')) ||
+                  (userRole === '2' && pathname.startsWith('/dashboard/seller'))
                 ) {
                   return NextResponse.redirect(new URL('/', request.url));
                 }

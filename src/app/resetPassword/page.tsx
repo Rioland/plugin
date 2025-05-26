@@ -73,14 +73,14 @@ export default function LoginForm() {
               const profile = await fetchAndReturnUserProfile();
               if (profile && profile.id) {
                 dispatch(updateSellersProfile(profile));
-                window.location.href = `/dashboard/seller-dashboard`;
+                window.location.href = `/dashboard/seller`;
               }else{
                 toast.error("Failed to fetch user profile",);
                 setLoading(false);
               }
              
             } else {
-              window.location.href = `/dashboard/buyer-dashboard`;
+              window.location.href = `/dashboard/buyer`;
               setLoading(false);
             }
         
