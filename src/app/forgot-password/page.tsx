@@ -2,11 +2,8 @@
 
 
 import { toast, Toaster } from "sonner"
-import { ApiBaseUrl, fetchAndReturnUserProfile, fetchAndStoreUserProfile } from "@/helper/functions";
-import Cookies from "js-cookie";
+import { ApiBaseUrl, } from "@/helper/functions";
 
-import { useDispatch } from "react-redux";
-// import { updateSellersProfile } from "@/states/sellersProfileSlice";
 import React from "react";
 
 

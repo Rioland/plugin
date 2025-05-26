@@ -13,7 +13,7 @@ type CredentialsState = {
 
 type RememberMeState = {
   isChecked: boolean;
-  toggleRememberMe: () => void;
+  setIsChecked: (v: boolean) => void;
 };
 
 // 2. Store for credentials
@@ -39,10 +39,8 @@ const storedCredentials = create<CredentialsState>((set) => ({
 // 3. Store for rememberMe
 const rememberMe = create<RememberMeState>((set) => ({
   isChecked: false,
-  toggleRememberMe: () =>
-    set((state) => ({
-      isChecked: !state.isChecked,
-    })),
+  setIsChecked: (isChecked) => set({ isChecked }),
+
 }));
 
 // 4. Export

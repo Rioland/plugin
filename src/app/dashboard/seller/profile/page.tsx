@@ -5,8 +5,6 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Share2, Pencil, Star, Bookmark, PlusCircleIcon, Trash, EditIcon } from "lucide-react";
 
-import { RootState } from "@/stores/userStore";
-import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import MyModal from "@/components/ui/MyModal";
 import AddExperienceForm from "./Components/AddExperienceForm";
@@ -16,7 +14,7 @@ import MySkills from "./Components/MySkill";
 import { ApiBaseUrl, fetchAndReturnUserProfile } from "@/helper/functions";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
-import { updateSellersProfile } from "@/states/sellersProfileSlice";
+
 import { Experience } from "@/types/SellersProfileType";
 import UpdateExperienceForm from "./Components/UpdateExperienceForm";
 import PluginNavbar from "../Components/NavBar";

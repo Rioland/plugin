@@ -4,8 +4,8 @@ import { useState } from "react";
 import { toast, Toaster } from "sonner";
 import Cookies from "js-cookie";
 import { Button } from "@/components/ui/button";
-import { updateSellersProfile } from "@/states/sellersProfileSlice";
-import { useDispatch } from "react-redux";
+import { useSellerProfile } from "@/stores/userStore";
+
 
 interface UpdateExperienceFormProps {
   type: string;
@@ -20,7 +20,7 @@ interface UpdateExperienceFormProps {
 const UpdateExperienceForm: React.FC<UpdateExperienceFormProps> = ({ type, start_year, end_year, title, from, desc,id }) => {
 
   const [loading, setLoading] = useState(false);
-  const dispatcher = useDispatch();
+  const setProfile = useSellerProfile((state) => state.setProfile);
   const [experience, setExperience] = useState({
     start_year: start_year,
     end_year: end_year,
@@ -55,7 +55,7 @@ const UpdateExperienceForm: React.FC<UpdateExperienceFormProps> = ({ type, start
         toast.success(` ${type === 'education' ? 'Education' : type === 'award' ? 'Award' : 'Experience'} updated successfully!`);
         const profile = await fetchAndReturnUserProfile();
                if (profile && profile.id) {
-                 dispatcher(updateSellersProfile(profile));
+                 setProfile(profile);
                }
       } else {
         toast.error("Failed to add experience");

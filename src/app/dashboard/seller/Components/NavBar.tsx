@@ -130,9 +130,9 @@ import { Input } from '@/components/ui/input'
 import { Bell, HelpCircle, LogOut, Menu, Search, Settings, User, X } from 'lucide-react'
 
 import { useState } from 'react'
-import { RootState } from '@/stores/userStore'
+
 import { usePathname, useRouter } from 'next/navigation'
-import { useSelector } from 'react-redux'
+
 import Cookies from 'js-cookie'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import {
@@ -140,6 +140,7 @@ import {
         AvatarImage,
         AvatarFallback,
       } from "@/components/ui/avatar"; // or wherever your ui components live
+import { useSellerProfile } from '@/stores/userStore'
 
 
 // import Image from 'next/image'
@@ -152,6 +153,7 @@ interface PluginNavbarProps {
 }
 const PluginNavbar: React.FC<PluginNavbarProps> = ({ children }) => {
         const [hoveredMenu, setHoveredMenu] = useState<string | null>(null)
+     
         const router = useRouter();
         const renderDropdown = (items: string[]) => (
                 <div className="absolute top-full mt-0 left-0 bg-[#1f1f1f] border border-gray-700 rounded shadow-lg w-48 z-50">
@@ -186,7 +188,7 @@ const PluginNavbar: React.FC<PluginNavbarProps> = ({ children }) => {
         )
         const [menuOpen, setMenuOpen] = useState(false);
 
-        const profile = useSelector((state: RootState) => state.sellersProfileReducer)
+        const profile =useSellerProfile((state) => state.profile);
         const pathname = usePathname();
         return (
                 <div className="h-screen bg-black text-white ">

@@ -3,8 +3,7 @@ import Cookies from "js-cookie";
 import { toast, Toaster } from "sonner";
 import { ApiBaseUrl, fetchAndReturnUserProfile } from "@/helper/functions";
 import { Badge } from "@/components/ui/badge";
-import { updateSellersProfile } from "@/states/sellersProfileSlice";
-import { useDispatch } from "react-redux";
+import { useSellerProfile } from "@/stores/userStore";
 interface MySkillProps {
   cominprofile: any;
 }
@@ -12,7 +11,7 @@ const MySkills: React.FC<MySkillProps> = ({ cominprofile }) => {
   const [profile, setProfile] = useState(cominprofile);
   const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
-  const dispatcher = useDispatch();
+const setProfilestore = useSellerProfile((state) => state.setProfile);
 
   const handleSkillClick = (skillId: number) => {
     setSelectedSkills((prev) =>
@@ -43,7 +42,8 @@ const MySkills: React.FC<MySkillProps> = ({ cominprofile }) => {
         toast.success("Skill(s) removed successfully!");
         const profile = await fetchAndReturnUserProfile();
         if (profile && profile.id) {
-          dispatcher(updateSellersProfile(profile));
+          setProfilestore(profile);
+          setProfile(profile);
         }
         setProfile((prev) => ({
           ...prev,

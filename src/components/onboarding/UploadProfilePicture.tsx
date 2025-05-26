@@ -1,11 +1,11 @@
-import { ApiBaseUrl, fetchAndReturnUserProfile, fetchAndStoreUserProfile } from '@/helper/functions';
+import { ApiBaseUrl, fetchAndReturnUserProfile } from '@/helper/functions';
 import React, { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone';
 import { toast, Toaster } from 'sonner'
 import { Button } from '../ui/button';
 import Cookies from 'js-cookie';
-import { updateSellersProfile } from '@/states/sellersProfileSlice';
-import { useDispatch } from 'react-redux';
+import { useSellerProfile } from '@/stores/userStore';
+
 
 
 interface UpdateUserProfilePictureProps {
@@ -16,7 +16,7 @@ interface UpdateUserProfilePictureProps {
 
 }
 const UploadProfilePicture: React.FC<UpdateUserProfilePictureProps> = ({ onPrevious }) => {
-  const dispatcher = useDispatch();
+  const setProfile = useSellerProfile((state) => state.setProfile);
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -61,7 +61,7 @@ const UploadProfilePicture: React.FC<UpdateUserProfilePictureProps> = ({ onPrevi
         toast.success("Upload Successful!");
         const profile = await fetchAndReturnUserProfile();
         if (profile && profile.id) {
-          dispatcher(updateSellersProfile(profile));
+          setProfile(profile);
         }
         window.location.reload();
         //     setOnboardingState('Bio');

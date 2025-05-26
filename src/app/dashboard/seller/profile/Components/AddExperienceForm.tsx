@@ -4,16 +4,18 @@ import { useState } from "react";
 import { toast, Toaster } from "sonner";
 import Cookies from "js-cookie";
 import { Button } from "@/components/ui/button";
-import { updateSellersProfile } from "@/states/sellersProfileSlice";
+
 import { SellersProfileType } from "@/types/SellersProfileType";
-import { useDispatch } from "react-redux";
+import { useSellerProfile } from "@/stores/userStore";
+
 
 interface AddExperienceFormProps {
   type: string;
 }
 
 const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
-  const dispatcher = useDispatch();
+  // const profile =useSellerProfile((state) => state.profile);
+  const setProfile = useSellerProfile((state) => state.setProfile);
   const [loading, setLoading] = useState(false);
   const [experience, setExperience] = useState({
     start_year: "",
@@ -48,7 +50,7 @@ const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
       if (data.status) {
         const profile = await fetchAndReturnUserProfile();
         if (profile && profile.id) {
-          dispatcher(updateSellersProfile(profile));
+          setProfile(profile);
         }
         
         toast.success(` ${type === 'education' ? 'Education' : type === 'award' ? 'Award' : 'Experience'} added successfully!`);

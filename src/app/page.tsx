@@ -24,7 +24,7 @@ export default function LoginForm() {
   //  const {data,error,isLoading} = useQuery({ queryKey: ['sellerProfile'], queryFn: fetchAndReturnUserProfile, refetchOnWindowFocus: false, retry: false ,},);
 
 const isChecked = rememberMe((state) => state.isChecked);
-const toggleRememberMe = rememberMe((state) => state.toggleRememberMe);
+const setIsChecked = rememberMe((state) => state.setIsChecked);
 const credentials = storedCredentials((state) => state.credentials);
 const setEmail = storedCredentials((state) => state.setEmail);
 const setPassword = storedCredentials((state) => state.setPassword);
@@ -67,10 +67,11 @@ const setProfile = useSellerProfile((state) => state.setProfile);
             setLoading(false);
           } else {
             if (isChecked == true) {
-              toggleRememberMe();
+              setIsChecked(true);
               setEmail(username);
               setPassword(password);
             } else {
+              setIsChecked(false);
              clearCredentials();
             }
             if (data.data.verified == true) {
@@ -216,7 +217,7 @@ const setProfile = useSellerProfile((state) => state.setProfile);
           </div>
 
           <div className="flex items-center space-x-2 mb-5">
-            <input type="checkbox" id="remember" className="accent-purple-500" checked={isChecked}  onChange={(e)=>toggleRememberMe()}/>
+            <input type="checkbox" id="remember" className="accent-purple-500" checked={isChecked}  onChange={(e)=>setIsChecked(e.target.checked)}/>
             <label htmlFor="remember" className="text-sm">Remember Me</label>
           </div>
 {loading?<img src="/images/preloader.gif" className="mx-auto" />:    <button

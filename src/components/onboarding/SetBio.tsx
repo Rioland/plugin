@@ -1,13 +1,13 @@
-import { ApiBaseUrl, fetchAndReturnUserProfile, fetchAndStoreUserProfile } from '@/helper/functions';
+import { ApiBaseUrl, fetchAndReturnUserProfile } from '@/helper/functions';
 import React, { useState } from 'react'
 import { toast, Toaster } from 'sonner';
 import { Button } from '../ui/button';
 import Cookies from 'js-cookie';
-import { updateSellersProfile } from '@/states/sellersProfileSlice';
-import { useDispatch } from 'react-redux';
+import { useSellerProfile } from '@/stores/userStore';
+
 export default function SetBio() {
           // bio
-          const dispatcher = useDispatch();
+          const setProfile = useSellerProfile((state) => state.setProfile);
   const [biography, setBiography] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -41,7 +41,7 @@ export default function SetBio() {
           // setOnboardingState('Skills');
        const profile = await fetchAndReturnUserProfile();
              if (profile && profile.id) {
-               dispatcher(updateSellersProfile(profile));
+               setProfile(profile);
              }
         window.location.reload();
         }

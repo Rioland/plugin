@@ -2,11 +2,10 @@
 
 
 import { toast, Toaster } from "sonner"
-import { ApiBaseUrl, fetchAndReturnUserProfile, fetchAndStoreUserProfile } from "@/helper/functions";
+import { ApiBaseUrl, fetchAndReturnUserProfile } from "@/helper/functions";
 import Cookies from "js-cookie";
 
-import { useDispatch } from "react-redux";
-import { updateSellersProfile } from "@/states/sellersProfileSlice";
+
 import React from "react";
 
 
@@ -14,9 +13,10 @@ import React from "react";
 import { useState } from 'react';
 import { Eye, EyeOff, User, Lock } from 'lucide-react';
 import Link from "next/link";
+import { useSellerProfile } from "@/stores/userStore";
 
 export default function LoginForm() {
-  const dispatch = useDispatch();
+const setProfile = useSellerProfile((state) => state.setProfile);
 
   const [loading, setLoading] = React.useState(false);
 
@@ -65,14 +65,14 @@ export default function LoginForm() {
               secure: process.env.NODE_ENV === "production",
               sameSite: "strict",
             });
-         await   fetchAndStoreUserProfile();
+       
             
            
 
             if (data.data.role == 1) {
               const profile = await fetchAndReturnUserProfile();
               if (profile && profile.id) {
-                dispatch(updateSellersProfile(profile));
+                setProfile(profile);
                 window.location.href = `/dashboard/seller`;
               }else{
                 toast.error("Failed to fetch user profile",);

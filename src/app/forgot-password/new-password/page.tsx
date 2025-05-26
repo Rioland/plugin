@@ -4,9 +4,6 @@
 import { toast, Toaster } from "sonner"
 import { ApiBaseUrl} from "@/helper/functions";
 
-
-import { useDispatch } from "react-redux";
-// import { updateSellersProfile } from "@/states/sellersProfileSlice";
 import React from "react";
 
 import { Eye, EyeOff, User, Lock } from 'lucide-react';
