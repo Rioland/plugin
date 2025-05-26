@@ -3,19 +3,19 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/states/store';
+
 import SkipNavBar from '../Components/SkipNavBar';
 // import { useNavigate } from 'react-router-dom';
 // import { Icon } from 'lucide-react'; // Placeholder, replace with actual icon if needed
 
 const KYBIntroScreen = () => {
-  const profile=useSelector((state:RootState)=>(state.sellersProfileReducer));
+
 
   return (
     <div className='bg-black text-white  px-4 h-screen ' style={{ backgroundImage: '/images/Wrapper.png', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
       <SkipNavBar/>
-      {profile.account_type === 'individual' ? <KYBUnregisterCard /> : <KYBRegisterCard />}
+       <KYBUnregisterCard />
+      {/* {profile.account_type === 'individual' ? <KYBUnregisterCard /> : <KYBRegisterCard />} */}
 
     </div>
   );

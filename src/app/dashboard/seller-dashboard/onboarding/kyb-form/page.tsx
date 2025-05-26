@@ -280,12 +280,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 // import { Label } from '@/components/ui/label';
 import { UploadCloud, UploadCloudIcon, User } from 'lucide-react';
 import PhoneInput from 'react-phone-number-input/input';
-import { RootState } from '@/states/store';
-import { useDispatch, useSelector } from 'react-redux';
 import { toast, Toaster } from 'sonner';
-import { ApiBaseUrl, fetchAndReturnUserProfile } from '@/helper/functions';
+
 import Cookies from 'js-cookie';
-import { updateSellersProfile } from '@/states/sellersProfileSlice';
+
 import SkipNavBar from '../../Components/SkipNavBar';
 
 const UploadBox = ({ label, handleChange, name }: { name: string, label: string, handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
@@ -306,12 +304,13 @@ const UploadBox = ({ label, handleChange, name }: { name: string, label: string,
 
 const KybCompanyDocumentationForm = () => {
 
-        const profile = useSelector((state: RootState) => (state.sellersProfileReducer));
+     
         return (
-                <div >
+                <UnRegisterBusinessUi />
+                // <div >
 
-                        {profile.account_type === 'individual' ? <UnRegisterBusinessUi /> : <RegisterBusinessUi />}
-                </div>
+                //         {profile.account_type === 'individual' ? <UnRegisterBusinessUi /> : <RegisterBusinessUi />}
+                // </div>
         );
 };
 
@@ -595,12 +594,12 @@ const RegisterBusinessUi = () => {
 
 
 const UnRegisterBusinessUi = () => {
-        const profile = useSelector((state: RootState) => (state.sellersProfileReducer));
+    
         // const [activeStep, setActiveStep] = useState(1);
         const [activeStepList, setActiveStepList] = useState([1]);
         const [uploading, setUploading] = useState(false);
         const [verificationType, setVerificationType] = useState('nin');
-        const dispatch = useDispatch();
+   
         const [formData, setFormData] = useState({
                 bvn: '',
                 ownerId: null,

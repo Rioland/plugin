@@ -16,7 +16,9 @@ const PluginPage = () => {
         <h1 className="text-white text-3xl px-3 md:px-0">What brings you to Plugin?</h1>
       </div>
       <div className="flex flex-col md:flex-row justify-center items-center gap-6 px-6">
-        <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-sm cursor-pointer" onClick={() => window.location.href = '/signup/buyer'}>
+        <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-sm cursor-pointer" onClick={() => {
+          localStorage.setItem("account_type", "individual");
+          window.location.href = '/signup'}}>
           <div className="flex justify-center mb-4">
           <img
                 src="/images/ineedsservice.svg"
@@ -29,7 +31,9 @@ const PluginPage = () => {
           I&#39;m looking for trusted professionals to handle tasks like home repairs, beauty treatments, event planning, or fitness coaching. I want convenience and quality at my fingertips.
           </p>
         </div>
-        <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-sm cursor-pointer" onClick={() => window.location.href = '/signup/seller'}>
+        <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-sm cursor-pointer" onClick={()=>{
+          localStorage.setItem("account_type", "business");
+          window.location.href = '/signup'}}>
           <div className="flex justify-center mb-4">
             {/* <div className="text-6xl">&#128682;&#129309;</div> Door and handshake
              */}

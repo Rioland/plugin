@@ -130,9 +130,9 @@ import { Input } from '@/components/ui/input'
 import { Bell, HelpCircle, LogOut, Menu, Search, Settings, User, X } from 'lucide-react'
 
 import { useState } from 'react'
-import { RootState } from '@/states/store'
+
 import { usePathname, useRouter } from 'next/navigation'
-import { useSelector } from 'react-redux'
+
 import Cookies from 'js-cookie'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import {
@@ -186,7 +186,7 @@ const PluginNavbar: React.FC<PluginNavbarProps> = ({ children }) => {
         )
         const [menuOpen, setMenuOpen] = useState(false);
 
-        const profile = useSelector((state: RootState) => state.sellersProfileReducer)
+
         const pathname = usePathname();
         return (
                 <div className="h-screen bg-black text-white ">
@@ -230,7 +230,7 @@ const PluginNavbar: React.FC<PluginNavbarProps> = ({ children }) => {
 
                                                 <Bell className="w-8 h-8" />
                                                 <HelpCircle className="w-8 h-8" />
-                                                <UserDropdown profile={profile}/>
+                                                <UserDropdown profile={{}}/>
                                                 {/* <div className=' relative w-14'>
                                                         <img
                                                                 src={profile.profile_picture ?? "/images/avatar.jpg"}

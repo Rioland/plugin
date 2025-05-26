@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Share2, Pencil, Star, Bookmark, PlusCircleIcon, Trash, EditIcon } from "lucide-react";
 
-import { RootState } from "@/states/store";
+import { RootState } from "@/stores/userStore";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import MyModal from "@/components/ui/MyModal";

@@ -143,15 +143,15 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { RootState } from '@/states/store';
+
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
+
 import PluginNavbar from './Components/NavBar';
 
 
 
 export default function DashboardPage() {
-  const profile = useSelector((state: RootState) => state.  sellersProfileReducer)
+ 
   return (
     <PluginNavbar >
       <div className="flex-grow flex items-center justify-center p-6">
@@ -163,7 +163,7 @@ export default function DashboardPage() {
               width={300}
               height={300}
             />
-            <h2 className="text-lg font-bold mt-6 text-white">Welcome to your dashboard, {profile?.firstname}!</h2>
+            <h2 className="text-lg font-bold mt-6 text-white">Welcome to your dashboard, Bola</h2>
             <p className="text-gray-400 mt-2 text-sm">
               You’re all set to start managing your business on Plugin. Explore your dashboard to track orders, update products, and grow your sales!
             </p>

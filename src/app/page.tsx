@@ -2,11 +2,10 @@
 
 
 import { toast, Toaster } from "sonner"
-import { ApiBaseUrl, fetchAndReturnUserProfile, fetchAndStoreUserProfile } from "@/helper/functions";
+import { ApiBaseUrl, fetchAndReturnUserProfile } from "@/helper/functions";
 import Cookies from "js-cookie";
 
-import { useDispatch } from "react-redux";
-import { updateSellersProfile } from "@/states/sellersProfileSlice";
+
 import React from "react";
 
 
@@ -14,14 +13,28 @@ import React from "react";
 import { useState } from 'react';
 import { Eye, EyeOff, User, Lock } from 'lucide-react';
 import Link from "next/link";
+import { rememberMe, storedCredentials} from "@/stores/others";
+import { clear } from "console";
+import { useSellerProfile } from "@/stores/userStore";
+import { useQuery } from "@tanstack/react-query";
+import { on } from "events";
+
 
 export default function LoginForm() {
-  const dispatcher = useDispatch();
+  //  const {data,error,isLoading} = useQuery({ queryKey: ['sellerProfile'], queryFn: fetchAndReturnUserProfile, refetchOnWindowFocus: false, retry: false ,},);
+
+const isChecked = rememberMe((state) => state.isChecked);
+const toggleRememberMe = rememberMe((state) => state.toggleRememberMe);
+const credentials = storedCredentials((state) => state.credentials);
+const setEmail = storedCredentials((state) => state.setEmail);
+const setPassword = storedCredentials((state) => state.setPassword);
+const clearCredentials = storedCredentials((state) => state.clearCredentials);
 
   const [loading, setLoading] = React.useState(false);
-const[rememberMe,setRememberMe]=useState(localStorage.getItem('rememberMe')=='true'?true:false)
 
 
+
+const setProfile = useSellerProfile((state) => state.setProfile);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -53,12 +66,14 @@ const[rememberMe,setRememberMe]=useState(localStorage.getItem('rememberMe')=='tr
 
             setLoading(false);
           } else {
-            if(rememberMe==true){
-              localStorage.setItem("rememberMe", "true");
-              localStorage.setItem("username", username);
-              localStorage.setItem("password", password);
+            if (isChecked == true) {
+              toggleRememberMe();
+              setEmail(username);
+              setPassword(password);
+            } else {
+             clearCredentials();
             }
-            if(data.data.verified==true){
+            if (data.data.verified == true) {
               setLoading(false);
               toast.success("Login successful",);
               // Set cookies instead of localStorage
@@ -75,9 +90,10 @@ const[rememberMe,setRememberMe]=useState(localStorage.getItem('rememberMe')=='tr
       
               if (data.data.role == 1) {
                 const profile = await fetchAndReturnUserProfile();
-                console.log(profile);
+              setProfile(profile);
+                console.log("Profile fetched:", profile);
                 if (profile && profile.id) {
-                  dispatcher(updateSellersProfile(profile));
+                  
                   if(!profile.kycverifications || profile.kycverifications.length==0){
                     window.location.href = `/dashboard/seller-dashboard/onboarding`;
                   }else{
@@ -160,7 +176,7 @@ const[rememberMe,setRememberMe]=useState(localStorage.getItem('rememberMe')=='tr
                 name="username"
                 id="username"
                 required
-                defaultValue={localStorage.getItem('username')??""}
+                defaultValue={credentials.email??''}
                 autoComplete="username"
                 autoFocus
                 autoCorrect="off"
@@ -179,7 +195,7 @@ const[rememberMe,setRememberMe]=useState(localStorage.getItem('rememberMe')=='tr
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
-                defaultValue={localStorage.getItem('password')??''}
+                defaultValue={credentials.password??''}
                 autoComplete="current-password"
                 required
                 name="password"
@@ -200,7 +216,7 @@ const[rememberMe,setRememberMe]=useState(localStorage.getItem('rememberMe')=='tr
           </div>
 
           <div className="flex items-center space-x-2 mb-5">
-            <input type="checkbox" id="remember" className="accent-purple-500" checked={rememberMe}  onChange={(e)=>setRememberMe(e.target.checked)}/>
+            <input type="checkbox" id="remember" className="accent-purple-500" checked={isChecked}  onChange={(e)=>toggleRememberMe()}/>
             <label htmlFor="remember" className="text-sm">Remember Me</label>
           </div>
 {loading?<img src="/images/preloader.gif" className="mx-auto" />:    <button

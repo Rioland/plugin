@@ -148,7 +148,7 @@ import { Button } from '@/components/ui/button';
 
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/states/store';
+import { RootState } from '@/stores/userStore';
 import { usePathname } from 'next/navigation';
 
 interface AppbarItemProps {

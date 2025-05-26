@@ -102,16 +102,24 @@ const SignupForm = () => {
                 const phoneNumber = formData.get("phoneNumber") as string;
                 const email = formData.get("email") as string;
 
-                const account_type = formData.get("account_type") as string;
-                console.log(phoneNumber, email, localStorage.getItem("account_type"), firstName, lastName, username, password)
-                if (!lastName || !username || !password || !phoneNumber || !email || !firstName || !localStorage.getItem("account_type")) {
+                const account_type = localStorage.getItem("account_type");
+                console.log(phoneNumber, email, account_type, firstName, lastName, username, password)
+                if (!lastName || !username || !password || !phoneNumber || !email || !firstName || !account_type) {
                         toast.error("All fields must be provided",);
                         return;
                 }
 
                 setLoading(true);
+                var url="";
+                if(account_type !== "individual") {
+                        url = `${ApiBaseUrl}/register-step-one`;
+                } else {
+                        url = `${ApiBaseUrl}/seller/register-step-one`;
+
+                }
+               
                 // api call
-                fetch(`${ApiBaseUrl}/seller/register-step-one`, {
+                fetch(url, {
                         method: "POST",
                         headers: {
                                 "Content-Type": "application/json",
@@ -123,7 +131,7 @@ const SignupForm = () => {
                                 password: password,
                                 username: username,
                                 email: email,
-                                account_type: localStorage.getItem("account_type")
+                                account_type: account_type
                         }),
                 })
                         .then((res) => res.json())

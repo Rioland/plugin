@@ -130,7 +130,7 @@ import { Input } from '@/components/ui/input'
 import { Bell, HelpCircle, LogOut, Menu, Search, Settings, User, X } from 'lucide-react'
 
 import { useState } from 'react'
-import { RootState } from '@/states/store'
+import { RootState } from '@/stores/userStore'
 import { usePathname, useRouter } from 'next/navigation'
 import { useSelector } from 'react-redux'
 import Cookies from 'js-cookie'

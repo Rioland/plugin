@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSelector } from 'react-redux'
-import { RootState } from '@/states/store'
+import { RootState } from '@/stores/userStore'
 
 
 
