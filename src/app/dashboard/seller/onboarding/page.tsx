@@ -12,11 +12,12 @@ import { useSellerProfile } from '@/stores/userStore';
 const KYBIntroScreen = () => {
 
 const profile =useSellerProfile((state) => state.profile);
+console.log('Profile:', profile);
   return (
     <div className='bg-black text-white  px-4 h-screen ' style={{ backgroundImage: '/images/Wrapper.png', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
       <SkipNavBar/>
-       
-      {profile.account_type === 'individual' ? <KYBUnregisterCard /> : <KYBRegisterCard />}
+
+      {profile?.account_type === 'individual' ? <KYBUnregisterCard /> : <KYBRegisterCard />}
 
     </div>
   );

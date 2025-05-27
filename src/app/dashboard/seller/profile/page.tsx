@@ -18,11 +18,13 @@ import Cookies from "js-cookie";
 import { Experience } from "@/types/SellersProfileType";
 import UpdateExperienceForm from "./Components/UpdateExperienceForm";
 import PluginNavbar from "../Components/NavBar";
+import { useSellerProfile } from "@/stores/userStore";
 
 export default function ProfilePage() {
-  const profile = useSelector((state: RootState) => state.sellersProfileReducer)
+  const profile = useSellerProfile((state) => state.profile);
+  const setProfile = useSellerProfile((state) => state.setProfile);
   const [selectedFile, setSelectedFile] = useState(null);
-  const dispatch = useDispatch();
+ 
   const [addSkill, setAddSkill] = useState(false);
   const [addExperience, setAddExperience] = useState(false);
   const [addAward, setAddAward] = useState(false);
@@ -31,7 +33,7 @@ export default function ProfilePage() {
   const [preview, setPreview] = useState(null);
   const [updateExperience, setUpdateExperience] = useState<Experience | null>(null)
   const [uploading, setUploading] = useState(false);
-  const dispatcher = useDispatch();
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -61,7 +63,7 @@ export default function ProfilePage() {
          const profile = await fetchAndReturnUserProfile();
                        console.log(profile);
                        if (profile && profile.id) {
-                         dispatcher(updateSellersProfile(profile));
+                         setProfile(profile);
                        }
 
         toast.success("Profile picture updated successfully!");
@@ -242,7 +244,7 @@ export default function ProfilePage() {
                   <div className="text-sm text-gray-200 space-y-2">
 
 
-                    {profile.experiences.length === 0 ? <p>No Work Experience Added</p> : profile.experiences.map((experience, index) => (
+                    {profile.experiences.length == 0 ? <p>No Work Experience Added</p> : profile.experiences.map((experience, index) => (
                       <div className="flex justify-between items-start py-4" key={experience.id}>
                         <div>
                           <div className="flex items-center gap-2">
@@ -281,7 +283,7 @@ export default function ProfilePage() {
                                     const profile = await fetchAndReturnUserProfile();
                                     console.log(profile);
                                     if (profile && profile.id) {
-                                      dispatch(updateSellersProfile(profile));
+                                      setProfile(profile);
                                     }
                                     // setExperiences((prev) =>
                                     //         prev.filter((item) => item.id !== exp.id)
@@ -358,7 +360,7 @@ export default function ProfilePage() {
                                     const profile = await fetchAndReturnUserProfile();
                                     console.log(profile);
                                     if (profile && profile.id) {
-                                      dispatch(updateSellersProfile(profile));
+                                      setProfile(profile);
                                     }
                                     // setExperiences((prev) =>
                                     //         prev.filter((item) => item.id !== exp.id)
@@ -436,7 +438,7 @@ export default function ProfilePage() {
                                     const profile = await fetchAndReturnUserProfile();
                                     console.log(profile);
                                     if (profile && profile.id) {
-                                      dispatch(updateSellersProfile(profile));
+                                      setProfile(profile);
                                     }
                                     // setExperiences((prev) =>
                                     //         prev.filter((item) => item.id !== exp.id)

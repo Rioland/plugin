@@ -1,6 +1,30 @@
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { SellersProfileType } from "@/types/SellersProfileType";
-import { create } from 'zustand';
-// Zustand store type
+
+// Default empty profile matching the SellersProfileType
+const defaultProfile: SellersProfileType = {
+  id: 0,
+  profile_picture: "",
+  email: "",
+  username: "",
+  name: "",
+  role: "",
+  account_type: "",
+  firstname: "",
+  lastname: "",
+  phone_number: null,
+  country: "",
+  bio: "",
+  skills: [],
+  kycverifications: [],
+  awards: [],
+  experiences: [],
+  educations: [],
+  languages: [],
+};
+
+// Store definition
 interface SellerProfileStore {
   profile: SellersProfileType;
   setProfile: (profile: SellersProfileType) => void;
@@ -8,13 +32,21 @@ interface SellerProfileStore {
   updateProfile: (updates: Partial<SellersProfileType>) => void;
 }
 
-// Zustand store
-export const useSellerProfile = create<SellerProfileStore>((set) => ({
-  profile: {} as SellersProfileType,
-  setProfile: (profile) => set({ profile }),
-  clearProfile: () => set({ profile: {} as SellersProfileType }),
-  updateProfile: (updates) =>
-    set((state) => ({
-      profile: { ...state.profile, ...updates },
-    })),
-}));
+export const useSellerProfile = create<SellerProfileStore>()(
+  persist(
+    (set) => ({
+      profile: defaultProfile,
+      setProfile: (profile) => set({ profile }),
+      clearProfile: () => set({ profile: defaultProfile }),
+      updateProfile: (updates) =>
+        set((state) => ({
+          profile: { ...state.profile, ...updates },
+        })),
+    }),
+    {
+      name: "seller-profile", // localStorage key
+      // Optional: customize what gets persisted
+      partialize: (state) => ({ profile: state.profile }),
+    }
+  )
+);

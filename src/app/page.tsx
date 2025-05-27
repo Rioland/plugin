@@ -13,20 +13,22 @@ import React from "react";
 import { useState } from 'react';
 import { Eye, EyeOff, User, Lock } from 'lucide-react';
 import Link from "next/link";
-import { rememberMe, storedCredentials} from "@/stores/others";
-import { clear } from "console";
+
+
 import { useSellerProfile } from "@/stores/userStore";
-import { useQuery } from "@tanstack/react-query";
-import { on } from "events";
+import { rememberMe, storedCredentials } from "@/stores/zustandStores";
+
 
 
 export default function LoginForm() {
   //  const {data,error,isLoading} = useQuery({ queryKey: ['sellerProfile'], queryFn: fetchAndReturnUserProfile, refetchOnWindowFocus: false, retry: false ,},);
 
 const isChecked = rememberMe((state) => state.isChecked);
+console.log("isChecked", isChecked);
 const setIsChecked = rememberMe((state) => state.setIsChecked);
 const credentials = storedCredentials((state) => state.credentials);
 const setEmail = storedCredentials((state) => state.setEmail);
+console.log("credentials", credentials);
 const setPassword = storedCredentials((state) => state.setPassword);
 const clearCredentials = storedCredentials((state) => state.clearCredentials);
 
@@ -66,7 +68,7 @@ const setProfile = useSellerProfile((state) => state.setProfile);
 
             setLoading(false);
           } else {
-            if (isChecked == true) {
+            if (isChecked) {
               setIsChecked(true);
               setEmail(username);
               setPassword(password);
@@ -74,7 +76,7 @@ const setProfile = useSellerProfile((state) => state.setProfile);
               setIsChecked(false);
              clearCredentials();
             }
-            if (data.data.verified == true) {
+            if (data.data.verified) {
               setLoading(false);
               toast.success("Login successful",);
               // Set cookies instead of localStorage
@@ -91,10 +93,10 @@ const setProfile = useSellerProfile((state) => state.setProfile);
       
               if (data.data.role == 1) {
                 const profile = await fetchAndReturnUserProfile();
-              setProfile(profile);
+               
                 console.log("Profile fetched:", profile);
                 if (profile && profile.id) {
-                  
+                     setProfile(profile);
                   if(!profile.kycverifications || profile.kycverifications.length==0){
                     window.location.href = `/dashboard/seller/onboarding`;
                   }else{
@@ -217,7 +219,9 @@ const setProfile = useSellerProfile((state) => state.setProfile);
           </div>
 
           <div className="flex items-center space-x-2 mb-5">
-            <input type="checkbox" id="remember" className="accent-purple-500" checked={isChecked}  onChange={(e)=>setIsChecked(e.target.checked)}/>
+            <input type="checkbox" id="remember" className="accent-purple-500" checked={isChecked}  onChange={(e)=>{
+              console.log("isChecked", e.target.checked);
+              setIsChecked(e.target.checked)}}/>
             <label htmlFor="remember" className="text-sm">Remember Me</label>
           </div>
 {loading?<img src="/images/preloader.gif" className="mx-auto" />:    <button

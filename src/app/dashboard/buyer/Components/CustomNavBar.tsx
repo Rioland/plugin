@@ -1,45 +1,35 @@
 "use client"
-
-import { useState } from "react"
-import { Search, Bell, HelpCircle, ChevronDown, Menu, X } from "lucide-react"
+import { AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
+import {
+  Search,
+  Bell,
+  HelpCircle,
+  ChevronDown,
+  Menu,
+  X,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
+
+import React, { useState } from 'react'
+
 import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
-interface NavbarProps {
-  className?: string
-}
-
-export default function Navbar({ className = "" }: NavbarProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [findTalentOpen, setFindTalentOpen] = useState(false)
-  const [manageJobsOpen, setManageJobsOpen] = useState(false)
-  const [mobileFindTalentOpen, setMobileFindTalentOpen] = useState(false)
-  const [mobileManageJobsOpen, setMobileManageJobsOpen] = useState(false)
-
-  // Close dropdowns when clicking outside
-  const closeDropdowns = () => {
-    setFindTalentOpen(false)
-    setManageJobsOpen(false)
-  }
-
-  const findTalentItems = [
-    { label: "Browse Freelancers", href: "#" },
-    { label: "Post a Project", href: "#" },
-    { label: "Talent Scout", href: "#" },
-    { label: "Enterprise", href: "#" },
-  ]
-
-  const manageJobsItems = [
-    { label: "My Jobs", href: "#" },
-    { label: "All Contracts", href: "#" },
-    { label: "Work Diary", href: "#" },
-    { label: "Reports", href: "#" },
-  ]
-
+import { Avatar } from '@/components/ui/avatar'
+export default function CustomNavBar() {
+          const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+          const [findTalentOpen, setFindTalentOpen] = useState(false)
+          const [manageJobsOpen, setManageJobsOpen] = useState(false)
+          const [mobileFindTalentOpen, setMobileFindTalentOpen] = useState(false)
+          const [mobileManageJobsOpen, setMobileManageJobsOpen] = useState(false)
+        
+          // Close dropdowns when clicking outside
+          const closeDropdowns = () => {
+            setFindTalentOpen(false)
+            setManageJobsOpen(false)
+          }
+        
   return (
-    <div className={className} onClick={closeDropdowns}>
-      {/* Header */}
+    <div>
+       {/* Header */}
       <header className="flex items-center justify-between px-4 lg:px-8 py-4 border-b border-gray-800">
         <div className="flex items-center space-x-8">
           <div className="flex items-center space-x-2">
@@ -54,10 +44,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
             <div className="relative">
               <button
                 className="text-white hover:text-yellow-500 flex items-center space-x-1"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setFindTalentOpen(!findTalentOpen)
-                }}
+                onClick={() => setFindTalentOpen(!findTalentOpen)}
               >
                 <span>Find Talent</span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${findTalentOpen ? "rotate-180" : ""}`} />
@@ -65,11 +52,18 @@ export default function Navbar({ className = "" }: NavbarProps) {
               {findTalentOpen && (
                 <div className="absolute top-full left-0 mt-2 w-48 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
                   <div className="py-2">
-                    {findTalentItems.map((item, index) => (
-                      <a key={index} href={item.href} className="block px-4 py-2 text-sm text-white hover:bg-gray-800">
-                        {item.label}
-                      </a>
-                    ))}
+                    <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-gray-800">
+                      Browse Freelancers
+                    </a>
+                    <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-gray-800">
+                      Post a Project
+                    </a>
+                    <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-gray-800">
+                      Talent Scout
+                    </a>
+                    <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-gray-800">
+                      Enterprise
+                    </a>
                   </div>
                 </div>
               )}
@@ -78,10 +72,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
             <div className="relative">
               <button
                 className="text-white hover:text-yellow-500 flex items-center space-x-1"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setManageJobsOpen(!manageJobsOpen)
-                }}
+                onClick={() => setManageJobsOpen(!manageJobsOpen)}
               >
                 <span>Manage Jobs</span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${manageJobsOpen ? "rotate-180" : ""}`} />
@@ -89,11 +80,18 @@ export default function Navbar({ className = "" }: NavbarProps) {
               {manageJobsOpen && (
                 <div className="absolute top-full left-0 mt-2 w-48 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
                   <div className="py-2">
-                    {manageJobsItems.map((item, index) => (
-                      <a key={index} href={item.href} className="block px-4 py-2 text-sm text-white hover:bg-gray-800">
-                        {item.label}
-                      </a>
-                    ))}
+                    <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-gray-800">
+                      My Jobs
+                    </a>
+                    <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-gray-800">
+                      All Contracts
+                    </a>
+                    <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-gray-800">
+                      Work Diary
+                    </a>
+                    <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-gray-800">
+                      Reports
+                    </a>
                   </div>
                 </div>
               )}
@@ -161,11 +159,18 @@ export default function Navbar({ className = "" }: NavbarProps) {
                 </button>
                 {mobileFindTalentOpen && (
                   <div className="pl-4 space-y-2">
-                    {findTalentItems.map((item, index) => (
-                      <a key={index} href={item.href} className="block text-sm text-gray-300 hover:text-white py-1">
-                        {item.label}
-                      </a>
-                    ))}
+                    <a href="#" className="block text-sm text-gray-300 hover:text-white py-1">
+                      Browse Freelancers
+                    </a>
+                    <a href="#" className="block text-sm text-gray-300 hover:text-white py-1">
+                      Post a Project
+                    </a>
+                    <a href="#" className="block text-sm text-gray-300 hover:text-white py-1">
+                      Talent Scout
+                    </a>
+                    <a href="#" className="block text-sm text-gray-300 hover:text-white py-1">
+                      Enterprise
+                    </a>
                   </div>
                 )}
               </div>
@@ -180,11 +185,18 @@ export default function Navbar({ className = "" }: NavbarProps) {
                 </button>
                 {mobileManageJobsOpen && (
                   <div className="pl-4 space-y-2">
-                    {manageJobsItems.map((item, index) => (
-                      <a key={index} href={item.href} className="block text-sm text-gray-300 hover:text-white py-1">
-                        {item.label}
-                      </a>
-                    ))}
+                    <a href="#" className="block text-sm text-gray-300 hover:text-white py-1">
+                      My Jobs
+                    </a>
+                    <a href="#" className="block text-sm text-gray-300 hover:text-white py-1">
+                      All Contracts
+                    </a>
+                    <a href="#" className="block text-sm text-gray-300 hover:text-white py-1">
+                      Work Diary
+                    </a>
+                    <a href="#" className="block text-sm text-gray-300 hover:text-white py-1">
+                      Reports
+                    </a>
                   </div>
                 )}
               </div>
