@@ -110,7 +110,7 @@ const SignupForm = () => {
                 }
 
                 setLoading(true);
-                var url="";
+                let url="";
                 if(account_type !== "individual") {
                         url = `${ApiBaseUrl}/register-step-one`;
                 } else {
