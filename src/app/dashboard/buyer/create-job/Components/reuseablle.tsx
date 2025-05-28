@@ -1,3 +1,4 @@
+import { useState } from "react";
 
 
 type SkillTagProps = {
@@ -195,4 +196,87 @@ export  function ScopeEstimator() {
 
 
 
+
+
+
+
+
+export default function SkillSelection() {
+  const [skills] = useState([
+    'Home &Lifestyle',
+    'Branding, Design & Identity',
+    'Transportation & Logistics',
+  ])
+
+  const categories = [
+    'Business, Corporate & Financial services',
+    'Website, App & Software Development',
+    'Transportation & Logistics',
+    'Branding, Design & Identity',
+    'Health, Wellness & Fitness',
+  ]
+
+  return (
+    <div className=" bg-black text-white px-4 py-10 md:px-16">
+      <div className="flex flex-col md:flex-row gap-10">
+        {/* Left section */}
+        <div className="md:w-1/2">
+          <p className="text-sm text-gray-400 mb-2">
+            2/5 <span className="font-semibold text-white ml-2">Job post</span>
+          </p>
+          <h1 className="text-2xl md:text-4xl font-bold max-w-md leading-snug">
+            What are the main skills required for this job?
+          </h1>
+        </div>
+
+        {/* Right section */}
+        <div className="md:w-1/2">
+          {/* Search input */}
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Search skills or add your own"
+              className="w-full px-4 py-3 rounded-md bg-zinc-900 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white"
+            />
+            <p className="text-sm text-gray-400 mt-2">
+              For the best results, add 3–5 skills
+            </p>
+          </div>
+
+          {/* Selected Skills */}
+          <div className="flex flex-wrap gap-2 mt-4 mb-8">
+            {skills.map((skill, i) => (
+              <span
+                key={i}
+                className="bg-zinc-800 border border-gray-600 px-4 py-2 rounded-full text-sm font-medium"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+
+          {/* Categories */}
+          <div className="mt-4">
+            <p className="text-white font-semibold mb-3">Categories</p>
+            <div className="flex flex-wrap gap-3">
+              {categories.map((cat, i) => (
+                <button
+                  key={i}
+                  className="bg-zinc-900 border border-gray-700 px-4 py-2 rounded-full text-sm hover:bg-zinc-800 transition"
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            {/* See More */}
+            <button className="mt-4 text-sm text-gray-400 underline hover:text-white">
+              See more
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 

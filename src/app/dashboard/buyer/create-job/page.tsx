@@ -12,7 +12,8 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import Navbar from "../Components/NavBar"
-import { CategorySection, ScopeEstimator, SkillInputSection } from "./Components/reuseablle"
+import SkillSelection, { CategorySection, ScopeEstimator, SkillInputSection } from "./Components/reuseablle"
+import JobDescription from "./Components/JobDescription"
 
 
 export default function CreatePostPage() {
@@ -67,10 +68,10 @@ export default function CreatePostPage() {
 
 
         return (
-                <div className="min-h-screen bg-black text-white">
+                <div className=" bg-black text-white">
                         <Navbar />
 
-                        <main className=" flex flex-col items-center justify-center  min-h-screen md:px-32">
+                        <main className=" flex flex-col items-center justify-center  min-h-screen md:px-32 h-4/6">
                                 {step === 1 ? <Stepone title={title} setTitle={setTitle} /> : step === 2 ? <StepTwo /> : step === 3 ? <StepThree /> : step === 4 ? <StepFour /> : step === 5 ? <StepFive /> : null}
                         </main>
 
@@ -136,192 +137,119 @@ function Stepone({ title, setTitle }: { title: string, setTitle: (value: string)
 }
 
 function StepTwo({ title, setTitle }: { title?: string, setTitle?: (value: string) => void }) {
-        return <main className=" text-white px-4  flex flex-col md:flex-row gap-8 items-start justify-between md:px-32 py-6">
-                <div className="md:w-1/2">
-                        <p className="text-sm text-white font-semibold mb-2">2/5 &nbsp; • &nbsp; Job post</p>
-                        <h1 className="text-3xl md:text-5xl font-bold leading-snug">
-                                What are the main skills required for this job?
-                        </h1>
-                </div>
-
-                <div className="md:w-1/2">
-                        <SkillInputSection />
-                        <CategorySection />
-                </div>
-        </main>
+        return<SkillSelection />
 }
 
 function StepThree({ title, setTitle }: { title?: string, setTitle?: (value: string) => void }) {
-        return  <main className=" text-white px-4 md:px-12 py-12 flex flex-col md:flex-row gap-8">
-      <div className="md:w-1/2">
-        <p className="text-sm text-white font-semibold mb-2">3/5 &nbsp; • &nbsp; Job post</p>
-        <h1 className="text-3xl md:text-5xl font-bold leading-snug mb-4">
-          Next, estimate the scope of this work.
-        </h1>
-        <p className="text-gray-400 text-lg">
-          Consider the size of your project and the time it will take.
-        </p>
-      </div>
+        return <main className=" text-white px-4 md:px-12 py-12 flex flex-col md:flex-row gap-8">
+                <div className="md:w-1/2">
+                        <p className="text-sm text-white font-semibold mb-2">3/5 &nbsp; • &nbsp; Job post</p>
+                        <h1 className="text-3xl md:text-5xl font-bold leading-snug mb-4">
+                                Next, estimate the scope of this work.
+                        </h1>
+                        <p className="text-gray-400 text-lg">
+                                Consider the size of your project and the time it will take.
+                        </p>
+                </div>
 
-      <div className="md:w-1/2">
-        <ScopeEstimator />
-      </div>
-    </main>
+                <div className="md:w-1/2">
+                        <ScopeEstimator />
+                </div>
+        </main>
 }
 function StepFour({ title, setTitle }: { title?: string, setTitle?: (value: string) => void }) {
-        return <div className="w-[995px] h-[296px] relative">
-                <div className="w-[995px] h-[296px] left-0 top-0 absolute">
-                        <div className="w-[996px] left-[-0.50px] top-0 absolute inline-flex justify-start items-start gap-40">
-                                <div className="w-[418px] inline-flex flex-col justify-start items-start gap-3">
-                                        <div className="w-[181px] inline-flex justify-center items-center gap-[60px]">
-                                                <div className="justify-center text-white text-lg font-semibold font-['Outfit']">2/5</div>
-                                                <div className="justify-center text-white text-lg font-bold font-['Outfit']">Job post</div>
-                                        </div>
-                                        <div className="self-stretch flex flex-col justify-center items-start gap-1.5">
-                                                <div className="inline-flex justify-center items-center gap-2">
-                                                        <div className="w-[433px] justify-center text-white text-[40px] font-bold font-['Outfit']">What are the main skills required for this job?</div>
-                                                </div>
-                                        </div>
+        const [rateType, setRateType] = useState<"hourly" | "fixed">("hourly")
+        const [minRate, setMinRate] = useState("5000")
+        const [maxRate, setMaxRate] = useState("40000")
+
+        return (
+                <div className=" bg-black text-white px-6 md:px-12 py-10 font-sans">
+                        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-10">
+                                {/* LEFT CONTENT */}
+                                <div className="md:w-1/2 space-y-6">
+                                        <p className="text-sm text-white/70">4/5 &nbsp;&nbsp; Job post</p>
+                                        <h1 className="text-3xl md:text-5xl font-extrabold leading-tight">
+                                                Tell us about your <br /> budget.
+                                        </h1>
+                                        <p className="text-white/70 text-base max-w-md">
+                                                This will help us match you to talent within your range.
+                                        </p>
                                 </div>
-                                <div className="w-[417px] h-[111px] relative">
-                                        <div className="w-[531px] left-0 top-[128px] absolute inline-flex flex-col justify-start items-start gap-6">
-                                                <div className="w-[410px] flex flex-col justify-start items-start gap-4">
-                                                        <div className="self-stretch justify-center text-white text-base font-bold font-['Outfit'] leading-tight tracking-tight">Selected Skills</div>
-                                                        <div className="self-stretch h-[94px] inline-flex justify-start items-center gap-[13px] flex-wrap content-center">
-                                                                <div className="p-2.5 rounded-[17px]  outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Home &Lifestyle</div>
-                                                                </div>
-                                                                <div className="p-2.5 rounded-[17px] outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Branding, Design & Identity</div>
-                                                                </div>
-                                                                <div className="p-2.5 rounded-[17px]  outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Transportation & Logistics</div>
-                                                                </div>
+
+                                {/* RIGHT CONTENT */}
+                                <div className="md:w-1/2 flex flex-col gap-6">
+                                        {/* Rate Type Selection */}
+                                        <div className="flex flex-col md:flex-row gap-4">
+                                                <div
+                                                        onClick={() => setRateType("hourly")}
+                                                        className={
+                                                                `flex flex-col items-start justify-center w-full md:w-1/2 p-5 border rounded-xl cursor-pointer space-y-2 ${rateType === "hourly"
+                                                                        ? "border-white bg-white/10"
+                                                                        : "border-white/30 hover:bg-white/5"
+                                                                }`
+                                                        }
+                                                >
+                                                        <Clock size={24} />
+                                                        <p className="text-lg font-semibold">Hourly rate</p>
+                                                </div>
+
+                                                <div
+                                                        onClick={() => setRateType("fixed")}
+                                                        className={
+                                                                `flex flex-col items-start justify-center w-full md:w-1/2 p-5 border rounded-xl cursor-pointer space-y-2 ${rateType === "fixed"
+                                                                        ? "border-white bg-white/10"
+                                                                        : "border-white/30 hover:bg-white/5"
+                                                                }`
+                                                        }
+                                                >
+                                                        <Tag size={24} />
+                                                        <p className="text-lg font-semibold">Fixed rate</p>
+                                                </div>
+                                        </div>
+
+                                        {/* Rate Range Inputs */}
+                                        <div className="flex flex-col md:flex-row gap-6 items-start">
+                                                <div className="w-full md:w-1/2">
+                                                        <Label htmlFor="from" className="text-white/70 text-sm">From</Label>
+                                                        <div className="flex items-center gap-2 border rounded-md px-4 py-2 mt-2">
+                                                                <span className="text-xl font-bold">₦</span>
+                                                                <Input
+                                                                        id="from"
+                                                                        className="bg-transparent border-none focus-visible:ring-0 text-white text-lg w-full"
+                                                                        value={minRate}
+                                                                        onChange={(e) => setMinRate(e.target.value)}
+                                                                />
+                                                                <span className="text-sm">/hr</span>
                                                         </div>
                                                 </div>
-                                                <div className="self-stretch flex flex-col justify-start items-start gap-[23px]">
-                                                        <div data-property-1="Collapsed" className="self-stretch h-[289px] flex flex-col justify-start items-start gap-[23px]">
-                                                                <div className="self-stretch flex flex-col justify-start items-start gap-[22px]">
-                                                                        <div className="self-stretch justify-center text-white text-base font-bold font-['Outfit'] leading-tight">Categories</div>
-                                                                        <div className="self-stretch h-0 outline-offset-[-0.50px] outline-white/30"></div>
-                                                                        <div className="self-stretch inline-flex justify-start items-center gap-[13px] flex-wrap content-center">
-                                                                                <div className="p-2.5 rounded-[17px]  outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Business, Corporate & Financial services</div>
-                                                                                </div>
-                                                                                <div className="p-2.5 rounded-[17px] outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Website, App & Software Development</div>
-                                                                                </div>
-                                                                                <div className="p-2.5 rounded-[17px] outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Transportation & Logistics</div>
-                                                                                </div>
-                                                                                <div className="p-2.5 rounded-[17px] outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight"> Branding, Design & Identity</div>
-                                                                                </div>
-                                                                                <div className="p-2.5 rounded-[17px] outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Health, Wellness & Fitness</div>
-                                                                                </div>
-                                                                        </div>
-                                                                </div>
-                                                                <div className="inline-flex justify-center items-center gap-[7px]">
-                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">See more</div>
-                                                                        <div className="w-4 h-4 relative overflow-hidden" />
-                                                                </div>
+
+                                                <div className="w-full md:w-1/2">
+                                                        <Label htmlFor="to" className="text-white/70 text-sm">To</Label>
+                                                        <div className="flex items-center gap-2 border rounded-md px-4 py-2 mt-2">
+                                                                <span className="text-xl font-bold">₦</span>
+                                                                <Input
+                                                                        id="to"
+                                                                        className="bg-transparent border-none focus-visible:ring-0 text-white text-lg w-full"
+                                                                        value={maxRate}
+                                                                        onChange={(e) => setMaxRate(e.target.value)}
+                                                                />
+                                                                <span className="text-sm">/hr</span>
                                                         </div>
                                                 </div>
                                         </div>
-                                        <div className="w-[417px] left-0 top-0 absolute inline-flex flex-col justify-start items-start gap-2">
-                                                <div className="self-stretch flex flex-col justify-start items-start gap-3">
-                                                        <div className="self-stretch justify-center text-white text-base font-bold font-['Outfit'] leading-[22.86px]">Search skills or add your own</div>
-                                                        <div className="self-stretch h-10 p-4 rounded-lg  outline-offset-[-0.75px] outline-[#c2c4cf] flex flex-col justify-between items-start">
-                                                                <div className="self-stretch inline-flex justify-start items-center gap-[491px]">
-                                                                        <div className="w-[18px] h-[18px] bg-white" />
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                                <div className="w-[417px] left-[20px] top-[83px] absolute justify-center text-white text-sm font-bold font-['Outfit'] leading-tight tracking-tight">For the best results, add 3-5 skills</div>
-                                        </div>
+
+                                        {/* Optional Skip Text */}
+                                        <p className="text-yellow-400 font-semibold text-base mt-6">
+                                                Not ready to set an hourly rate?
+                                        </p>
                                 </div>
                         </div>
                 </div>
-        </div>
+        )
 }
 
 
 function StepFive({ title, setTitle }: { title?: string, setTitle?: (value: string) => void }) {
-        return <div className="w-[995px] h-[296px] relative">
-                <div className="w-[995px] h-[296px] left-0 top-0 absolute">
-                        <div className="w-[996px] left-[-0.50px] top-0 absolute inline-flex justify-start items-start gap-40">
-                                <div className="w-[418px] inline-flex flex-col justify-start items-start gap-3">
-                                        <div className="w-[181px] inline-flex justify-center items-center gap-[60px]">
-                                                <div className="justify-center text-white text-lg font-semibold font-['Outfit']">2/5</div>
-                                                <div className="justify-center text-white text-lg font-bold font-['Outfit']">Job post</div>
-                                        </div>
-                                        <div className="self-stretch flex flex-col justify-center items-start gap-1.5">
-                                                <div className="inline-flex justify-center items-center gap-2">
-                                                        <div className="w-[433px] justify-center text-white text-[40px] font-bold font-['Outfit']">What are the main skills required for this job?</div>
-                                                </div>
-                                        </div>
-                                </div>
-                                <div className="w-[417px] h-[111px] relative">
-                                        <div className="w-[531px] left-0 top-[128px] absolute inline-flex flex-col justify-start items-start gap-6">
-                                                <div className="w-[410px] flex flex-col justify-start items-start gap-4">
-                                                        <div className="self-stretch justify-center text-white text-base font-bold font-['Outfit'] leading-tight tracking-tight">Selected Skills</div>
-                                                        <div className="self-stretch h-[94px] inline-flex justify-start items-center gap-[13px] flex-wrap content-center">
-                                                                <div className="p-2.5 rounded-[17px]  outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Home &Lifestyle</div>
-                                                                </div>
-                                                                <div className="p-2.5 rounded-[17px] outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Branding, Design & Identity</div>
-                                                                </div>
-                                                                <div className="p-2.5 rounded-[17px]  outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Transportation & Logistics</div>
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                                <div className="self-stretch flex flex-col justify-start items-start gap-[23px]">
-                                                        <div data-property-1="Collapsed" className="self-stretch h-[289px] flex flex-col justify-start items-start gap-[23px]">
-                                                                <div className="self-stretch flex flex-col justify-start items-start gap-[22px]">
-                                                                        <div className="self-stretch justify-center text-white text-base font-bold font-['Outfit'] leading-tight">Categories</div>
-                                                                        <div className="self-stretch h-0 outline-offset-[-0.50px] outline-white/30"></div>
-                                                                        <div className="self-stretch inline-flex justify-start items-center gap-[13px] flex-wrap content-center">
-                                                                                <div className="p-2.5 rounded-[17px]  outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Business, Corporate & Financial services</div>
-                                                                                </div>
-                                                                                <div className="p-2.5 rounded-[17px] outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Website, App & Software Development</div>
-                                                                                </div>
-                                                                                <div className="p-2.5 rounded-[17px] outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Transportation & Logistics</div>
-                                                                                </div>
-                                                                                <div className="p-2.5 rounded-[17px] outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight"> Branding, Design & Identity</div>
-                                                                                </div>
-                                                                                <div className="p-2.5 rounded-[17px] outline-offset-[-1px] outline-white/70 flex justify-center items-center gap-2.5">
-                                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">Health, Wellness & Fitness</div>
-                                                                                </div>
-                                                                        </div>
-                                                                </div>
-                                                                <div className="inline-flex justify-center items-center gap-[7px]">
-                                                                        <div className="justify-center text-white/60 text-base font-bold font-['Outfit'] leading-tight">See more</div>
-                                                                        <div className="w-4 h-4 relative overflow-hidden" />
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                        <div className="w-[417px] left-0 top-0 absolute inline-flex flex-col justify-start items-start gap-2">
-                                                <div className="self-stretch flex flex-col justify-start items-start gap-3">
-                                                        <div className="self-stretch justify-center text-white text-base font-bold font-['Outfit'] leading-[22.86px]">Search skills or add your own</div>
-                                                        <div className="self-stretch h-10 p-4 rounded-lg  outline-offset-[-0.75px] outline-[#c2c4cf] flex flex-col justify-between items-start">
-                                                                <div className="self-stretch inline-flex justify-start items-center gap-[491px]">
-                                                                        <div className="w-[18px] h-[18px] bg-white" />
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                                <div className="w-[417px] left-[20px] top-[83px] absolute justify-center text-white text-sm font-bold font-['Outfit'] leading-tight tracking-tight">For the best results, add 3-5 skills</div>
-                                        </div>
-                                </div>
-                        </div>
-                </div>
-        </div>
+     return  <JobDescription />
 }
 
