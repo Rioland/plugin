@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 
 
 import React, { useState } from 'react'
-import { profile } from 'console';
+
 import { UploadCloud } from 'lucide-react';
 
 export default function page() {
