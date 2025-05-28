@@ -14,9 +14,11 @@ import { Badge } from "@/components/ui/badge"
 import Navbar from "../Components/NavBar"
 import SkillSelection, { CategorySection, ScopeEstimator, SkillInputSection } from "./Components/reuseablle"
 import JobDescription from "./Components/JobDescription"
+import { useRouter } from "next/navigation"
 
 
 export default function CreatePostPage() {
+        const router = useRouter();
         const [step, setStep] = useState(1)
         const [title, setTitle] = useState("")
         const [description, setDescription] = useState("")
@@ -79,8 +81,14 @@ export default function CreatePostPage() {
                                 <div className="cursor-pointer h-[50px] px-[59px] py-[19px] rounded-xl  outline-offset-[-0.75px] outline-[#c2c4cf] flex justify-center items-center gap-2.5 overflow-hidden border border-[#c2c4cf]" onClick={() => setStep(step > 1 ? step - 1 : step)}>
                                         <div className="justify-center text-white text-xl font-bold font-['Outfit'] leading-[22.86px] ">Back</div>
                                 </div>
-                                <div className="cursor-pointer h-[50px] px-[59px] py-[19px] bg-[#e3a325] rounded-xl flex justify-center items-center gap-2.5 overflow-hidden" onClick={() => setStep(step < 5 ? step + 1 : step)}>
-                                        <div className="justify-center text-black text-xl font-bold font-['Outfit'] leading-[22.86px] ">Next</div>
+                                <div className="cursor-pointer h-[50px] px-[59px] py-[19px] bg-[#e3a325] rounded-xl flex justify-center items-center gap-2.5 overflow-hidden" onClick={()=>{
+                                        if (step < 5) {
+                                                setStep(step + 1)
+                                        } else {
+                                                router.push('/dashboard/buyer/create-job/review')
+                                        }
+                                }}>
+                                        <div className="justify-center text-black text-xl font-bold font-['Outfit'] leading-[22.86px] ">{step==5?' Review job post' :'Next'}</div>
                                 </div>
                         </div>
                 </div>

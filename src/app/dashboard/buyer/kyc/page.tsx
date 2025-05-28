@@ -318,7 +318,7 @@ export default function page() {
                                                                                         placeholder="E.g Jeffrey Samuels"
                                                                                         name='firstname'
                                                                                         onChange={handleChange}
-                                                                                        defaultValue={`${profile.firstname}`}
+                                                                                        defaultValue={``}
 
                                                                                         className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
                                                                                 />
@@ -330,7 +330,7 @@ export default function page() {
                                                                                         placeholder="E.g Jeffrey Samuels"
                                                                                         onChange={handleChange}
                                                                                         name='lastname'
-                                                                                        defaultValue={`${profile.lastname}`}
+                                                                                        defaultValue={``}
 
                                                                                         className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
                                                                                 />
@@ -346,7 +346,7 @@ export default function page() {
                                                                                                 placeholder="812 345 6789"
                                                                                                 name='phone_number'
                                                                                                 readOnly
-                                                                                                defaultValue={profile.phone_number}
+                                                                                                defaultValue={''}
                                                                                                 className="w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
                                                                                         />
                                                                                 </div>
@@ -358,7 +358,7 @@ export default function page() {
                                                                                         type="email"
                                                                                         placeholder="E.g jsamuels@proflix.io"
                                                                                         readOnly
-                                                                                        defaultValue={profile.email}
+                                                                                        defaultValue={''}
                                                                                         onChange={handleChange}
                                                                                         className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
                                                                                 />
