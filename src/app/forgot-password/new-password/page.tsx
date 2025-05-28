@@ -92,7 +92,7 @@ export default function LoginForm() {
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
-                defaultValue={localStorage.getItem('password')??''}
+                defaultValue={''}
                 autoComplete="current-password"
                 required
                 name="password"
