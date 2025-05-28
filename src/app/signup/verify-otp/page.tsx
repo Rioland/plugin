@@ -1,12 +1,27 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Info } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { ApiBaseUrl } from '@/helper/functions';
 import { toast, Toaster } from "sonner"
 
 
-export default function OtpVerification() {
+
+
+import React from 'react'
+
+export default function page() {
+  return (
+      <Suspense fallback={<div>Loading...</div>}>
+                  <OtpVerification/>
+        </Suspense>
+  )
+}
+
+
+
+
+  function OtpVerification() {
   const inputRefs = useRef<Array<HTMLInputElement | null>>(Array(6).fill(null));
   const [otp, setOtp] = useState(Array(6).fill(''));
   const [timer, setTimer] = useState(7);
