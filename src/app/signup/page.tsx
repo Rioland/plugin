@@ -1,5 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import * as React from "react";
 import { Eye, EyeOff } from "lucide-react";
@@ -9,12 +10,24 @@ import { Button } from "@/components/ui/button";
 import { FaGoogle, FaUser, FaEnvelope, FaPhone, FaLock } from "react-icons/fa";
 import { toast, Toaster } from "sonner"
 import { ApiBaseUrl } from "@/helper/functions";
+import { useRouter } from "next/navigation";
+
 
 
 
 export default function Page() {
 
+  const router = useRouter();
 
+  useEffect(() => {
+    // This code runs only in the browser
+    if (typeof window !== 'undefined') { // Ensure window is defined (client-side)
+      const accountType = localStorage.getItem("account_type");
+      if (!accountType) {
+        router.push('/select-account-type');
+      }
+    }
+  }, [router]);
 
 
         return (
@@ -32,8 +45,8 @@ function MyComponentLeft() {
         // Define images for each slide
         const slideImages = [
                 '/images/ImageCard1.png',
-                '/images/ImageCard.png',
-                '/images/ImageCard1.png',
+                '/images/ImageCard2.png',
+                '/images/ImageCard3.png',
         ];
 
         const [currentSlide, setCurrentSlide] = useState(0);

@@ -64,3 +64,23 @@ export interface SellersProfileType {
   educations: any[];  // You can define a specific type if education objects are added later
   languages: any[];   // Same here
 }
+export interface UsersProfileType {
+  id: number;
+  profile_picture: string;
+  email: string;
+  username: string;
+  name: string;
+  role: string;
+  account_type: string;
+  firstname: string;
+  lastname: string;
+  phone_number: string | null;
+  country: string;
+  bio: string;
+  skills: Skill[];
+  kycverifications: KycVerification[];
+  awards: Award[];
+  experiences: Experience[];
+  educations: any[];  // You can define a specific type if education objects are added later
+  languages: any[];   // Same here
+}

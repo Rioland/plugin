@@ -2,7 +2,7 @@
 
 
 import { toast, Toaster } from "sonner"
-import { ApiBaseUrl, fetchAndReturnUserProfile } from "@/helper/functions";
+import { ApiBaseUrl, fetchAndReturnUserProfile, fetchAndReturnVendorProfile } from "@/helper/functions";
 import Cookies from "js-cookie";
 
 
@@ -15,7 +15,7 @@ import { Eye, EyeOff, User, Lock } from 'lucide-react';
 import Link from "next/link";
 
 
-import { useSellerProfile } from "@/stores/userStore";
+import { useSellerProfile, useUserProfile } from "@/stores/userStore";
 import { rememberMe, storedCredentials } from "@/stores/zustandStores";
 
 
@@ -36,7 +36,8 @@ const clearCredentials = storedCredentials((state) => state.clearCredentials);
 
 
 
-const setProfile = useSellerProfile((state) => state.setProfile);
+const setVendorProfile = useSellerProfile((state) => state.setProfile);
+const setUserProfile = useUserProfile((state) => state.setProfile);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -92,11 +93,11 @@ const setProfile = useSellerProfile((state) => state.setProfile);
               });
       
               if (data.data.role == 1) {
-                const profile = await fetchAndReturnUserProfile();
+                const profile = await fetchAndReturnVendorProfile();
                
                 console.log("Profile fetched:", profile);
                 if (profile && profile.id) {
-                     setProfile(profile);
+                     setVendorProfile(profile);
                   if(!profile.kycverifications || profile.kycverifications.length==0){
                     window.location.href = `/dashboard/seller/onboarding`;
                   }else{
@@ -110,6 +111,21 @@ const setProfile = useSellerProfile((state) => state.setProfile);
                
               } else {
                 // window.location.href = `/dashboard/buyer`;
+                 const profile = await fetchAndReturnUserProfile();
+               
+                console.log("Profile fetched:", profile);
+                if (profile && profile.id) {
+                     setUserProfile(profile);
+                  if(!profile.kycverifications || profile.kycverifications.length==0){
+                    window.location.href = `/dashboard/buyer/onboarding`;
+                  }else{
+                    window.location.href = `/dashboard/buyer`;
+                  }
+                  // window.location.href = `/dashboard/seller`;
+                }else{
+                  toast.error("Failed to fetch user profile",);
+                  setLoading(false);
+                }
                 setLoading(false);
               }
             }else{

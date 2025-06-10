@@ -13,7 +13,7 @@ import React, { useState } from 'react'
 
 import { UploadCloud } from 'lucide-react';
 
-export default function page() {
+export default function Page() {
         // const profile = useSelector((state: RootState) => (state.sellersProfileReducer));
         // const [activeStep, setActiveStep] = useState(1);
         const [activeStepList, setActiveStepList] = useState([1]);

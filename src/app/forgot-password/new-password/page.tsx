@@ -10,7 +10,8 @@ import { Eye, EyeOff, User, Lock } from 'lucide-react';
 
 import { useState } from 'react';
 
-import { FaEnvelope, FaKeyboard } from "react-icons/fa";
+import {  FaKeyboard } from "react-icons/fa";
+import Image from "next/image";
 
 export default function LoginForm() {
   // const dispatch = useDispatch();
@@ -22,7 +23,7 @@ export default function LoginForm() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
-  const [showPassword, setShowPassword] = useState(false);
+
     if (!email) {
       toast.error("Email field is required",);
       return;  // stop the function execution here if email field is required
@@ -60,7 +61,7 @@ export default function LoginForm() {
           <div className="flex justify-center mb-4">
            
             <div className=" p-2 rounded-lg">
-            <img
+            <Image
                 src="/images/logo-white-single.svg"
                 alt="Logo"
                 className="w-18 h-auto mb-4"  />
