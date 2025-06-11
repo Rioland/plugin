@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 
 
@@ -42,10 +43,10 @@ const setUserProfile = useUserProfile((state) => state.setProfile);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const username = formData.get("username") as string;
+    const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    if (!username || !password) {
+    if (!email || !password) {
       toast.error("All fields must be provided",);
 
     } else {
@@ -56,7 +57,7 @@ const setUserProfile = useUserProfile((state) => state.setProfile);
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: username,
+          email: email,
           password: password,
         }),
       })
@@ -71,7 +72,7 @@ const setUserProfile = useUserProfile((state) => state.setProfile);
           } else {
             if (isChecked) {
               setIsChecked(true);
-              setEmail(username);
+              setEmail(email);
               setPassword(password);
             } else {
               setIsChecked(false);
@@ -187,21 +188,21 @@ const setUserProfile = useUserProfile((state) => state.setProfile);
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="mb-5">
-            <label className="block mb-1 text-sm">Username</label>
+            <label className="block mb-1 text-sm">Email Address</label>
             <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
               <User className="h-4 w-4 text-purple-400" />
               <input
                 type="text"
-                name="username"
-                id="username"
+                name="email"
+                id="email"
                 required
                 defaultValue={credentials.email??''}
-                autoComplete="username"
+                autoComplete="email"
                 autoFocus
                 autoCorrect="off"
                 autoCapitalize="none"
                 spellCheck="false"
-                placeholder="Username"
+                placeholder="Enter your email address"
                 className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
               />
             </div>

@@ -110,14 +110,14 @@ const SignupForm = () => {
                 const formData = new FormData(event.currentTarget);
                 const lastName = formData.get("lastName") as string;
                 const firstName = formData.get("firstName") as string;
-                const username = formData.get("username") as string;
+                // const username = formData.get("username") as string;
                 const password = formData.get("password") as string;
                 const phoneNumber = formData.get("phoneNumber") as string;
                 const email = formData.get("email") as string;
 
                 const account_type = localStorage.getItem("account_type");
-                console.log(phoneNumber, email, account_type, firstName, lastName, username, password)
-                if (!lastName || !username || !password || !phoneNumber || !email || !firstName || !account_type) {
+                console.log(phoneNumber, email, account_type, firstName, lastName, password)
+                if (!lastName  || !password || !phoneNumber || !email || !firstName || !account_type) {
                         toast.error("All fields must be provided",);
                         return;
                 }
@@ -142,7 +142,6 @@ const SignupForm = () => {
                                 lastname: lastName,
                                 phone_number: phoneNumber,
                                 password: password,
-                                username: username,
                                 email: email,
                                 account_type: account_type
                         }),
@@ -196,10 +195,10 @@ const SignupForm = () => {
                                                                 <Input placeholder="Last Name" name="lastName" id="lastName" className="pl-10 bg-[#1a1a1a] text-white border-gray-700 py-6 md:py-0" />
                                                         </div>
                                                 </div>
-                                                <div className="relative mb-4">
+                                                {/* <div className="relative mb-4">
                                                         <FaUser className="absolute left-3 top-3 text-gray-400" />
                                                         <Input placeholder="Username" className="pl-10  bg-[#1a1a1a] text-white border-gray-700 py-6 md:py-0" name="username" id="username" />
-                                                </div>
+                                                </div> */}
                                                 <div className="relative mb-4">
                                                         <FaEnvelope className="absolute left-3 top-3 text-gray-400" />
                                                         <Input placeholder="Email" name="email" id="email" className="pl-10 bg-[#1a1a1a] text-white border-gray-700 py-6 md:py-0" />

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 // 'use client';
 // import React, { Fragment, useState } from 'react';
 // import { ChevronDown, HelpCircle, UploadCloud } from 'lucide-react';
@@ -282,10 +284,11 @@ import { UploadCloud, UploadCloudIcon, User } from 'lucide-react';
 import PhoneInput from 'react-phone-number-input/input';
 import { toast, Toaster } from 'sonner';
 
-import Cookies from 'js-cookie';
+import cookie from 'js-cookie';
 
-import SkipNavBar from '../../Components/SkipNavBar';
+// import SkipNavBar from '../../Components/SkipNavBar';
 import { useSellerProfile } from '@/stores/userStore';
+import { ApiBaseUrl } from '@/helper/functions';
 
 const UploadBox = ({ label, handleChange, name }: { name: string, label: string, handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
         <div className="mb-8">
@@ -320,7 +323,7 @@ export default KybCompanyDocumentationForm;
 
 
 const RegisterBusinessUi = () => {
-   const profile =useSellerProfile((state) => state.profile);
+//    const profile =useSellerProfile((state) => state.profile);
 
         // const [activeStep, setActiveStep] = useState(1);
         const [activeStepList, setActiveStepList] = useState([1]);
@@ -595,133 +598,217 @@ const RegisterBusinessUi = () => {
 
 
 const UnRegisterBusinessUi = () => {
-    
-        // const [activeStep, setActiveStep] = useState(1);
-        const [activeStepList, setActiveStepList] = useState([1]);
-        const [uploading, setUploading] = useState(false);
-        const [verificationType, setVerificationType] = useState('nin');
-   const profile =useSellerProfile((state) => state.profile);
-        const [formData, setFormData] = useState({
-                bvn: '',
-                ownerId: null,
-                proof_of_address: null,
-                passport: null,
-                socialLink: null,
 
+    const [uploading, setUploading] = useState(false);
 
+//     const profile = useSellerProfile((state) => state.profile); // Access profile from your store
+const token=cookie.get('token')
+    const [formData, setFormData] = useState({
+        bvn: '',
+        owner_id_path: null,       // File object
+        proof_of_address: null,    // File object
+        passport_photo_path: null, // File object
+        social_media_links: '',    // String for URL
+    });
+
+    const handleChange = (e) => {
+        const { name, type, checked, files, value } = e.target;
+        const updatedValue =
+            type === 'file'
+                ? files[0] // Store the File object
+                : type === 'checkbox'
+                    ? checked
+                    : value;
+
+        setFormData((prev) => {
+            const updatedForm = { ...prev, [name]: updatedValue };
+            console.log("Updated formData:", updatedForm);
+            return updatedForm;
         });
+    };
 
-        const handleChange = (e) => {
-                const { name, type, checked, files, value } = e.target;
-                const updatedValue =
-                        type === 'file'
-                                ? files[0]
-                                : type === 'checkbox'
-                                        ? checked
-                                        : value;
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setUploading(true); // Start loading state
 
-                setFormData((prev) => {
-                        const updatedForm = { ...prev, [name]: updatedValue };
-                        console.log("Updated formData:", updatedForm); // ✅ logs the right data
-                        return updatedForm;
-                });
-        };
+        const apiUrl = `${ApiBaseUrl}/seller/kyb/verified` // Your API endpoint
 
-        const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-                event.preventDefault();
-                // const formData = new FormData(event.currentTarget);
+        // Create a FormData object for sending files and text data
+        const dataToSend = new FormData();
+        dataToSend.append('type', 'business'); // As per your API example
 
+        // Append text fields
+        dataToSend.append('bvn', formData.bvn);
+        if (formData.social_media_links) {
+            dataToSend.append('social_media_links', formData.social_media_links);
+        }
+        
+        // Append file fields
+        if (formData.owner_id_path) {
+            dataToSend.append('owner_id_path', formData.owner_id_path);
+        }
+        if (formData.proof_of_address) {
+            dataToSend.append('proof_of_address', formData.proof_of_address);
+        }
+        if (formData.passport_photo_path) {
+            dataToSend.append('passport_photo_path', formData.passport_photo_path);
+        }
 
-        };
+        // Get the token from your profile state (ensure it's available)
+        const authToken = token;
 
-        return (<div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white">
-                <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-2xl shadow-xl border border-neutral-700">
-                        <div className="text-center mb-6">
-                                <div className="flex justify-center mb-4">
-                                        <Toaster position="top-center" />
+        if (!authToken) {
+            toast.error("Authentication token not found. Please log in.");
+            setUploading(false);
+            return;
+        }
 
-                                        <div className=" p-2 rounded-lg">
-                                                <img
-                                                        src="/images/logo-white-single.svg"
-                                                        alt="Logo"
-                                                        className="w-10 h-auto mb-4" />
-                                        </div>
-                                </div>
-                                <h1 className="text-xl font-semibold">KYB for Unregistered Business</h1>
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                // When using FormData, you typically don't set 'Content-Type' header manually;
+                // the browser will set it automatically with the correct boundary.
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${authToken}` // Use your actual token
+                },
+                body: dataToSend, // Use FormData as the body
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                toast.success(result.message || 'KYB submission successful!');
+                console.log('Success:', result);
+                // Optionally: Redirect user, update UI, etc.
+            } else {
+                // Handle API errors (e.g., validation errors)
+                const errorMessage = result.message || result.error || 'An error occurred during submission.';
+                toast.error(errorMessage);
+                console.error('API Error:', result);
+            }
+        } catch (error) {
+            console.error('Network or other error:', error);
+            toast.error('Failed to connect to the server. Please try again.');
+        } finally {
+            setUploading(false); // End loading state
+        }
+    };
+
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white">
+            <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-2xl shadow-xl border border-neutral-700">
+                <div className="text-center mb-6">
+                    <div className="flex justify-center mb-4">
+                        <Toaster position="top-center" />
+                        <div className=" p-2 rounded-lg">
+                            <img
+                                src="/images/logo-white-single.svg"
+                                alt="Logo"
+                                className="w-10 h-auto mb-4"
+                            />
                         </div>
-
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                                <div className="mb-5">
-                                        <label className="block mb-1 text-sm">Bank verification number</label>
-                                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
-                                                {/* <User className="h-4 w-4 text-purple-400" /> */}
-                                                <input
-                                                        type="text"
-                                                        name="bvn"
-                                                        id="bvn"
-                                                        required
-
-                                                        placeholder="BVN"
-                                                        className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
-                                                />
-                                        </div>
-                                </div>
-
-                                <div className="mb-5">
-                                        <label className="block mb-1 text-sm">Business Owner ID</label>
-                                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
-                                                <UploadCloudIcon className="h-4 w-4 text-purple-400" />
-                                                <input
-                                                        type="file"
-                                                        name="id"
-                                                        id="id"
-                                                        required
-                                                        placeholder='Valid ID (International Passport, National ID Card, or Driver’s License)*'
-                                                        className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
-                                                />
-                                        </div>
-                                </div>
-                                <div className="mb-5">
-                                        <label className="block mb-1 text-sm">Passport Photograph</label>
-                                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
-                                                <UploadCloudIcon className="h-4 w-4 text-purple-400" />
-                                                <input
-                                                        type="file"
-                                                        name="id"
-                                                        id="id"
-                                                        required
-                                                        placeholder='Valid ID (International Passport, National ID Card, or Driver’s License)*'
-                                                        className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
-                                                />
-                                        </div>
-                                </div>
-                                <div className="mb-5">
-                                        <label className="block mb-1 text-sm">Add Your Social Media Links</label>
-                                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
-                                                <UploadCloudIcon className="h-4 w-4 text-purple-400" />
-                                                <input
-                                                        type="url"
-                                                        name="id"
-                                                        id="id"
-                                                        required
-                                                        placeholder='Valid ID (International Passport, National ID Card, or Driver’s License)*'
-                                                        className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
-                                                />
-                                        </div>
-                                </div>
-
-
-                                {uploading ? <img src="/images/preloader.gif" className="mx-auto" /> : <button
-                                        type="submit"
-                                        className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition"
-                                >
-                                        Log in
-                                </button>}
-
-
-
-                        </form>
+                    </div>
+                    <h1 className="text-xl font-semibold">KYB for Unregistered Business</h1>
                 </div>
-        </div>);
-}
 
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="mb-5">
+                        <label htmlFor="bvn" className="block mb-1 text-sm">Bank verification number</label>
+                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
+                            {/* <User className="h-4 w-4 text-purple-400" /> */}
+                            <input
+                                type="text"
+                                name="bvn"
+                                id="bvn"
+                                value={formData.bvn}
+                                required
+                                onChange={handleChange}
+                                placeholder="BVN"
+                                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mb-5">
+                        <label htmlFor="owner_id_path" className="block mb-1 text-sm">Business Owner ID</label>
+                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
+                            <UploadCloudIcon className="h-4 w-4 text-purple-400" />
+                            <input
+                                type="file"
+                                name="owner_id_path" // Corrected name
+                                id="owner_id_path"
+                                onChange={handleChange}
+                                required
+                                accept=".jpg,.jpeg,.png,.pdf" // Specify accepted file types
+                                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
+                            />
+                        </div>
+                        <p className="text-xs text-gray-400 mt-1">Valid ID (International Passport, National ID Card, or Driver’s License)*</p>
+                    </div>
+
+                    <div className="mb-5">
+                        <label htmlFor="passport_photo_path" className="block mb-1 text-sm">Passport Photograph</label>
+                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
+                            <UploadCloudIcon className="h-4 w-4 text-purple-400" />
+                            <input
+                                type="file"
+                                name="passport_photo_path" // Corrected name
+                                id="passport_photo_path"
+                                required
+                                onChange={handleChange}
+                                accept=".jpg,.jpeg,.png" // Specify accepted file types
+                                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
+                            />
+                        </div>
+                        <p className="text-xs text-gray-400 mt-1">Recent passport-sized photo.</p>
+                    </div>
+                    
+                    <div className="mb-5">
+                        <label htmlFor="proof_of_address" className="block mb-1 text-sm">Proof of Address</label>
+                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
+                            <UploadCloudIcon className="h-4 w-4 text-purple-400" />
+                            <input
+                                type="file"
+                                name="proof_of_address" // Corrected name, added input
+                                id="proof_of_address"
+                                required
+                                onChange={handleChange}
+                                accept=".jpg,.jpeg,.png,.pdf" // Specify accepted file types
+                                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
+                            />
+                        </div>
+                        <p className="text-xs text-gray-400 mt-1">Utility bill or bank statement (not older than 3 months).</p>
+                    </div>
+
+                    <div className="mb-5">
+                        <label htmlFor="social_media_links" className="block mb-1 text-sm">Add Your Social Media Links</label>
+                        <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
+                            {/* You might want a different icon here, or none */}
+                            <input
+                                type="url"
+                                name="social_media_links" // Corrected name
+                                id="social_media_links"
+                                onChange={handleChange}
+                                placeholder='e.g., https://instagram.com/yourbusiness'
+                                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
+                            />
+                        </div>
+                        <p className="text-xs text-gray-400 mt-1">Optional: Link to your business's social media page.</p>
+                    </div>
+
+                    {uploading ? (
+                        <img src="/images/preloader.gif" alt="Loading..." className="mx-auto h-12" />
+                    ) : (
+                        <button
+                            type="submit"
+                            className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition"
+                        >
+                            Submit Application
+                        </button>
+                    )}
+                </form>
+            </div>
+        </div>
+    );
+}
