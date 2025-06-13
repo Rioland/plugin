@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 // 'use client'
 // import Link from 'next/link'
 // import {
@@ -189,7 +190,7 @@ const PluginNavbar: React.FC<PluginNavbarProps> = ({ children }) => {
         const [menuOpen, setMenuOpen] = useState(false);
 
         const profile =useSellerProfile((state) => state.profile);
-        const pathname = usePathname();
+        // const pathname = usePathname();
         return (
                 <div className="h-screen bg-black text-white ">
                         <header className="flex justify-between items-center px-6 py-4 border-b border-gray-800 relative">

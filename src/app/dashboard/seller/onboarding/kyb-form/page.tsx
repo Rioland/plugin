@@ -289,6 +289,7 @@ import cookie from 'js-cookie';
 // import SkipNavBar from '../../Components/SkipNavBar';
 import { useSellerProfile } from '@/stores/userStore';
 import { ApiBaseUrl } from '@/helper/functions';
+import RegisterBusinessUi from '../../Components/RegisterBusinessUiComponent';
 
 const UploadBox = ({ label, handleChange, name }: { name: string, label: string, handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
         <div className="mb-8">
@@ -313,7 +314,7 @@ const KybCompanyDocumentationForm = () => {
  
                 <div >
 
-                        {profile.account_type === 'individual' ? <UnRegisterBusinessUi /> : <RegisterBusinessUi />}
+                        {profile.account_type === 'individual' ?   <UnRegisterBusinessUi />:<RegisterBusinessUi />}
                 </div>
         );
 };
@@ -322,279 +323,277 @@ export default KybCompanyDocumentationForm;
 
 
 
-const RegisterBusinessUi = () => {
-//    const profile =useSellerProfile((state) => state.profile);
+// const RegisterBusinessUi = () => {
 
-        // const [activeStep, setActiveStep] = useState(1);
-        const [activeStepList, setActiveStepList] = useState([1]);
-        const [phone, setPhone] = useState('');
-        const [date, setDate] = useState('08-11-2024');
-        const [formData, setFormData] = useState({
-                businessName: '',
-                officeAddress: '',
-                natureOfBusiness: '',
-                proofOfID: null,
-                proofOfAddress: null,
-                otherDocs: null,
-                declaration: false,
-        });
+//         const [activeStepList, setActiveStepList] = useState([1]);
+//         const [phone, setPhone] = useState('');
+//         const [date, setDate] = useState('08-11-2024');
+//         const [formData, setFormData] = useState({
+//                 businessName: '',
+//                 officeAddress: '',
+//                 natureOfBusiness: '',
+//                 proofOfID: null,
+//                 proofOfAddress: null,
+//                 otherDocs: null,
+//                 declaration: false,
+//         });
 
-        const handleChange = (e) => {
-                const { name, type, checked, files, value } = e.target;
-                setFormData((prev) => ({
-                        ...prev,
-                        [name]: type === 'file' ? files[0] : type === 'checkbox' ? checked : value,
-                }));
-        };
+//         const handleChange = (e) => {
+//                 const { name, type, checked, files, value } = e.target;
+//                 setFormData((prev) => ({
+//                         ...prev,
+//                         [name]: type === 'file' ? files[0] : type === 'checkbox' ? checked : value,
+//                 }));
+//         };
 
-        return (
+//         return (
 
-                <div className="min-h-screen bg-black text-white py-10 px-6 md:px-20">
-                        {/* Left-side steps */}
-                        <div className="flex flex-col md:flex-row gap-10">
-                                <aside className="md:w-1/4 mb-6">
-                                        <h2 className="text-xl font-semibold mb-6">KYB Verification</h2>
-                                        <ol className="space-y-4 text-sm text-gray-400">
-                                                <li className={`flex items-center space-x-2 text-yellow-500`} onClick={() => setActiveStepList([1])} >
-                                                        <div className={`w-5 h-5 rounded-full ${activeStepList.length >= 1 ? 'bg-yellow-500' : ''} ${activeStepList.length >= 1 ? 'text-black' : 'text-yellow-500'} ${activeStepList.length >= 1 ? '' : 'border border-yellow-500'}  flex items-center justify-center text-xs font-bold`}>1</div>
-                                                        <span>Business details</span>
-                                                </li>
-                                                <li className="flex items-center space-x-2 text-yellow-500" onClick={() => setActiveStepList([1, 2])}>
-                                                        <div className={`w-5 h-5 rounded-full ${activeStepList.length >= 2 ? 'bg-yellow-500' : ''} ${activeStepList.length >= 2 ? 'text-black' : 'text-yellow-500'}  ${activeStepList.length >= 2 ? '' : 'border border-yellow-500'}  flex items-center justify-center text-xs font-bold`}>2</div>
-                                                        <span>Contact details</span>
-                                                </li>
-                                                <li className="flex items-center space-x-2 text-yellow-500 font-medium" onClick={() => setActiveStepList([1, 2, 3])} >
-                                                        <div className={`w-5 h-5 rounded-full ${activeStepList.length >= 3 ? 'bg-yellow-500' : ''} ${activeStepList.length >= 3 ? 'text-black' : 'text-yellow-500'} ${activeStepList.length >= 3 ? '' : 'border border-yellow-500'} flex items-center justify-center text-xs font-bold`}>3</div>
-                                                        <span>Company/Business documentation</span>
-                                                </li>
-                                        </ol>
-                                </aside>
+//                 <div className="min-h-screen bg-black text-white py-10 px-6 md:px-20">
+//                         {/* Left-side steps */}
+//                         <div className="flex flex-col md:flex-row gap-10">
+//                                 <aside className="md:w-1/4 mb-6">
+//                                         <h2 className="text-xl font-semibold mb-6">KYB Verification</h2>
+//                                         <ol className="space-y-4 text-sm text-gray-400">
+//                                                 <li className={`flex items-center space-x-2 text-yellow-500`} onClick={() => setActiveStepList([1])} >
+//                                                         <div className={`w-5 h-5 rounded-full ${activeStepList.length >= 1 ? 'bg-yellow-500' : ''} ${activeStepList.length >= 1 ? 'text-black' : 'text-yellow-500'} ${activeStepList.length >= 1 ? '' : 'border border-yellow-500'}  flex items-center justify-center text-xs font-bold`}>1</div>
+//                                                         <span>Business details</span>
+//                                                 </li>
+//                                                 <li className="flex items-center space-x-2 text-yellow-500" onClick={() => setActiveStepList([1, 2])}>
+//                                                         <div className={`w-5 h-5 rounded-full ${activeStepList.length >= 2 ? 'bg-yellow-500' : ''} ${activeStepList.length >= 2 ? 'text-black' : 'text-yellow-500'}  ${activeStepList.length >= 2 ? '' : 'border border-yellow-500'}  flex items-center justify-center text-xs font-bold`}>2</div>
+//                                                         <span>Contact details</span>
+//                                                 </li>
+//                                                 <li className="flex items-center space-x-2 text-yellow-500 font-medium" onClick={() => setActiveStepList([1, 2, 3])} >
+//                                                         <div className={`w-5 h-5 rounded-full ${activeStepList.length >= 3 ? 'bg-yellow-500' : ''} ${activeStepList.length >= 3 ? 'text-black' : 'text-yellow-500'} ${activeStepList.length >= 3 ? '' : 'border border-yellow-500'} flex items-center justify-center text-xs font-bold`}>3</div>
+//                                                         <span>Company/Business documentation</span>
+//                                                 </li>
+//                                         </ol>
+//                                 </aside>
 
-                                {/* Right-side form */}
+//                                 {/* Right-side form */}
 
-                                {activeStepList.length === 1 ?
-                                        <div className=" w-full md:w-2/3  mx-auto md:mx-0 p-8 rounded-lg">
+//                                 {activeStepList.length === 1 ?
+//                                         <div className=" w-full md:w-2/3  mx-auto md:mx-0 p-8 rounded-lg">
 
-                                                <div className="mb-8">
-                                                        <h3 className="text-lg text-white mb-2 ">Business details</h3>
-                                                        <p className='text-sm text-gray-400 mb-2'>Please provide details of your business below.</p>
-                                                        <div className='bg-gray-600 w-full  mb-4 mt-2 ' style={{ "height": "0.3px" }} />
+//                                                 <div className="mb-8">
+//                                                         <h3 className="text-lg text-white mb-2 ">Business details</h3>
+//                                                         <p className='text-sm text-gray-400 mb-2'>Please provide details of your business below.</p>
+//                                                         <div className='bg-gray-600 w-full  mb-4 mt-2 ' style={{ "height": "0.3px" }} />
 
-                                                        <div className="space-y-4 ">
-                                                                <div>
-                                                                        <label className="text-sm text-gray-300 block mb-1">Business&apos;s legal name <span className="text-red-600">*</span></label>
-                                                                        <input
-                                                                                type="text"
-                                                                                name="businessName"
-                                                                                value={formData.businessName}
-                                                                                onChange={handleChange}
-                                                                                placeholder="E.g ZoomFix Global Limited"
-                                                                                className="w-full bg-[#1E1E1E] border border-gray-700 text-white p-3 rounded-md text-lg placeholder-gray-500"
-                                                                        />
-                                                                </div>
+//                                                         <div className="space-y-4 ">
+//                                                                 <div>
+//                                                                         <label className="text-sm text-gray-300 block mb-1">Business&apos;s legal name <span className="text-red-600">*</span></label>
+//                                                                         <input
+//                                                                                 type="text"
+//                                                                                 name="businessName"
+//                                                                                 value={formData.businessName}
+//                                                                                 onChange={handleChange}
+//                                                                                 placeholder="E.g ZoomFix Global Limited"
+//                                                                                 className="w-full bg-[#1E1E1E] border border-gray-700 text-white p-3 rounded-md text-lg placeholder-gray-500"
+//                                                                         />
+//                                                                 </div>
 
-                                                                <div>
-                                                                        <label className="text-sm text-gray-300 block mb-1">Business Registration Number (RC) <span className="text-red-600">*</span></label>
-                                                                        <input
-                                                                                type="text"
-                                                                                name="regnumber"
-                                                                                // value={formData.officeAddress}
-                                                                                onChange={handleChange}
-                                                                                placeholder="E.g RC123456"
-                                                                                className="w-full bg-[#1E1E1E] border border-gray-700 text-white p-3 rounded-md text-lg placeholder-gray-500"
-                                                                        />
-                                                                </div>
-                                                                {/* date */}
-                                                                <div className="flex flex-col">
-                                                                        <label className="text-white font-medium mb-1 text-sm">
-                                                                                Date of Registration/Incorporation <span className="text-red-600">*</span>
-                                                                        </label>
-                                                                        <div className="relative">
-                                                                                <input
-                                                                                        type="date"
-                                                                                        value={date}
-                                                                                        onChange={(e) => setDate(e.target.value)}
-                                                                                        className="w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:border-white text-white"
-                                                                                />
-                                                                                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z" />
-                                                                                        </svg>
+//                                                                 <div>
+//                                                                         <label className="text-sm text-gray-300 block mb-1">Business Registration Number (RC) <span className="text-red-600">*</span></label>
+//                                                                         <input
+//                                                                                 type="text"
+//                                                                                 name="regnumber"
+//                                                                                 // value={formData.officeAddress}
+//                                                                                 onChange={handleChange}
+//                                                                                 placeholder="E.g RC123456"
+//                                                                                 className="w-full bg-[#1E1E1E] border border-gray-700 text-white p-3 rounded-md text-lg placeholder-gray-500"
+//                                                                         />
+//                                                                 </div>
+//                                                                 {/* date */}
+//                                                                 <div className="flex flex-col">
+//                                                                         <label className="text-white font-medium mb-1 text-sm">
+//                                                                                 Date of Registration/Incorporation <span className="text-red-600">*</span>
+//                                                                         </label>
+//                                                                         <div className="relative">
+//                                                                                 <input
+//                                                                                         type="date"
+//                                                                                         value={date}
+//                                                                                         onChange={(e) => setDate(e.target.value)}
+//                                                                                         className="w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:border-white text-white"
+//                                                                                 />
+//                                                                                 <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+//                                                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+//                                                                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z" />
+//                                                                                         </svg>
 
-                                                                                </div>
-                                                                        </div>
-                                                                </div>
+//                                                                                 </div>
+//                                                                         </div>
+//                                                                 </div>
 
 
-                                                                <div >
-                                                                        <label className="text-sm text-gray-300 block mb-1">Operating Business/Office Address <span className="text-red-600">*</span></label>
-                                                                        <input
-                                                                                type="text"
-                                                                                name="officeAddress"
-                                                                                value={formData.officeAddress}
-                                                                                onChange={handleChange}
-                                                                                placeholder="E.g 26, Justin Brown, Ikoyi, Lagos, Nigeria"
-                                                                                className="w-full bg-[#1E1E1E] border border-gray-700 text-white p-3 rounded-md text-lg placeholder-gray-500"
-                                                                        />
-                                                                </div>
+//                                                                 <div >
+//                                                                         <label className="text-sm text-gray-300 block mb-1">Operating Business/Office Address <span className="text-red-600">*</span></label>
+//                                                                         <input
+//                                                                                 type="text"
+//                                                                                 name="officeAddress"
+//                                                                                 value={formData.officeAddress}
+//                                                                                 onChange={handleChange}
+//                                                                                 placeholder="E.g 26, Justin Brown, Ikoyi, Lagos, Nigeria"
+//                                                                                 className="w-full bg-[#1E1E1E] border border-gray-700 text-white p-3 rounded-md text-lg placeholder-gray-500"
+//                                                                         />
+//                                                                 </div>
 
-                                                                <div>
-                                                                        <label className="text-sm text-gray-300 block mb-1">Nature of Business <span className="text-red-600">*</span></label>
-                                                                        <textarea
-                                                                                name="natureOfBusiness"
-                                                                                value={formData.natureOfBusiness}
-                                                                                onChange={handleChange}
-                                                                                placeholder="Please provide a brief description of your business operations."
-                                                                                className="w-full bg-[#1E1E1E] border border-gray-700 text-white p-3 rounded-md text-lg placeholder-gray-500 h-28"
-                                                                        ></textarea>
-                                                                </div>
-                                                        </div>
-                                                </div>
-
-
-                                                <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded-md" onClick={() => setActiveStepList([1, 2])}>
-                                                        Continue</button>
+//                                                                 <div>
+//                                                                         <label className="text-sm text-gray-300 block mb-1">Nature of Business <span className="text-red-600">*</span></label>
+//                                                                         <textarea
+//                                                                                 name="natureOfBusiness"
+//                                                                                 value={formData.natureOfBusiness}
+//                                                                                 onChange={handleChange}
+//                                                                                 placeholder="Please provide a brief description of your business operations."
+//                                                                                 className="w-full bg-[#1E1E1E] border border-gray-700 text-white p-3 rounded-md text-lg placeholder-gray-500 h-28"
+//                                                                         ></textarea>
+//                                                                 </div>
+//                                                         </div>
+//                                                 </div>
 
 
-                                        </div> : activeStepList.length === 2 ?
-                                                (
+//                                                 <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded-md" onClick={() => setActiveStepList([1, 2])}>
+//                                                         Continue</button>
 
 
-                                                        <div className="lg:w-2/3">
-                                                                <h3 className="text-lg font-semibold mb-2">Contact details</h3>
-                                                                <p className="text-lg text-gray-400 mb-6">
-                                                                        Enter your contact&apos;s information below.
-                                                                </p>
+//                                         </div> : activeStepList.length === 2 ?
+//                                                 (
 
-                                                                <div className="space-y-4">
-                                                                        <div>
-                                                                                <label className="text-lg font-medium">Contact name <span className="text-red-600">*</span></label>
-                                                                                <input
-                                                                                        type="text"
-                                                                                        placeholder="E.g Jeffrey Samuels"
-                                                                                        onChange={handleChange}
-                                                                                        className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
-                                                                                />
-                                                                        </div>
 
-                                                                        <div>
-                                                                                <label className="text-lg font-medium">Contact phone number (with contry code )<span className="text-red-600">*</span></label>
-                                                                                <div className="mt-1 flex items-center gap-2">
-                                                                                        {/* <div className="bg-gray-900 border border-gray-700 rounded-md px-1 py-3 flex items-center flex-row w-1/14">
-                                                                                🇳🇬 +234
-                                                                        </div> */}
-                                                                                        <PhoneInput className='w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-2 text-lg'
-                                                                                                // defaultCountry="ng"
-                                                                                                value={phone}
-                                                                                                onChange={setPhone}
-                                                                                        />
-                                                                                        {/* <input
-                                                                                type="tel"
-                                                                                placeholder="812 345 6789"
-                                                                                className="w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
-                                                                        /> */}
-                                                                                </div>
-                                                                        </div>
+//                                                         <div className="lg:w-2/3">
+//                                                                 <h3 className="text-lg font-semibold mb-2">Contact details</h3>
+//                                                                 <p className="text-lg text-gray-400 mb-6">
+//                                                                         Enter your contact&apos;s information below.
+//                                                                 </p>
 
-                                                                        <div>
-                                                                                <label className="text-lg font-medium">Contact email address <span className="text-red-600">*</span></label>
-                                                                                <input
-                                                                                        type="email"
-                                                                                        placeholder="E.g jsamuels@proflix.io"
-                                                                                        onChange={handleChange}
-                                                                                        className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
-                                                                                />
-                                                                        </div>
+//                                                                 <div className="space-y-4">
+//                                                                         <div>
+//                                                                                 <label className="text-lg font-medium">Contact name <span className="text-red-600">*</span></label>
+//                                                                                 <input
+//                                                                                         type="text"
+//                                                                                         placeholder="E.g Jeffrey Samuels"
+//                                                                                         onChange={handleChange}
+//                                                                                         className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
+//                                                                                 />
+//                                                                         </div>
 
-                                                                        <div>
-                                                                                <label className="text-lg font-medium">Bank Verification Number (BVN) *</label>
-                                                                                <input
-                                                                                        type="text"
-                                                                                        placeholder="E.g 22356801434"
+//                                                                         <div>
+//                                                                                 <label className="text-lg font-medium">Contact phone number (with contry code )<span className="text-red-600">*</span></label>
+//                                                                                 <div className="mt-1 flex items-center gap-2">
+//                                                                                         {/* <div className="bg-gray-900 border border-gray-700 rounded-md px-1 py-3 flex items-center flex-row w-1/14">
+//                                                                                 🇳🇬 +234
+//                                                                         </div> */}
+//                                                                                         <PhoneInput className='w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-2 text-lg'
+//                                                                                                 // defaultCountry="ng"
+//                                                                                                 value={phone}
+//                                                                                                 onChange={setPhone}
+//                                                                                         />
+//                                                                                         {/* <input
+//                                                                                 type="tel"
+//                                                                                 placeholder="812 345 6789"
+//                                                                                 className="w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
+//                                                                         /> */}
+//                                                                                 </div>
+//                                                                         </div>
 
-                                                                                        onChange={handleChange}
-                                                                                        className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
-                                                                                />
-                                                                        </div>
+//                                                                         <div>
+//                                                                                 <label className="text-lg font-medium">Contact email address <span className="text-red-600">*</span></label>
+//                                                                                 <input
+//                                                                                         type="email"
+//                                                                                         placeholder="E.g jsamuels@proflix.io"
+//                                                                                         onChange={handleChange}
+//                                                                                         className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
+//                                                                                 />
+//                                                                         </div>
 
-                                                                        <div>
-                                                                                <label className="text-lg font-medium">National Identification Number (NIN) *</label>
-                                                                                <input
-                                                                                        type="text"
-                                                                                        placeholder="E.g 9934356801434"
-                                                                                        onChange={handleChange}
-                                                                                        className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
-                                                                                />
-                                                                        </div>
+//                                                                         <div>
+//                                                                                 <label className="text-lg font-medium">Bank Verification Number (BVN) *</label>
+//                                                                                 <input
+//                                                                                         type="text"
+//                                                                                         placeholder="E.g 22356801434"
 
-                                                                        <div className="flex justify-between mt-6 gap-4">
-                                                                                <button
-                                                                                        type="button"
-                                                                                        className="w-1/2 border border-yellow-400 text-yellow-400 py-3 rounded-md hover:bg-yellow-600/10 transition"
-                                                                                        onClick={() => setActiveStepList([1])}
-                                                                                >
-                                                                                        Go back
-                                                                                </button>
-                                                                                <button
-                                                                                        type="submit"
-                                                                                        onClick={() => { setActiveStepList([1, 2, 3]) }}
-                                                                                        className="w-1/2 bg-yellow-400 text-black font-medium py-3 rounded-md hover:bg-yellow-500 transition"
-                                                                                >
-                                                                                        Submit
-                                                                                </button>
-                                                                        </div>
-                                                                </div>
-                                                        </div>
-                                                ) : <main className="md:w-3/4">
-                                                        <section className="mb-10">
-                                                                <h3 className="text-lg font-semibold mb-1">Company/Business documentation</h3>
-                                                                <p className="text-sm text-gray-400 mb-6">Please upload relevant documents below.</p>
+//                                                                                         onChange={handleChange}
+//                                                                                         className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
+//                                                                                 />
+//                                                                         </div>
 
-                                                                <UploadBox label="Certificate of incorporation/registration *" handleChange={handleChange} name="certificateOfIncorporation" />
-                                                                <UploadBox label="Upload Certified List of Shareholders/CAC 2A/Application for Registration of a company/Status Report issued by CAC *" handleChange={handleChange} name="certifiedList" />
-                                                        </section>
+//                                                                         <div>
+//                                                                                 <label className="text-lg font-medium">National Identification Number (NIN) *</label>
+//                                                                                 <input
+//                                                                                         type="text"
+//                                                                                         placeholder="E.g 9934356801434"
+//                                                                                         onChange={handleChange}
+//                                                                                         className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
+//                                                                                 />
+//                                                                         </div>
 
-                                                        <section className="mb-10">
-                                                                <h3 className="text-lg font-semibold mb-1">Proof of Identification</h3>
-                                                                <p className="text-sm text-gray-400 mb-6">
-                                                                        Only an International Passport, NIN Slip, or Driver’s License is accepted. The document must be in good condition (not torn or damaged), clear in color, unexpired, and fully visible with all corners intact.
-                                                                </p>
-                                                                <UploadBox label="Proof of Identification for individual shareholders who own 5% shares or more *" handleChange={handleChange} name="proofOfID" />
-                                                        </section>
+//                                                                         <div className="flex justify-between mt-6 gap-4">
+//                                                                                 <button
+//                                                                                         type="button"
+//                                                                                         className="w-1/2 border border-yellow-400 text-yellow-400 py-3 rounded-md hover:bg-yellow-600/10 transition"
+//                                                                                         onClick={() => setActiveStepList([1])}
+//                                                                                 >
+//                                                                                         Go back
+//                                                                                 </button>
+//                                                                                 <button
+//                                                                                         type="submit"
+//                                                                                         onClick={() => { setActiveStepList([1, 2, 3]) }}
+//                                                                                         className="w-1/2 bg-yellow-400 text-black font-medium py-3 rounded-md hover:bg-yellow-500 transition"
+//                                                                                 >
+//                                                                                         Submit
+//                                                                                 </button>
+//                                                                         </div>
+//                                                                 </div>
+//                                                         </div>
+//                                                 ) : <main className="md:w-3/4">
+//                                                         <section className="mb-10">
+//                                                                 <h3 className="text-lg font-semibold mb-1">Company/Business documentation</h3>
+//                                                                 <p className="text-sm text-gray-400 mb-6">Please upload relevant documents below.</p>
 
-                                                        <section className="mb-6">
-                                                                <h3 className="text-lg font-semibold mb-1">Proof of Address/Utility Bill</h3>
-                                                                <p className="text-sm text-gray-400 mb-6">
-                                                                        This can be a utility bill (electricity or waste), bank statement, tax invoice, or any government-issued document issued within the last 3 months.
-                                                                </p>
-                                                                <UploadBox label="Proof of Address *" handleChange={handleChange} name="proofOfAddress" />
-                                                                <UploadBox label="Any other relevant documents (licenses, certificates, etc.)" handleChange={handleChange} name="otherDocs" />
-                                                        </section>
+//                                                                 <UploadBox label="Certificate of incorporation/registration *" handleChange={handleChange} name="certificateOfIncorporation" />
+//                                                                 <UploadBox label="Upload Certified List of Shareholders/CAC 2A/Application for Registration of a company/Status Report issued by CAC *" handleChange={handleChange} name="certifiedList" />
+//                                                         </section>
 
-                                                        <div className="mb-6 flex items-start space-x-3">
-                                                                <Checkbox id="declaration" />
-                                                                <label htmlFor="declaration" className="text-sm text-gray-300">
-                                                                        By submitting this form, I confirm that the information provided is true, accurate, and complete. I also agree to promptly notify Plugin of any changes to the details submitted.
-                                                                </label>
-                                                        </div>
+//                                                         <section className="mb-10">
+//                                                                 <h3 className="text-lg font-semibold mb-1">Proof of Identification</h3>
+//                                                                 <p className="text-sm text-gray-400 mb-6">
+//                                                                         Only an International Passport, NIN Slip, or Driver’s License is accepted. The document must be in good condition (not torn or damaged), clear in color, unexpired, and fully visible with all corners intact.
+//                                                                 </p>
+//                                                                 <UploadBox label="Proof of Identification for individual shareholders who own 5% shares or more *" handleChange={handleChange} name="proofOfID" />
+//                                                         </section>
 
-                                                        <div className="flex flex-col sm:flex-row gap-4 justify-end">
-                                                                <Button variant="outline" className="border-yellow-500 bg-transparent text-white hover:bg-yellow-600 hover:text-black" onClick={() => setActiveStepList([1, 2])}>
-                                                                        Go back
-                                                                </Button>
-                                                                <Button className="bg-yellow-500 text-black hover:bg-yellow-600 px-8">
-                                                                        Submit
-                                                                </Button>
-                                                        </div>
-                                                </main>}
+//                                                         <section className="mb-6">
+//                                                                 <h3 className="text-lg font-semibold mb-1">Proof of Address/Utility Bill</h3>
+//                                                                 <p className="text-sm text-gray-400 mb-6">
+//                                                                         This can be a utility bill (electricity or waste), bank statement, tax invoice, or any government-issued document issued within the last 3 months.
+//                                                                 </p>
+//                                                                 <UploadBox label="Proof of Address *" handleChange={handleChange} name="proofOfAddress" />
+//                                                                 <UploadBox label="Any other relevant documents (licenses, certificates, etc.)" handleChange={handleChange} name="otherDocs" />
+//                                                         </section>
+
+//                                                         <div className="mb-6 flex items-start space-x-3">
+//                                                                 <Checkbox id="declaration" />
+//                                                                 <label htmlFor="declaration" className="text-sm text-gray-300">
+//                                                                         By submitting this form, I confirm that the information provided is true, accurate, and complete. I also agree to promptly notify Plugin of any changes to the details submitted.
+//                                                                 </label>
+//                                                         </div>
+
+//                                                         <div className="flex flex-col sm:flex-row gap-4 justify-end">
+//                                                                 <Button variant="outline" className="border-yellow-500 bg-transparent text-white hover:bg-yellow-600 hover:text-black" onClick={() => setActiveStepList([1, 2])}>
+//                                                                         Go back
+//                                                                 </Button>
+//                                                                 <Button className="bg-yellow-500 text-black hover:bg-yellow-600 px-8">
+//                                                                         Submit
+//                                                                 </Button>
+//                                                         </div>
+//                                                 </main>}
 
 
 
-                        </div>
-                </div>
-        );
+//                         </div>
+//                 </div>
+//         );
 
-}
+// }
 
 
 const UnRegisterBusinessUi = () => {
@@ -610,6 +609,10 @@ const token=cookie.get('token')
         passport_photo_path: null, // File object
         social_media_links: '',    // String for URL
     });
+
+
+
+
 
     const handleChange = (e) => {
         const { name, type, checked, files, value } = e.target;

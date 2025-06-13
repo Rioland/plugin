@@ -1,6 +1,6 @@
 
 // import type { Metadata } from "next";
-import { Geist, Geist_Mono, Poppins } from "next/font/google";
+
 import "./globals.css";
 import "./css/fontawesome.css";
 import { Metadata } from "next";
@@ -8,21 +8,8 @@ import QuerysProvider from "@/components/Providers/QuerysProvider";
 
 
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-// Poppins
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-});
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+
 
 export const metadata: Metadata = {
   title: "Plugin",
@@ -37,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${poppins.variable} antialiased`}
+        className={` antialiased`}
       >
         <QuerysProvider>
           {children}
