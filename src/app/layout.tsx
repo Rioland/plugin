@@ -2,7 +2,7 @@
 // import type { Metadata } from "next";
 
 import "./globals.css";
-import "./css/fontawesome.css";
+
 import { Metadata } from "next";
 import QuerysProvider from "@/components/Providers/QuerysProvider";
 

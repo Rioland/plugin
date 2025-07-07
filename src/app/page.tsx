@@ -1,345 +1,85 @@
-/* eslint-disable @next/next/no-img-element */
-"use client"
+import React from 'react'
 
+import Image from 'next/image';
 
-import { toast, Toaster } from "sonner"
-import { ApiBaseUrl, fetchAndReturnUserProfile, fetchAndReturnVendorProfile } from "@/helper/functions";
-import Cookies from "js-cookie";
-
-
-import React from "react";
-
-
-
-import { useState } from 'react';
-import { Eye, EyeOff, User, Lock } from 'lucide-react';
-import Link from "next/link";
-
-
-import { useSellerProfile, useUserProfile } from "@/stores/userStore";
-import { rememberMe, storedCredentials } from "@/stores/zustandStores";
-
-
-
-export default function LoginForm() {
-  //  const {data,error,isLoading} = useQuery({ queryKey: ['sellerProfile'], queryFn: fetchAndReturnUserProfile, refetchOnWindowFocus: false, retry: false ,},);
-
-const isChecked = rememberMe((state) => state.isChecked);
-console.log("isChecked", isChecked);
-const setIsChecked = rememberMe((state) => state.setIsChecked);
-const credentials = storedCredentials((state) => state.credentials);
-const setEmail = storedCredentials((state) => state.setEmail);
-console.log("credentials", credentials);
-const setPassword = storedCredentials((state) => state.setPassword);
-const clearCredentials = storedCredentials((state) => state.clearCredentials);
-
-  const [loading, setLoading] = React.useState(false);
-
-
-
-const setVendorProfile = useSellerProfile((state) => state.setProfile);
-const setUserProfile = useUserProfile((state) => state.setProfile);
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-
-    if (!email || !password) {
-      toast.error("All fields must be provided",);
-
-    } else {
-      setLoading(true);
-      fetch(`${ApiBaseUrl}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      })
-        .then((res) => res.json())
-        .then(async (data) => {
-          console.log(data);
-          if (data.status === false) {
-           
-            toast.error(data.message,);
-
-            setLoading(false);
-          } else {
-            if (isChecked) {
-              setIsChecked(true);
-              setEmail(email);
-              setPassword(password);
-            } else {
-              setIsChecked(false);
-             clearCredentials();
-            }
-            if (data.data.verified) {
-              setLoading(false);
-              toast.success("Login successful",);
-              // Set cookies instead of localStorage
-              Cookies.set("token", data.data.token, {
-                expires: 0.5,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
-              });
-              Cookies.set("role", data.data.role, {
-                expires: 0.5,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
-              });
-      
-              if (data.data.role == 1) {
-                const profile = await fetchAndReturnVendorProfile();
-               
-                console.log("Profile fetched:", profile);
-                if (profile && profile.id) {
-                     setVendorProfile(profile);
-                  if(!profile.kycverifications || profile.kycverifications.length==0){
-                    window.location.href = `/dashboard/seller/onboarding`;
-                  }else{
-                    window.location.href = `/dashboard/seller`;
-                  }
-                  // window.location.href = `/dashboard/seller`;
-                }else{
-                  toast.error("Failed to fetch user profile",);
-                  setLoading(false);
-                }
-               
-              } else {
-                // window.location.href = `/dashboard/buyer`;
-                 const profile = await fetchAndReturnUserProfile();
-               
-                console.log("Profile fetched:", profile);
-                if (profile && profile.id) {
-                     setUserProfile(profile);
-                  if(!profile.kycverifications || profile.kycverifications.length==0){
-                    window.location.href = `/dashboard/buyer/onboarding`;
-                  }else{
-                    window.location.href = `/dashboard/buyer`;
-                  }
-                  // window.location.href = `/dashboard/seller`;
-                }else{
-                  toast.error("Failed to fetch user profile",);
-                  setLoading(false);
-                }
-                setLoading(false);
-              }
-            }else{
-              fetch(`${ApiBaseUrl}/resend-verification`, {
-                method: "POST",
-                headers: {
-                        "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                        email: data.data.user.email
-                }),
-        })
-                .then((res) => res.json()).then((data) => {
-                        console.log(data);
-                        if (data.status == false) {
-                          
-                                toast.error(data.message,);
-  
-                                // setLoading(false);
-                        } else {
-                           
-                                toast.success(data.message);
-                                window.location.href = "/signup/verify-otp";
-    
-                                // setLoading(false);
-                        }
-                });
-            }
-        
-        
-
-          }
-        })
-        .catch((error) => {
-          console.error("Error during login:", error);
-          setLoading(false);
-        });
-    }
-
-  };
-  const [showPassword, setShowPassword] = useState(false);
-
+export default function AdminLoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white p-2">
-      <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-xl shadow-xl border border-neutral-700">
-        <div className="text-center mb-6">
-          <div className="flex justify-center mb-4">
-            <Toaster  position="top-center"  />
-           
-            <div className=" p-2 rounded-lg">
-            <img
-                src="/images/logo-white-single.svg"
-                alt="Logo"
-                className="w-18 h-auto mb-4"  />
+
+    <div className='min-h-screen '>
+      <div className="flex items-center gap-3 text-white text-3xl font-semibold bg-black/80 py-12 px-4">
+        <Image src="/images/logo-single-yellow.png" alt="Plugin logo" width={40} height={40} />
+        <span>Plugin</span>
+      </div>
+      <div className="min-h-screen flex">
+        {/* Left Section */}
+        <div className="w-1/2 bg-[#F6A700]/90 text-white px-16 py-20 flex flex-col justify-between">
+          <div>
+
+            <div className="mt-16 space-y-10">
+              <div>
+                <h3 className="font-bold text-lg">✅ Secure Login</h3>
+                <p className="text-sm mt-2">Use your email to sign in</p>
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">✅ Enhanced User Management</h3>
+                <p className="text-sm mt-2">
+                  Gain insights into user activity, track jobs and analyse Plugin patterns
+                </p>
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">✅ Proactive Monitoring</h3>
+                <p className="text-sm mt-2">
+                  Stay on top with real-time data and reports, ensuring a smooth experience for users.
+                </p>
+              </div>
             </div>
           </div>
-          <h1 className="text-xl font-semibold">Login to Plugin</h1>
+          <div className="text-sm">
+            Pluginafrica &nbsp; | &nbsp;
+            <a href="#" className="underline">
+              Terms and Privacy
+            </a>
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="mb-5">
-            <label className="block mb-1 text-sm">Email Address</label>
-            <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
-              <User className="h-4 w-4 text-purple-400" />
-              <input
-                type="text"
-                name="email"
-                id="email"
-                required
-                defaultValue={credentials.email??''}
-                autoComplete="email"
-                autoFocus
-                autoCorrect="off"
-                autoCapitalize="none"
-                spellCheck="false"
-                placeholder="Enter your email address"
-                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
-              />
-            </div>
+        {/* Right Section */}
+        {/* Right Section */}
+        <div className="w-1/2 bg-black/80 relative text-white flex items-center justify-center">
+          <div className="absolute inset-0">
+            <Image src="/images/people.png" alt="Team Background" layout="fill" objectFit="cover" className="opacity-20" />
           </div>
-
-          <div className="mb-3">
-            <label className="block mb-1 text-sm">Password</label>
-            <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md relative">
-              <Lock className="h-4 w-4 text-purple-400" />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Password"
-                defaultValue={credentials.password??''}
-                autoComplete="current-password"
-                required
-                name="password"
-                id="password"
-                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 py-3"
-              />
+          <div className="z-10 w-full max-w-md p-10">
+            <div className="mb-10 text-center">
+              <Image src="/logo.svg" alt="Plugin logo" width={40} height={40} className="mx-auto mb-3" />
+              <h2 className="text-2xl font-semibold">Welcome Admin</h2>
+            </div>
+            <form className="space-y-6">
+              <div>
+                <label className="block mb-2 text-sm font-medium">Email</label>
+                <input
+                  type="email"
+                  placeholder="Johndoe@pluginafrica.com"
+                  className="w-full px-4 py-3 bg-gray-900 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                />
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium">Password</label>
+                <input
+                  type="password"
+                  placeholder="********"
+                  className="w-full px-4 py-3 bg-gray-900 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                />
+              </div>
               <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 text-purple-300"
+                type="submit"
+                className="w-full bg-[#F6A700] text-black font-semibold py-3 rounded-full hover:bg-yellow-500 transition"
               >
-                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                LOGIN →
               </button>
-            </div>
-            <div className="text-right mt-1">
-              <a href="/forgot-password" className="text-[oklch(0.79_0.18_86.03)] text-xs">Forgot password?</a>
-            </div>
+            </form>
           </div>
-
-          <div className="flex items-center space-x-2 mb-5">
-            <input type="checkbox" id="remember" className="accent-purple-500" checked={isChecked}  onChange={(e)=>{
-              console.log("isChecked", e.target.checked);
-              setIsChecked(e.target.checked)}}/>
-            <label htmlFor="remember" className="text-sm">Remember Me</label>
-          </div>
-{loading?<img src="/images/preloader.gif" className="mx-auto" />:    <button
-            type="submit"
-            className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition"
-          >
-            Log in
-          </button>}
-       
-
-          <p className="text-center text-sm mt-4">
-            Do not have an account?{' '}
-            <Link href="/select-account-type" className="text-[oklch(0.79_0.18_86.03)] font-medium cursor-pointer" >Sign Up</Link>
-          </p>
-        </form>
+        </div>
       </div>
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-// const MyOldDesign= () => {
-//   <Fragment>
-//     <Myheader/>
-//     <div className="pt-34 px-4"  >
-
-// <h1 className="text-center text-5xl font-bold  mb-15">Log In</h1>
-// <div className="w-full lg:w-2/5 mx-auto ">
-//   {/* Your content goes here */}
-//   <Card className="border-none py-16">
-//     <CardHeader>
-//       <CardTitle className="pb-2">We&apos;re glad to see you again!</CardTitle>
-//       <CardDescription className="font-semibold text-sm mb-5">Don&apos;t have an account?  <a href="/signup" className="text-yellow-500">Sign Up!</a></CardDescription>
-
-//       <CardContent>
-//         <form className="space-y-6" onSubmit={handleSubmit}>
-//           <div className="mb-4">
-//             <Label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">Username</Label>
-//             <Input
-//               type="text"
-//               name="username"
-//               id="username"
-//               required
-//               className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-7 rounded-md"
-//             />
-//           </div>
-//           <Toaster position="top-center"  />
-
-//           <div className="mb-4">
-//             <Label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password</Label>
-//             <input
-//               type="password"
-//               name="password"
-//               id="password"
-//               required
-//               className="shadow-sm focus:ring-primary focus:border-primary block w-full px-4 py-4 rounded-md"
-//             />
-//           </div>
-//           {/* remember me checkbox and forgot password  */}
-//           <div className="flex items-center justify-between my-4">
-//             <div className="flex items-center justify-content-center">
-//               <input
-//                 type="checkbox"
-//                 name="rememberPassword"
-//                 id="rememberPassword" />
-//               <Label htmlFor="rememberPassword" className="block text-sm font-medium text-gray-700 ms-2">Remember me</Label>
-
-
-
-//             </div>
-//             <a href="/forgot-password" className="text-sm text-blue-500 hover:text-blue-600">Lost your password?</a>
-
-//           </div>
-         
-     
-//             {loading ? (
-//             <div className="flex items-center justify-center">
-//                   <i className="fa-solid fa-circle-notch animate-spin text-4xl"></i>
-//             </div>
-//             ) : <Button type="submit" className="w-full bg-yellow-500 py-6 mt-10 ">
-//               Log In <i className="fal fa-arrow-right-long"></i>
-//             </Button>}
-
-
-    
-//         </form>
-//       </CardContent>
-//     </CardHeader>
-//   </Card>
-// </div>
-// </div>
-// <Footer/>
-    
-//    </Fragment>
-// }
