@@ -38,8 +38,8 @@ export default function JobDashboard() {
           <div className="mt-6 bg-[#111] rounded-xl p-4">
             <h3 className="text-lg font-semibold">Jobs you might like</h3>
             <div className="mt-4 flex gap-4">
-              <Button variant="secondary" className="bg-yellow-400 text-black" onClick={() => { window.location.href = '/dashboard/seller/jobs/job-search' }}>More Jobs</Button>
-              <Button variant="ghost" className="text-white border border-gray-700">Saved Jobs</Button>
+              <Button variant="secondary" className="border  bg-transparent border-yellow-400 text-white hover:bg-transparent cursor-pointer" onClick={() => { window.location.href = '/dashboard/seller/jobs/job-search' }}>More Jobs</Button>
+              <Button variant="ghost" className="text-white border border-gray-700 cursor-pointer">Saved Jobs</Button>
             </div>
 
             <div className="grid md:grid-cols-2 mt-6 gap-4">
