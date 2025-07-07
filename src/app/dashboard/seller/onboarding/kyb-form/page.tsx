@@ -289,6 +289,7 @@ import cookie from 'js-cookie';
 // import SkipNavBar from '../../Components/SkipNavBar';
 import { useSellerProfile } from '@/stores/userStore';
 import { ApiBaseUrl } from '@/helper/functions';
+import { useRouter } from 'next/navigation';
 // import RegisterBusinessUi from '../../Components/RegisterKyb';
 // import RegisterBusinessUi from '../../Components/RegisterBusinessUiComponent';
 
@@ -325,6 +326,7 @@ export default KybCompanyDocumentationForm;
 
 
 const RegisterBusinessUi = () => {
+    const profile = useSellerProfile((state) => state.profile)
     // NEW: Function to handle phone number change from PhoneInput
     const handlePhoneChange = (phone) => {
         setError('');
@@ -349,8 +351,8 @@ const RegisterBusinessUi = () => {
         proof_of_id: null,
         proof_of_address: null,
         other_documents: null,
-        firstname: '',
-        lastname: '',
+        firstname: profile.firstname,
+        lastname: profile.lastname,
         phone_number: '',
         bvn: '',
         nin: '',
@@ -578,10 +580,9 @@ const RegisterBusinessUi = () => {
 
 
                 </div>)
+            // ... inside your renderStep function
             case 2:
                 return (
-
-
                     <div className="lg:w-2/3">
                         <h3 className="text-lg font-semibold mb-2">Contact details</h3>
                         <p className="text-lg text-gray-400 mb-6">
@@ -593,11 +594,11 @@ const RegisterBusinessUi = () => {
                                 <label className="text-lg font-medium">First name <span className="text-red-600">*</span></label>
                                 <input
                                     type="text"
+                                    name="firstname" // MODIFIED: Added name attribute
                                     placeholder="E.g Jeffrey"
                                     required
                                     value={formData.firstname}
                                     onChange={handleChange}
-
                                     className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
                                 />
                             </div>
@@ -605,53 +606,33 @@ const RegisterBusinessUi = () => {
                                 <label className="text-lg font-medium">Last name <span className="text-red-600">*</span></label>
                                 <input
                                     type="text"
-                                    placeholder="E.g Jeffrey"
+                                    name="lastname" // MODIFIED: Added name attribute
+                                    placeholder="E.g Samuels"
                                     required
                                     value={formData.lastname}
                                     onChange={handleChange}
-
                                     className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
                                 />
                             </div>
 
                             <div>
-                                <label className="text-lg font-medium">Contact phone number (with contry code )<span className="text-red-600">*</span></label>
-                                <div className="mt-1 flex items-center gap-2">
-                                    {/* <div className="bg-gray-900 border border-gray-700 rounded-md px-1 py-3 flex items-center flex-row w-1/14">
-                                                                                🇳🇬 +234
-                                                                        </div> */}
-                                    <PhoneInput className='w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-2 text-lg'
-                                        // defaultCountry="ng"
-                                        value={formData.phone_number}
-                                        required
-                                        onChange={handlePhoneChange}
-                                    />
-                                    {/* <input
-                                                                                type="tel"
-                                                                                placeholder="812 345 6789"
-                                                                                className="w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
-                                                                        /> */}
-                                </div>
+                                <label className="text-lg font-medium">Contact phone number (with country code)<span className="text-red-600">*</span></label>
+                                <PhoneInput
+                                    className='w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-2 text-lg'
+                                    value={formData.phone_number}
+                                    required
+                                    onChange={handlePhoneChange}
+                                />
                             </div>
-                            {/* 
-                                                                        <div>
-                                                                                <label className="text-lg font-medium">Contact email address <span className="text-red-600">*</span></label>
-                                                                                <input
-                                                                                        type="email"
-                                                                                        placeholder="E.g jsamuels@proflix.io"
-                                                                                        onChange={handleChange}
-                                                                                        className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
-                                                                                />
-                                                                        </div> */}
 
                             <div>
                                 <label className="text-lg font-medium">Bank Verification Number (BVN) *</label>
                                 <input
                                     type="text"
+                                    name="bvn" // MODIFIED: Added name attribute
                                     placeholder="E.g 22356801434"
                                     required
                                     value={formData.bvn}
-
                                     onChange={handleChange}
                                     className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
                                 />
@@ -661,30 +642,33 @@ const RegisterBusinessUi = () => {
                                 <label className="text-lg font-medium">National Identification Number (NIN) *</label>
                                 <input
                                     type="text"
+                                    name="nin" // MODIFIED: Added name attribute
                                     placeholder="E.g 9934356801434"
                                     onChange={handleChange}
                                     required
                                     value={formData.nin}
-
                                     className="mt-1 w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-lg"
                                 />
                             </div>
-                            {/* NEW: Error Display */}
+
                             {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
+
                             <div className="flex justify-between mt-6 gap-4">
                                 <button
                                     type="button"
                                     className="w-1/2 border border-yellow-400 text-yellow-400 py-3 rounded-md hover:bg-yellow-600/10 transition"
-
                                     onClick={() => setActiveStep(1)}
                                 >
                                     Go back
                                 </button>
-                                {/* MODIFIED: Calls the verification function */}
-                                <button type="button" onClick={handleVerificationAndContinue} disabled={isLoading} className="w-1/2 bg-yellow-400 text-black font-medium py-3 rounded-md disabled:bg-gray-500">
+                                <button
+                                    type="button"
+                                    onClick={handleVerificationAndContinue}
+                                    disabled={isLoading}
+                                    className="w-1/2 bg-yellow-400 text-black font-medium py-3 rounded-md disabled:bg-gray-500"
+                                >
                                     {isLoading ? 'Verifying...' : 'Verify & Continue'}
                                 </button>
-
                             </div>
                         </div>
                     </div>
@@ -787,7 +771,8 @@ const RegisterBusinessUi = () => {
 
 
 const UnRegisterBusinessUi = () => {
-const profile= useSellerProfile((state) => state.profile)
+    const router=useRouter()
+    const profile = useSellerProfile((state) => state.profile)
     const [uploading, setUploading] = useState(false);
 
     //     const profile = useSellerProfile((state) => state.profile); // Access profile from your store
@@ -852,7 +837,7 @@ const profile= useSellerProfile((state) => state.profile)
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${authToken}`
                     },
-                    body: JSON.stringify({ bvn: formData.bvn,firstname:formData.firstname,lastname:formData.lastname })
+                    body: JSON.stringify({ bvn: formData.bvn, firstname: formData.firstname, lastname: formData.lastname })
                 }
             );
 
@@ -907,6 +892,7 @@ const profile= useSellerProfile((state) => state.profile)
                 const result = await response.json();
                 if (result.status) {
                     toast.success(result.message || "KYB submission successful!");
+                    router.push("/dashboard/seller")
                 } else {
                     toast.error(result.message);
                 }
@@ -943,15 +929,16 @@ const profile= useSellerProfile((state) => state.profile)
 
                 <form onSubmit={handleSubmit} className="space-y-6">
 
-                     <div className="mb-5">
+                    <div className="mb-5">
                         <label htmlFor="fname" className="block mb-1 text-sm">First Name</label>
                         <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
                             {/* <User className="h-4 w-4 text-purple-400" /> */}
                             <input
                                 type="text"
-                                name="fname"
+                                name="firstname"
                                 id="fname"
                                 value={formData.firstname}
+                                // defaultValue={profile?.firstname}
                                 required
                                 onChange={handleChange}
                                 placeholder="First name"
@@ -959,15 +946,16 @@ const profile= useSellerProfile((state) => state.profile)
                             />
                         </div>
                     </div>
-                     <div className="mb-5">
+                    <div className="mb-5">
                         <label htmlFor="lname" className="block mb-1 text-sm">Last Name</label>
                         <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
                             {/* <User className="h-4 w-4 text-purple-400" /> */}
                             <input
                                 type="text"
-                                name="lname"
+                                name="lastname"
                                 id="lname"
                                 value={formData.lastname}
+                                // defaultValue={profile?.lastname}
                                 required
                                 onChange={handleChange}
                                 placeholder="Last name"
