@@ -16,7 +16,7 @@ import { Eye, EyeOff, User, Lock } from 'lucide-react';
 import Link from "next/link";
 
 
-import { useSellerProfile, useUserProfile } from "@/stores/userStore";
+
 import { rememberMe, storedCredentials } from "@/stores/zustandStores";
 
 
@@ -37,8 +37,8 @@ const clearCredentials = storedCredentials((state) => state.clearCredentials);
 
 
 
-const setVendorProfile = useSellerProfile((state) => state.setProfile);
-const setUserProfile = useUserProfile((state) => state.setProfile);
+// const setVendorProfile = useSellerProfile((state) => state.setProfile);
+// const setUserProfile = useUserProfile((state) => state.setProfile);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,7 +48,6 @@ const setUserProfile = useUserProfile((state) => state.setProfile);
 
     if (!email || !password) {
       toast.error("All fields must be provided",);
-
     } else {
       setLoading(true);
       fetch(`${ApiBaseUrl}/login`, {
@@ -98,7 +97,7 @@ const setUserProfile = useUserProfile((state) => state.setProfile);
                
                 console.log("Profile fetched:", profile);
                 if (profile && profile.id) {
-                     setVendorProfile(profile);
+                    //  setVendorProfile(profile);
                   if(!profile.kycverifications || profile.kycverifications.length==0){
                     window.location.href = `/dashboard/seller/onboarding`;
                   }else{
@@ -116,7 +115,7 @@ const setUserProfile = useUserProfile((state) => state.setProfile);
                
                 console.log("Profile fetched:", profile);
                 if (profile && profile.id) {
-                     setUserProfile(profile);
+                    //  setUserProfile(profile);
                   if(!profile.kycverifications || profile.kycverifications.length==0){
                     window.location.href = `/dashboard/buyer/onboarding`;
                   }else{
