@@ -6,79 +6,55 @@ const ApiBaseUrl =
 export const Api = {
   // Fetch public job categories
   fetchJobCategories: async () => {
-    const res = await fetch(`${ApiBaseUrl}/categories`);
-    const json = await res.json();
-    return json.data;
+    try {
+      const res = await fetch(`${ApiBaseUrl}/categories`);
+      const json = await res.json();
+      return json.data;
+    } catch (error) {
+      console.error("Error fetching job categories:", error);
+      throw new Error("Failed to fetch job categories");
+    }
   },
 
   // Fetch job categories for admin
   fetchJobCategoriesAdmin: async () => {
-    const res = await fetch(`${ApiBaseUrl}/admin/categories`);
-    const json = await res.json();
-    return json.data;
-  },
-
-  // Login user
-  login: async (payload: any) => {
-    const res = await fetch(`${ApiBaseUrl}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message || "Login failed");
+    try {
+      const res = await fetch(`${ApiBaseUrl}/admin/categories`);
+      const json = await res.json();
+      return json.data;
+    } catch (error) {
+      console.error("Error fetching admin categories:", error);
+      throw new Error("Failed to fetch admin job categories");
     }
-
-    return res.json(); // assuming it returns { token, user, role, etc. }
   },
 
-  // Register user (handles individual and others)
-  registerStepOne: async (payload: any, accountType: string) => {
-    const endpoint =
-      accountType === "individual"
-        ? `${ApiBaseUrl}/seller/register-step-one`
-        : `${ApiBaseUrl}/register-step-one`;
 
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
 
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message || "Registration failed");
-    }
-
-    return res.json(); // expected: { user, status, etc. }
-  },
+  // Register step two
   registerStepTwo: async (payload: any, role: string) => {
-    const endpoint =
-      role === "individual"
-        ? `${ApiBaseUrl}/register-step-two`
-        : `${ApiBaseUrl}/register-step-one`;
+    try {
+      const endpoint =
+        role === "individual"
+          ? `${ApiBaseUrl}/register-step-two`
+          : `${ApiBaseUrl}/register-step-one`;
 
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message || "Registration failed");
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "Registration failed");
+      }
+
+      return await res.json();
+    } catch (error) {
+      console.error("Register step two error:", error);
+      throw new Error(error.message || "Registration step two failed");
     }
-
-    return res.json(); // expected: { user, status, etc. }
   },
-
-
 };

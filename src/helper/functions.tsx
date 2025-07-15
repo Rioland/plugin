@@ -1,7 +1,7 @@
 import { SellersProfileType } from "@/types/SellersProfileType";
 import Cookies from "js-cookie";
 
-export const ApiBaseUrl="https://plugins.cyclebreeze.com/api";
+export const ApiBaseUrl="https://plugin.cyclebreezetest.com/api";
 
       
 

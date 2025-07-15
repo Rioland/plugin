@@ -18,12 +18,13 @@ import Link from "next/link";
 
 
 import { rememberMe, storedCredentials } from "@/stores/zustandStores";
+import { useAuthStore } from "@/stores/userStore";
 
 
 
 export default function LoginForm() {
   //  const {data,error,isLoading} = useQuery({ queryKey: ['sellerProfile'], queryFn: fetchAndReturnUserProfile, refetchOnWindowFocus: false, retry: false ,},);
-
+const {login}=useAuthStore()
 const isChecked = rememberMe((state) => state.isChecked);
 console.log("isChecked", isChecked);
 const setIsChecked = rememberMe((state) => state.setIsChecked);
@@ -81,16 +82,17 @@ const clearCredentials = storedCredentials((state) => state.clearCredentials);
               setLoading(false);
               toast.success("Login successful",);
               // Set cookies instead of localStorage
-              Cookies.set("token", data.data.token, {
-                expires: 0.5,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
-              });
-              Cookies.set("role", data.data.role, {
-                expires: 0.5,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
-              });
+              login(data.data.user,data.data.token,data.data.role,true)
+              // Cookies.set("token", data.data.token, {
+              //   expires: 0.5,
+              //   secure: process.env.NODE_ENV === "production",
+              //   sameSite: "strict",
+              // });
+              // Cookies.set("role", data.data.role, {
+              //   expires: 0.5,
+              //   secure: process.env.NODE_ENV === "production",
+              //   sameSite: "strict",
+              // });
       
               if (data.data.role == 1) {
                 const profile = await fetchAndReturnVendorProfile();
