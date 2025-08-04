@@ -1,33 +1,28 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
-import { Suspense, useEffect, useRef, useState } from 'react';
-import {  Info } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
-import { ApiBaseUrl } from '@/helper/functions';
-import { toast, Toaster } from "sonner"
 
+import { Suspense, useEffect, useRef, useState } from "react";
+import { Info } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { toast, Toaster } from "sonner";
+import { AuthApi } from "@/utils/api-calls";
 
-
-
-import React from 'react'
-
-export default function page() {
+export default function Page() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <OtpVerification />
     </Suspense>
-  )
+  );
 }
-
-
-
 
 function OtpVerification() {
   const inputRefs = useRef<Array<HTMLInputElement | null>>(Array(6).fill(null));
-  const [otp, setOtp] = useState(Array(6).fill(''));
+  const [otp, setOtp] = useState(Array(6).fill(""));
   const [timer, setTimer] = useState(7);
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
-  const email = searchParams.get('email');
+  const email = searchParams.get("email");
+
   useEffect(() => {
     if (timer > 0) {
       const interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
@@ -48,93 +43,65 @@ function OtpVerification() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const formData = new FormData(event.currentTarget);
+    const otpString = otp.join("");
 
-    const otpString = otp.join('');
-    if (!otp) {
-      toast.error("OTP field is required",);
-      return;  // stop the function execution here if otp field is required
+    if (!otpString) {
+      toast.error("OTP field is required");
+      return;
     }
+
+    if (!email) {
+      toast.error("Email is required for OTP verification");
+      return;
+    }
+
     setLoading(true);
-    // api call
-    fetch(`${ApiBaseUrl}/register-step-two`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        verification_code: otpString,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.status == false) {
-          toast.error(data.message,);
-          setLoading(false);
-        } else {
-          setLoading(false);
-          toast.success("Registration successful, Kindly login",);
-          window.location.href = "/login";
 
-        }
-      });
+    try {
+      const data = await AuthApi.verifyOtp(email, otpString);
+      toast.success("Registration successful, Kindly login");
+      window.location.href = "/login";
+    } catch (error: any) {
+      console.error("Error during OTP verification:", error);
+      toast.error(error.message || "An error occurred during OTP verification");
+    } finally {
+      setLoading(false);
+    }
   };
-  const handleResendOTP = () => {
 
+  const handleResendOTP = async () => {
     if (timer > 0) {
       toast.error("Please wait for the timer to finish before resending OTP.");
       return;
     }
-    setTimer(60);
-    fetch(`${ApiBaseUrl}/resend-verification`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email
-      }),
-    })
-      .then((res) => res.json()).then((data) => {
-        console.log(data);
-        if (data.status == false) {
 
-          toast.error(data.message,);
+    if (!email) {
+      toast.error("Email is required to resend OTP");
+      return;
+    }
 
-          // setLoading(false);
-        } else {
-
-          toast.success(data.message);
-
-          // setLoading(false);
-        }
-      });
-
-
-    console.log("OTP Resent!");
+    try {
+      setTimer(60);
+      const data = await AuthApi.resendVerification(email);
+      toast.success(data.message || "OTP resent successfully");
+    } catch (error: any) {
+      console.error("Error resending OTP:", error);
+      toast.error(error.message || "Failed to resend OTP");
+    }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white px-3">
-      {/* Back button */}
-      {/* <div className="absolute top-6 left-6 flex items-center text-white space-x-2 cursor-pointer">
-        <ArrowLeft size={18} />
-        <span>Back</span>
-      </div> */}
-
-      {/* OTP Container */}
       <form onSubmit={handleSubmit}>
         <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-md shadow-xl border border-neutral-700">
           <div className="text-center mb-6">
-            {/* Logo */}
             <div className="flex justify-center mb-4">
               <div className="p-2 rounded-lg">
                 <img
@@ -149,13 +116,11 @@ function OtpVerification() {
             <Toaster position="top-center" />
           </div>
 
-          {/* OTP Input Fields */}
           <div className="flex justify-center space-x-3 mb-4">
             {otp.map((digit, index) => (
               <input
                 key={index}
                 type="text"
-
                 value={digit}
                 onChange={(e) => handleChange(e.target.value, index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
@@ -168,21 +133,30 @@ function OtpVerification() {
             ))}
           </div>
 
-          {/* Resend Timer */}
           <div className="text-center text-lg text-gray-400 mb-5">
-            Didn’t get a code? Resending in <span className="text-[oklch(0.79_0.18_86.03)] ">{timer < 1 ? <div className='cursor-pointer text-lg font-semibold' onClick={(() => { handleResendOTP() })} >Resend otp</div> : `0:${timer < 10 ? '0' : ''}${timer}`}</span>
+            Didn’t get a code? Resending in{" "}
+            <span className="text-[oklch(0.79_0.18_86.03)]">
+              {timer < 1 ? (
+                <div className="cursor-pointer text-lg font-semibold" onClick={handleResendOTP}>
+                  Resend OTP
+                </div>
+              ) : (
+                `0:${timer < 10 ? "0" : ""}${timer}`
+              )}
+            </span>
           </div>
 
-          {/* Continue Button */}
-          {loading ? <img src="/images/preloader.gif" className="mx-auto" /> : <button
-            type="submit"
-            className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition mb-4"
-          >
-            Continue
-          </button>}
+          {loading ? (
+            <img src="/images/preloader.gif" className="mx-auto" />
+          ) : (
+            <button
+              type="submit"
+              className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition mb-4"
+            >
+              Continue
+            </button>
+          )}
 
-
-          {/* Info Link */}
           <div className="flex justify-center items-center text-xs text-gray-500 space-x-2">
             <Info size={14} />
             <span>Learn more about OTP & Security</span>

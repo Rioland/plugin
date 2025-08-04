@@ -1,60 +1,148 @@
-// utils/api.ts
+// api/authApi.ts
 
 const ApiBaseUrl =
   process.env.NEXT_PUBLIC_API_BASE_URL || "https://your-api-url.com";
 
-export const Api = {
-  // Fetch public job categories
-  fetchJobCategories: async () => {
+interface LoginResponse {
+  status: boolean;
+  message?: string;
+  data?: {
+    user: any;
+    token: string;
+    role: string;
+    verified: boolean;
+  };
+  errors?: {
+    verified?: boolean;
+    email?: string;
+  };
+}
+
+interface ApiResponse {
+  status: boolean;
+  message?: string;
+  data?: any;
+}
+
+export const AuthApi = {
+  // Login API call
+  login: async (email: string, password: string): Promise<LoginResponse> => {
     try {
-      const res = await fetch(`${ApiBaseUrl}/categories`);
-      const json = await res.json();
-      return json.data;
-    } catch (error) {
-      console.error("Error fetching job categories:", error);
-      throw new Error("Failed to fetch job categories");
-    }
-  },
-
-  // Fetch job categories for admin
-  fetchJobCategoriesAdmin: async () => {
-    try {
-      const res = await fetch(`${ApiBaseUrl}/admin/categories`);
-      const json = await res.json();
-      return json.data;
-    } catch (error) {
-      console.error("Error fetching admin categories:", error);
-      throw new Error("Failed to fetch admin job categories");
-    }
-  },
-
-
-
-  // Register step two
-  registerStepTwo: async (payload: any, role: string) => {
-    try {
-      const endpoint =
-        role === "individual"
-          ? `${ApiBaseUrl}/register-step-two`
-          : `${ApiBaseUrl}/register-step-one`;
-
-      const res = await fetch(endpoint, {
+      const res = await fetch(`${ApiBaseUrl}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ email, password }),
       });
 
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.message || "Registration failed");
+      const data: LoginResponse = await res.json();
+
+      if (!res.ok || data.status === false) {
+        throw new Error(data.message || "Login failed", { cause: data.errors });
       }
 
-      return await res.json();
+      return data;
     } catch (error) {
-      console.error("Register step two error:", error);
-      throw new Error(error.message || "Registration step two failed");
+      console.error("Error during login:", error);
+      throw error;
+    }
+  },
+
+  // Resend verification email
+  resendVerification: async (email: string): Promise<ApiResponse> => {
+    try {
+      const res = await fetch(`${ApiBaseUrl}/resend-verification`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data: ApiResponse = await res.json();
+
+      if (!res.ok || data.status === false) {
+        throw new Error(data.message || "Failed to resend verification");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error resending verification:", error);
+      throw new Error(error.message || "Failed to resend verification");
+    }
+  },
+
+  // Verify OTP
+  verifyOtp: async (email: string, verification_code: string): Promise<ApiResponse> => {
+    try {
+      const res = await fetch(`${ApiBaseUrl}/register-step-two`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, verification_code }),
+      });
+
+      const data: ApiResponse = await res.json();
+
+      if (!res.ok || data.status === false) {
+        throw new Error(data.message || "OTP verification failed");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error during OTP verification:", error);
+      throw new Error(error.message || "Failed to verify OTP");
+    }
+  },
+  // Logout API call
+  logout: async (token: string): Promise<ApiResponse> => {
+    try {
+      const res = await fetch(`${ApiBaseUrl}/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data: ApiResponse = await res.json();
+
+      if (!res.ok || data.status === false) {
+        throw new Error(data.message || "Logout failed");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error during logout:", error);
+      throw new Error(error.message || "Failed to logout");
+    }
+  },
+
+  // Forgot Password API call
+  forgotPassword: async (email: string): Promise<ApiResponse> => {
+    try {
+      const res = await fetch(`${ApiBaseUrl}/forget-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data: ApiResponse = await res.json();
+
+      if (!res.ok || data.status === false) {
+        throw new Error(data.message || "Failed to send password reset request");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error during forgot password:", error);
+      throw new Error(error.message || "Failed to send password reset request");
     }
   },
 };
