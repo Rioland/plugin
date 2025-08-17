@@ -1,6 +1,8 @@
-import { createClient } from '@/lib/supabase/server'
+
 import { NextResponse } from 'next/server'
 import { redirect } from 'next/navigation'
+import { createClient } from '@/utils/supabase/clients'
+import { toast } from 'sonner'
 
 export async function GET(request: Request) {
   // The `/auth/callback` route is required for the server-side auth flow implemented
@@ -35,6 +37,7 @@ export async function GET(request: Request) {
 
         if (profileError) {
           console.error('Profile fetch error:', profileError)
+          toast.error('Profile fetch error:'+ profileError)
         }
 
         // Redirect based on profile completion or role

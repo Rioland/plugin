@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
@@ -6,18 +7,17 @@ import React, { useState, useTransition } from "react";
 import { Eye, EyeOff, User, Lock, Mail } from "lucide-react";
 import Link from "next/link";
 
-
-import { signIn, resendVerificationEmail } from "@/lib/actions";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/clients";
 
 export default function LoginForm() {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
-  const [needsVerification, setNeedsVerification] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
-  const [resendPending, setResendPending] = useState(false);
 
+  const [userEmail, setUserEmail] = useState("");
+
+  const supabase = createClient()
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -31,64 +31,76 @@ export default function LoginForm() {
 
     setUserEmail(email);
 
-    startTransition(async () => {
-      try {
-        const result = await signIn(null, formData);
-        
-        if (result.error) {
-          if (result.error.toLowerCase().includes('email not confirmed')) {
-            setNeedsVerification(true);
-            toast.error("Please verify your email before logging in.");
-          } else {
-            toast.error(result.error);
-          }
-          return;
-        }
-
-        if (result.success && result.toast) {
-          // This means verification email was sent
-          setNeedsVerification(true);
-          toast.success(result.toast);
-          return;
-        }
-
-        if (result.success) {
-          toast.success("Login successful!");
-          // Redirect will be handled by the server action
-          router.push("/dashboard");
-        }
-      } catch (error: any) {
-        console.error('Login error:', error);
-        toast.error(error.message || "An unexpected error occurred");
-      }
-    });
-  };
-
-  const handleResendVerification = async () => {
-    if (!userEmail) {
-      toast.error("Email is required to resend verification");
-      return;
-    }
-
-    setResendPending(true);
     try {
-      const formData = new FormData();
-      formData.append('email', userEmail);
-      
-      const result = await resendVerificationEmail(null, formData);
-      
-      if (result.error) {
-        toast.error(result.error);
-      } else if (result.success) {
-        toast.success(result.message || "Verification email sent! Please check your inbox.");
+
+      setLoading(true)
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.toString(),
+        password: password.toString(),
+      })
+      if (error) {
+        if (error.message.includes("Email not confirmed")) {
+          const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL
+            ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+            : `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/auth/callback`
+
+          await supabase.auth.resend({
+            type: "signup",
+            email: email.toString(),
+            options: {
+              emailRedirectTo: redirectUrl,
+            },
+          })
+
+          toast.error("Please verify your email before logging in.");
+        } else {
+          console.log('Login error:', error)
+          toast.error(error.message);
+        }
+        return; // Don't proceed to success handling if there was an error
       }
+
+
+
+
+
+      // If we get here, login was successful
+      toast.success("Login successful!");
+      router.push("/dashboard");
     } catch (error: any) {
-      console.error('Resend error:', error);
-      toast.error(error.message || "Failed to resend verification email");
+      console.error('Login error:', error);
+      toast.error(error || "An unexpected error occurred");
     } finally {
-      setResendPending(false);
+      setLoading(false)
     }
   };
+
+  // const handleResendVerification = async () => {
+  //   if (!userEmail) {
+  //     toast.error("Email is required to resend verification");
+  //     return;
+  //   }
+
+  //   setResendPending(true);
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append('email', userEmail);
+
+  //     const result = await resendVerificationEmail(null, formData);
+
+  //     if (result.error) {
+  //       toast.error(result.error);
+  //     } else if (result.success) {
+  //       toast.success(result.message || "Verification email sent! Please check your inbox.");
+  //     }
+  //   } catch (error: any) {
+  //     console.error('Resend error:', error);
+  //     toast.error(error.message || "Failed to resend verification email");
+  //   } finally {
+  //     setResendPending(false);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white p-2">
@@ -171,15 +183,15 @@ export default function LoginForm() {
             <label htmlFor="remember" className="text-sm">Remember Me</label>
           </div>
 
-          {isPending ? (
+          {loading ? (
             <img src="/images/preloader.gif" className="mx-auto" />
           ) : (
             <button
               type="submit"
-              disabled={isPending}
+              disabled={loading}
               className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition disabled:opacity-50"
             >
-              {isPending ? "Signing in..." : "Log in"}
+              {loading ? "Signing in..." : "Log in"}
             </button>
           )}
 
@@ -193,7 +205,7 @@ export default function LoginForm() {
             </Link>
           </p>
         </form>
-
+        {/* 
         {needsVerification && (
           <div className="mt-6 p-4 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
             <div className="flex items-center mb-2">
@@ -211,7 +223,7 @@ export default function LoginForm() {
               {resendPending ? "Sending..." : "Resend Verification Email"}
             </button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
