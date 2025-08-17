@@ -1,7 +1,10 @@
-'use client';
+/* eslint-disable @next/next/no-img-element */
+'use client'
+import { useAccountStore } from '@/stores/useAccountStore';
 import React from 'react';
 
 const PluginPage = () => {
+  const {  setAccountType } = useAccountStore();
   return (
     <div className="min-h-screen bg-gradient-to-b from-yellow-500 to-black flex flex-col items-center justify-center py-6 md:py-0 ">
       <div className="text-center mb-8">
@@ -17,7 +20,7 @@ const PluginPage = () => {
       </div>
       <div className="flex flex-col md:flex-row justify-center items-center gap-6 px-6">
         <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-sm cursor-pointer" onClick={() => {
-          localStorage.setItem("account_type", "individual");
+          setAccountType("buyer");
           window.location.href = '/signup'}}>
           <div className="flex justify-center mb-4">
           <img
@@ -32,7 +35,7 @@ const PluginPage = () => {
           </p>
         </div>
         <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-sm cursor-pointer" onClick={()=>{
-          localStorage.setItem("account_type", "business");
+           setAccountType("seller");
           window.location.href = '/signup'}}>
           <div className="flex justify-center mb-4">
             {/* <div className="text-6xl">&#128682;&#129309;</div> Door and handshake

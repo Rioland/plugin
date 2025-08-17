@@ -49,3 +49,28 @@ FOR UPDATE USING (auth.uid() = id);
 -- Allow insert for authenticated users (handled via trigger)
 CREATE POLICY "Allow insert for authenticated users" ON profiles
 FOR INSERT TO authenticated WITH CHECK (true);
+
+create table verification_codes (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade,
+  otp text not null,
+  expires_at timestamptz not null,
+  used boolean default false
+);
+
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow service role insert"
+ON profiles
+FOR INSERT
+TO service_role
+WITH CHECK (true);
+
+-- Same for verification_codes
+ALTER TABLE verification_codes ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow service role insert"
+ON verification_codes
+FOR INSERT
+TO service_role
+WITH CHECK (true);

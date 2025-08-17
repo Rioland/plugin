@@ -1,10 +1,13 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { Button } from '@/components/ui/button';
+import { useAccountStore } from '@/stores/useAccountStore';
 import React from 'react';
 
 
 const KYCVerification = () => {
+  const {setBusinessType}=useAccountStore()
   return (
     <div className="min-h-screen bg-gradient-to-b from-yellow-500 to-black flex flex-col items-center justify-center  py-10 md:py-0">
       {/* Back Button */}
@@ -25,7 +28,7 @@ const KYCVerification = () => {
       <div className="flex flex-col md:flex-row  space-x-8 gap-4 md:gap-0">
         {/* Registered Business Card */}
         <div className="bg-black text-white p-6 rounded-lg shadow-lg w-80 cursor-pointer" onClick={()=>{
-          localStorage.setItem('account_type', 'business');
+         setBusinessType( 'business');
           window.location.href = '/signup/register-seller';
         }}>
           <div className="mb-4">
@@ -45,7 +48,7 @@ const KYCVerification = () => {
 
         {/* Unregistered Business Card */}
         <div className="bg-black text-white p-6 rounded-lg shadow-lg w-80 cursor-pointer" onClick={()=>{
-          localStorage.setItem('account_type', 'individual');
+         setBusinessType( 'individual');
           window.location.href = '/signup/register-seller';
         }}>
           <div className="mb-4">

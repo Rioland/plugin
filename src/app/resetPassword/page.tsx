@@ -14,7 +14,7 @@ import React from "react";
 import { useState } from 'react';
 import { Eye, EyeOff, User, Lock } from 'lucide-react';
 import Link from "next/link";
-import { useSellerProfile } from "@/stores/userStore";
+// import { useSellerProfile } from "@/stores/userStore";
 
 export default function LoginForm() {
 const setProfile = useSellerProfile((state) => state.setProfile);

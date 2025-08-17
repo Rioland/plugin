@@ -22,6 +22,37 @@ function OtpVerification() {
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
+  const userId = searchParams.get("userId");
+
+
+
+
+  const handleVerify = async () => {
+    if (!otp) {
+      toast.error("Enter OTP");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, otp }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        toast.success("Account verified!");
+        window.location.href = "/dashboard";
+      } else {
+        toast.error(data.error || "Invalid OTP");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong");
+    }
+  };
 
   useEffect(() => {
     if (timer > 0) {
@@ -48,33 +79,7 @@ function OtpVerification() {
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const otpString = otp.join("");
 
-    if (!otpString) {
-      toast.error("OTP field is required");
-      return;
-    }
-
-    if (!email) {
-      toast.error("Email is required for OTP verification");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const data = await AuthApi.verifyOtp(email, otpString);
-      toast.success("Registration successful, Kindly login");
-      window.location.href = "/login";
-    } catch (error: any) {
-      console.error("Error during OTP verification:", error);
-      toast.error(error.message || "An error occurred during OTP verification");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleResendOTP = async () => {
     if (timer > 0) {
