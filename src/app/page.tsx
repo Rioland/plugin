@@ -2,32 +2,21 @@
 "use client";
 
 import { toast, Toaster } from "sonner";
-
-import {
-  fetchAndReturnUserProfile,
-  fetchAndReturnVendorProfile,
-} from "@/helper/functions";
-import Cookies from "js-cookie";
-
-import React, { useState } from "react";
-import { Eye, EyeOff, User, Lock } from "lucide-react";
+import React, { useState, useTransition } from "react";
+import { Eye, EyeOff, User, Lock, Mail } from "lucide-react";
 import Link from "next/link";
 
-import { rememberMe, storedCredentials } from "@/stores/zustandStores";
-import { useAuthStore } from "@/stores/userStore";
-import { AuthApi } from "@/utils/api-calls";
+
+import { signIn, resendVerificationEmail } from "@/lib/actions";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
-  const { login } = useAuthStore();
-  const isChecked = rememberMe((state) => state.isChecked);
-  const setIsChecked = rememberMe((state) => state.setIsChecked);
-  const credentials = storedCredentials((state) => state.credentials);
-  const setEmail = storedCredentials((state) => state.setEmail);
-  const setPassword = storedCredentials((state) => state.setPassword);
-  const clearCredentials = storedCredentials((state) => state.clearCredentials);
-
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const [showPassword, setShowPassword] = useState(false);
+  const [needsVerification, setNeedsVerification] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [resendPending, setResendPending] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,106 +25,68 @@ export default function LoginForm() {
     const password = formData.get("password") as string;
 
     if (!email || !password) {
-      toast.error("All fields must be provided");
+      toast.error("Email and password are required");
       return;
     }
 
-    setLoading(true);
+    setUserEmail(email);
 
+    startTransition(async () => {
+      try {
+        const result = await signIn(null, formData);
+        
+        if (result.error) {
+          if (result.error.toLowerCase().includes('email not confirmed')) {
+            setNeedsVerification(true);
+            toast.error("Please verify your email before logging in.");
+          } else {
+            toast.error(result.error);
+          }
+          return;
+        }
+
+        if (result.success && result.toast) {
+          // This means verification email was sent
+          setNeedsVerification(true);
+          toast.success(result.toast);
+          return;
+        }
+
+        if (result.success) {
+          toast.success("Login successful!");
+          // Redirect will be handled by the server action
+          router.push("/dashboard");
+        }
+      } catch (error: any) {
+        console.error('Login error:', error);
+        toast.error(error.message || "An unexpected error occurred");
+      }
+    });
+  };
+
+  const handleResendVerification = async () => {
+    if (!userEmail) {
+      toast.error("Email is required to resend verification");
+      return;
+    }
+
+    setResendPending(true);
     try {
-      // Call the login API
-      const data = await AuthApi.login(email, password);
-
-      if (data.status === false) {
-        // Handle unverified email case
-        if (data.errors?.verified === false && data.errors?.email) {
-          toast.error(data.message);
-          // Resend verification email
-          const resendData = await AuthApi.resendVerification(data.errors.email);
-          if (resendData.status === false) {
-            toast.error(resendData.message);
-          } else {
-            toast.success(resendData.message);
-            window.location.href = "/signup/verify-otp?email=" + encodeURIComponent(data.errors.email);
-          }
-        } else {
-          // Handle other error cases
-          toast.error(data.message);
-        }
-        setLoading(false);
-        return;
-      }
-
-      // Handle "Remember Me" functionality
-      if (isChecked) {
-        setIsChecked(true);
-        setEmail(email);
-        setPassword(password);
-      } else {
-        setIsChecked(false);
-        clearCredentials();
-      }
-
-      if (data.data.verified) {
-        toast.success("Login successful");
-        login(data.data.user, data.data.token, data.data.role, true);
-
-        // Fetch profile based on role
-        if (data.data.role === "1") {
-          const profile = await fetchAndReturnVendorProfile();
-          console.log("Profile fetched:", profile);
-          if (profile && profile.id) {
-            if (!profile.kycverifications || profile.kycverifications.length === 0) {
-              window.location.href = `/dashboard/seller/onboarding`;
-            } else {
-              window.location.href = `/dashboard/seller`;
-            }
-          } else {
-            toast.error("Failed to fetch user profile");
-            setLoading(false);
-          }
-        } else {
-          const profile = await fetchAndReturnUserProfile();
-          console.log("Profile fetched:", profile);
-          if (profile && profile.id) {
-            if (!profile.kycverifications || profile.kycverifications.length === 0) {
-              window.location.href = `/dashboard/buyer/onboarding`;
-            } else {
-              window.location.href = `/dashboard/buyer`;
-            }
-          } else {
-            toast.error("Failed to fetch user profile");
-            setLoading(false);
-          }
-        }
-      } else {
-        // Fallback for unverified user (if errors object is not present)
-        const resendData = await AuthApi.resendVerification(data.data.user.email);
-        if (resendData.status === false) {
-          toast.error(resendData.message);
-          window.location.href = "/signup/verify-otp?email=" + encodeURIComponent(data.data.user.email);
-        } else {
-          toast.success(resendData.message);
-   
-        }
+      const formData = new FormData();
+      formData.append('email', userEmail);
+      
+      const result = await resendVerificationEmail(null, formData);
+      
+      if (result.error) {
+        toast.error(result.error);
+      } else if (result.success) {
+        toast.success(result.message || "Verification email sent! Please check your inbox.");
       }
     } catch (error: any) {
-      console.error("Error during login:", error);
-      toast.error(error.message || "An error occurred during login");
-      if (error.cause?.verified === false && error.cause?.email) {
-        toast.error("Please verify your email before logging in.");
-        await AuthApi.resendVerification(error.cause.email);
-        toast.success("Verification email resent. Please check your inbox.");
-        window.location.href = "/signup/verify-otp?email=" + encodeURIComponent(error.cause.email);
-      }
+      console.error('Resend error:', error);
+      toast.error(error.message || "Failed to resend verification email");
     } finally {
-      // Reset loading state
-      setIsChecked(false);
-      setEmail("");
-      setPassword("");
-      clearCredentials();
-      setShowPassword(false); 
-      setLoading(false);
+      setResendPending(false);
     }
   };
 
@@ -166,7 +117,7 @@ export default function LoginForm() {
                 name="email"
                 id="email"
                 required
-                defaultValue={credentials.email ?? ""}
+                defaultValue=""
                 autoComplete="email"
                 autoFocus
                 autoCorrect="off"
@@ -185,7 +136,7 @@ export default function LoginForm() {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                defaultValue={credentials.password ?? ""}
+                defaultValue=""
                 autoComplete="current-password"
                 required
                 name="password"
@@ -215,20 +166,20 @@ export default function LoginForm() {
               type="checkbox"
               id="remember"
               className="accent-purple-500"
-              checked={isChecked}
-              onChange={(e) => setIsChecked(e.target.checked)}
+              defaultChecked={false}
             />
             <label htmlFor="remember" className="text-sm">Remember Me</label>
           </div>
 
-          {loading ? (
+          {isPending ? (
             <img src="/images/preloader.gif" className="mx-auto" />
           ) : (
             <button
               type="submit"
-              className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition"
+              disabled={isPending}
+              className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition disabled:opacity-50"
             >
-              Log in
+              {isPending ? "Signing in..." : "Log in"}
             </button>
           )}
 
@@ -242,6 +193,25 @@ export default function LoginForm() {
             </Link>
           </p>
         </form>
+
+        {needsVerification && (
+          <div className="mt-6 p-4 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
+            <div className="flex items-center mb-2">
+              <Mail className="h-4 w-4 text-yellow-400 mr-2" />
+              <h3 className="text-sm font-semibold text-yellow-400">Email Verification Required</h3>
+            </div>
+            <p className="text-xs text-yellow-200 mb-3">
+              Please check your email ({userEmail}) and click the verification link to complete your account setup.
+            </p>
+            <button
+              onClick={handleResendVerification}
+              disabled={resendPending}
+              className="text-xs bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded transition disabled:opacity-50"
+            >
+              {resendPending ? "Sending..." : "Resend Verification Email"}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

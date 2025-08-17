@@ -84,39 +84,60 @@ const SignupForm = () => {
                         return;
                 }
 
-                try {
-                        // ✅ Direct Supabase signup
-                        setPending(true)
-                        const { data, error } = await supabase.auth.signUp({
-                                email,
-                                password,
-                                options: {
-                                        data: {
-                                                firstName,
-                                                lastName,
-                                                phone: phoneNumber,
-                                                accountType,
-                                        },
-                                },
-                        });
+		try {
+			// ✅ Supabase signup with email verification
+			setPending(true)
+			
+			// Get site URL for email confirmation redirect
+			const siteUrl = window.location.origin;
+			
+			const { data, error } = await supabase.auth.signUp({
+				email,
+				password,
+				options: {
+					emailRedirectTo: `${siteUrl}/auth/callback`,
+					data: {
+						first_name: firstName,
+						last_name: lastName,
+						phone_number: phoneNumber,
+						account_type: accountType,
+						full_name: `${firstName} ${lastName}`,
+						display_name: `${firstName} ${lastName}`,
+					},
+				},
+			});
 
-                        if (error) {
-                                toast.error(error.message);
-                                return;
-                        }
-                        //   await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/send-otp`, {
-                        //       method: "POST",
-                        //       headers: { "Content-Type": "application/json" },
-                        //       body: JSON.stringify({ data.user?.id, email }),
-                        //     });
-                        toast.success("Registration successful, check your email for OTP!");
-                        window.location.href = `/signup/verify-otp?userId=${data.user?.id}&email=${email}`;
-                } catch (err) {
-                        console.error(err);
-                        toast.error("Something went wrong. Try again.");
-                } finally {
-                        setPending(false)
-                }
+			if (error) {
+				console.error('Signup error:', error);
+				
+				// Handle specific error cases
+				let errorMessage = 'Registration failed';
+				if (error.message.toLowerCase().includes('user already registered')) {
+					errorMessage = 'An account with this email already exists. Please try logging in.';
+				} else if (error.message.toLowerCase().includes('invalid email')) {
+					errorMessage = 'Please enter a valid email address';
+				} else if (error.message.toLowerCase().includes('weak password')) {
+					errorMessage = 'Password is too weak. Please use a stronger password.';
+				} else if (error.message) {
+					errorMessage = error.message;
+				}
+				
+				toast.error(errorMessage);
+				return;
+			}
+			
+			console.log('Signup successful:', data);
+			toast.success("Registration successful! Please check your email to verify your account.");
+			
+			// Redirect to check email page
+			window.location.href = `/auth/check-email?email=${encodeURIComponent(email)}`;
+			
+		} catch (err: any) {
+			console.error('Signup error:', err);
+			toast.error(err.message || "Something went wrong. Try again.");
+		} finally {
+			setPending(false)
+		}
         };
 
 
