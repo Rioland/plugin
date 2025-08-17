@@ -3,13 +3,15 @@
 "use client";
 
 import { toast, Toaster } from "sonner";
-
 import { FaEnvelope } from "react-icons/fa";
 import { useState } from "react";
-import { AuthApi } from "@/utils/api-calls";
+import { createClient } from "@/utils/supabase/clients";
+import Link from "next/link";
 
 export default function ForgotPassword() {
   const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const supabase = createClient();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -24,9 +26,20 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const data = await AuthApi.forgotPassword(email);
-      toast.success(data.message || "Password reset code sent successfully");
-      window.location.href = `/resetPassword?email=${email}`;
+      const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL
+        ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+        : `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/auth/callback`;
+
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: redirectUrl,
+      });
+
+      if (error) {
+        toast.error(error.message || "An error occurred during password reset");
+      } else {
+        toast.success("Password reset link sent! Please check your email.");
+        setEmailSent(true);
+      }
     } catch (error: any) {
       console.error("Error during forgot password:", error);
       toast.error(error.message || "An error occurred during password reset");
@@ -51,32 +64,65 @@ export default function ForgotPassword() {
           <h1 className="text-xl font-semibold">Forgot my Plugin Password</h1>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <Toaster position="top-center" />
-          <div className="mb-5">
-            <label className="block mb-1 text-sm">Email</label>
-            <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
-              <FaEnvelope className="h-4 w-4 text-purple-400" />
-              <input
-                type="email"
-                name="email"
-                placeholder="e.g (qbcd@gmai..com)"
-                className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400"
-              />
+        <Toaster position="top-center" />
+        
+        {emailSent ? (
+          <div className="text-center">
+            <div className="mb-6 p-4 bg-green-900/20 border border-green-500/30 rounded-lg">
+              <div className="flex items-center justify-center mb-2">
+                <FaEnvelope className="h-6 w-6 text-green-400 mr-2" />
+                <h3 className="text-lg font-semibold text-green-400">Email Sent!</h3>
+              </div>
+              <p className="text-sm text-green-200">
+                We've sent a password reset link to your email address. Please check your inbox and follow the instructions to reset your password.
+              </p>
             </div>
-          </div>
-
-          {loading ? (
-            <img src="/images/preloader.gif" className="mx-auto" />
-          ) : (
-            <button
-              type="submit"
-              className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition"
+            <Link 
+              href="/" 
+              className="w-full inline-block py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition text-center"
             >
-              Proceed
-            </button>
-          )}
-        </form>
+              Back to Login
+            </Link>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className="mb-5">
+              <label className="block mb-1 text-sm">Email</label>
+              <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
+                <FaEnvelope className="h-4 w-4 text-purple-400" />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="e.g (qbcd@gmail.com)"
+                  required
+                  className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400"
+                />
+              </div>
+            </div>
+
+            {loading ? (
+              <img src="/images/preloader.gif" className="mx-auto" />
+            ) : (
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition disabled:opacity-50"
+              >
+                Send Reset Link
+              </button>
+            )}
+            
+            <p className="text-center text-sm mt-4">
+              Remember your password?{" "}
+              <Link
+                href="/"
+                className="text-[oklch(0.79_0.18_86.03)] font-medium cursor-pointer"
+              >
+                Back to Login
+              </Link>
+            </p>
+          </form>
+        )}
       </div>
     </div>
   );

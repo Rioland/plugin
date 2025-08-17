@@ -12,6 +12,15 @@ export async function GET(request: Request) {
   const code = requestUrl.searchParams.get('code')
   const origin = requestUrl.origin
   const redirectTo = requestUrl.searchParams.get('redirect_to')?.toString()
+  const type = requestUrl.searchParams.get('type')
+  const access_token = requestUrl.searchParams.get('access_token')
+  const refresh_token = requestUrl.searchParams.get('refresh_token')
+
+  // Handle password recovery - redirect to reset password page with tokens
+  if (type === 'recovery' && access_token && refresh_token) {
+    const resetUrl = `${origin}/reset-password?access_token=${access_token}&refresh_token=${refresh_token}&type=recovery`
+    return NextResponse.redirect(resetUrl)
+  }
 
   if (code) {
     const supabase = createClient()

@@ -64,8 +64,7 @@ export default function LoginForm() {
 
 
 
-
-      // If we get here, login was successful
+      
       toast.success("Login successful!");
       router.push("/dashboard");
     } catch (error: any) {
