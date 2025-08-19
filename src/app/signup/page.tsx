@@ -10,7 +10,7 @@ import { Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { FaGoogle, FaUser, FaEnvelope, FaPhone, FaLock } from "react-icons/fa";
-import { toast, Toaster } from "sonner"
+
 
 
 // import { signUpWithGoogle } from "@/lib/actions";
@@ -19,7 +19,8 @@ import { useAccountStore } from "@/stores/useAccountStore";
 import MyComponentLeft from "./Slider";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { createClient } from "@/utils/supabase/clients";
+import { createClient } from "@/lib/supabase/clients";
+import Swal from "sweetalert2";
 
 
 
@@ -81,7 +82,13 @@ const SignupForm = () => {
                 const email = formData.get("email") as string;
 
                 if (!lastName || !password || !phoneNumber || !email || !firstName) {
-                        toast.error("All fields must be provided");
+
+                        Swal.fire({
+                                title: 'Error!',
+                                text: 'All fields must be provided',
+                                icon: 'error',
+                                confirmButtonText: 'Okay'
+                        })
                         return;
                 }
 
@@ -92,13 +99,13 @@ const SignupForm = () => {
                         // Get site URL for email confirmation redirect
                         const siteUrl = window.location.origin;
 
-                 
+
 
                         const { data, error } = await supabase.auth.signUp({
                                 email,
                                 password,
                                 options: {
-                                        emailRedirectTo: `${siteUrl}/auth/callback`,
+                                        emailRedirectTo: `${siteUrl}/auth/confirm`,
                                         data: {
                                                 first_name: firstName,
                                                 last_name: lastName,
@@ -125,19 +132,36 @@ const SignupForm = () => {
                                         errorMessage = error.message;
                                 }
 
-                                toast.error(errorMessage);
+
+                                Swal.fire({
+                                        title: 'Error!',
+                                        text: errorMessage,
+                                        icon: 'error',
+                                        confirmButtonText: 'Cool'
+                                })
                                 return;
                         }
 
                         console.log('Signup successful:', data);
-                        toast.success("Registration successful! Please check your email to verify your account.");
+                        Swal.fire({
+                                title: 'Error!',
+                                text: 'Please check your email to confirm your account.',
+                                icon: 'error',
+                                confirmButtonText: 'Cool'
+                        })
 
                         // Redirect to check email page
                         // window.location.href = `/auth/check-email?email=${encodeURIComponent(email)}`;
 
                 } catch (err: any) {
                         console.error('Signup error:', err);
-                        toast.error(err.message || "Something went wrong. Try again.");
+                        // toast.error(err.message || "Something went wrong. Try again.");
+                        Swal.fire({
+                                title: 'Error!',
+                                text: err.message || "Something went wrong. Try again.",
+                                icon: 'error',
+                                confirmButtonText: 'Cool'
+                        })
                 } finally {
                         setPending(false)
                 }
@@ -149,7 +173,7 @@ const SignupForm = () => {
                 <div className="min-h-screen bg-black text-white flex items-center justify-center px-4 w-full md:w-1/2">
                         <Card className="w-full max-w-md bg-black border border-gray-800">
                                 <form onSubmit={handleSubmit}>
-                                        <Toaster position="top-center" />
+                                        
                                         <CardContent className="p-6">
                                                 <h2 className="text-center text-lg font-semibold mb-4 text-white">Register with:</h2>
 

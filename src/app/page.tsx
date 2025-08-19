@@ -3,21 +3,42 @@
 "use client";
 
 import { toast, Toaster } from "sonner";
-import React, { useState, useTransition } from "react";
-import { Eye, EyeOff, User, Lock, Mail } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Eye, EyeOff, User, Lock, Mail, AlertCircle } from "lucide-react";
 import Link from "next/link";
 
-import { useRouter } from "next/navigation";
-import { createClient } from "@/utils/supabase/clients";
+import { useRouter, useSearchParams } from "next/navigation";
+import { createClient } from "@/lib/supabase/clients";
 
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
-
   const [userEmail, setUserEmail] = useState("");
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const supabase = createClient()
+
+  // Check for auth callback errors
+  useEffect(() => {
+    const error = searchParams.get('error');
+    if (error) {
+      // const decodedError = decodeURIComponent(error);
+      // console.log('Auth callback error:', decodedError);
+      
+      // if (decodedError.includes('expired')) {
+        setAuthError(error);
+      // } else if (decodedError.includes('invalid request')) {
+      //   setAuthError('Invalid authentication request. Please try logging in again.');
+      // } else {
+      //   setAuthError(decodedError);
+      // }
+      
+      // Show toast as well
+      toast.error(error);
+    }
+  }, [searchParams]);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -41,9 +62,11 @@ export default function LoginForm() {
       })
       if (error) {
         if (error.message.includes("Email not confirmed")) {
-          const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL
-            ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
-            : `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/auth/callback`
+          const siteUrl = typeof window !== 'undefined' 
+            ? window.location.origin 
+            : process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+          
+          const redirectUrl = `${siteUrl}/auth/verify-email`;
 
           await supabase.auth.resend({
             type: "signup",
@@ -117,6 +140,25 @@ export default function LoginForm() {
           </div>
           <h1 className="text-xl font-semibold">Login to Plugin</h1>
         </div>
+
+        {/* Show auth callback errors */}
+        {authError && (
+          <div className="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+            <div className="flex items-center mb-2">
+              <AlertCircle className="h-4 w-4 text-red-400 mr-2" />
+              <h3 className="text-sm font-semibold text-red-400">Authentication Error</h3>
+            </div>
+            <p className="text-xs text-red-200">{authError}</p>
+            {authError.includes('expired') && (
+              <Link 
+                href="/forgot-password"
+                className="inline-block mt-2 text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition"
+              >
+                Request New Reset Link
+              </Link>
+            )}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="mb-5">

@@ -5,7 +5,7 @@
 import { toast, Toaster } from "sonner";
 import { FaEnvelope } from "react-icons/fa";
 import { useState } from "react";
-import { createClient } from "@/utils/supabase/clients";
+import { createClient } from "@/lib/supabase/clients";
 import Link from "next/link";
 
 export default function ForgotPassword() {
@@ -23,26 +23,48 @@ export default function ForgotPassword() {
       return;
     }
 
+    if (!email.includes('@') || !email.includes('.')) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL
-        ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
-        : `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/auth/callback`;
+      // Get the current site URL dynamically
+      const siteUrl = typeof window !== 'undefined' 
+        ? window.location.origin 
+        : process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+      
+      const redirectUrl = `${siteUrl}/auth/confirm-password-reset`;
+      console.log('Sending password reset email with redirect URL:', redirectUrl);
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: redirectUrl,
       });
 
       if (error) {
-        toast.error(error.message || "An error occurred during password reset");
+        console.error('Password reset error:', error);
+        
+        // Handle specific error cases
+        let errorMessage = "An error occurred during password reset";
+        if (error.message.includes('rate limit')) {
+          errorMessage = "Too many requests. Please wait a few minutes before trying again.";
+        } else if (error.message.includes('invalid email')) {
+          errorMessage = "Please enter a valid email address.";
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        toast.error(errorMessage);
       } else {
-        toast.success("Password reset link sent! Please check your email.");
+        console.log('Password reset email sent successfully');
+        toast.success("Password reset link sent! Please check your email (including spam folder).");
         setEmailSent(true);
       }
     } catch (error: any) {
-      console.error("Error during forgot password:", error);
-      toast.error(error.message || "An error occurred during password reset");
+      console.error("Unexpected error during forgot password:", error);
+      toast.error("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }

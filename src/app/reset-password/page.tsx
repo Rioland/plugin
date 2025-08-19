@@ -4,39 +4,84 @@
 
 import { toast, Toaster } from "sonner";
 import { useState, useEffect } from "react";
-import { Eye, EyeOff, Lock } from "lucide-react";
+import { Eye, EyeOff, Lock, AlertCircle, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createClient } from "@/utils/supabase/clients";
+import { createClient } from "@/lib/supabase/clients";
 
 export default function ResetPassword() {
   const [loading, setLoading] = useState(false);
+  const [initializing, setInitializing] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordReset, setPasswordReset] = useState(false);
+  const [tokenValid, setTokenValid] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
 
-  // Check if we have the required tokens in the URL
+  // Check if we have the required tokens in the URL and validate them
   useEffect(() => {
-    const accessToken = searchParams.get('access_token');
-    const refreshToken = searchParams.get('refresh_token');
-    const type = searchParams.get('type');
+    const validateTokens = async () => {
+      try {
+        const accessToken = searchParams.get('access_token');
+        const refreshToken = searchParams.get('refresh_token');
+        const type = searchParams.get('type');
 
-    if (type === 'recovery' && accessToken && refreshToken) {
-      // Set the session with the tokens from the URL
-      supabase.auth.setSession({
-        access_token: accessToken,
-        refresh_token: refreshToken,
-      });
-    } else {
-      // If no valid tokens, redirect to forgot password page
-      toast.error("Invalid or expired reset link. Please request a new one.");
-      router.push("/forgot-password");
-    }
-  }, [searchParams, router, supabase.auth]);
+        console.log('Reset password page loaded with:', {
+          type,
+          hasAccessToken: !!accessToken,
+          hasRefreshToken: !!refreshToken
+        });
+
+        if (type !== 'recovery') {
+          setError("This page is only for password recovery. Please request a password reset.");
+          setInitializing(false);
+          return;
+        }
+
+        if (!accessToken || !refreshToken) {
+          setError("Invalid reset link. Please request a new password reset.");
+          setInitializing(false);
+          return;
+        }
+
+        // Set the session with the tokens from the URL
+        const { data, error: sessionError } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+
+        if (sessionError) {
+          console.error('Session error:', sessionError);
+          if (sessionError.message.includes('expired') || sessionError.message.includes('invalid')) {
+            setError("The reset link has expired or is invalid. Please request a new password reset.");
+          } else {
+            setError("Failed to authenticate reset link. Please try again.");
+          }
+          setInitializing(false);
+          return;
+        }
+
+        if (data.user) {
+          console.log('User authenticated for password reset:', data.user.email);
+          setTokenValid(true);
+          toast.success("Reset link verified! You can now set your new password.");
+        } else {
+          setError("Failed to authenticate reset link. Please request a new password reset.");
+        }
+      } catch (err: any) {
+        console.error('Token validation error:', err);
+        setError("An error occurred while validating the reset link. Please try again.");
+      } finally {
+        setInitializing(false);
+      }
+    };
+
+    validateTokens();
+  }, [searchParams, supabase.auth]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -84,6 +129,72 @@ export default function ResetPassword() {
     }
   };
 
+  // Show loading state while initializing
+  if (initializing) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white">
+        <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-md shadow-xl border border-neutral-700">
+          <div className="text-center">
+            <div className="flex justify-center mb-4">
+              <div className="p-2 rounded-lg">
+                <img
+                  src="/images/logo-white-single.svg"
+                  alt="Logo"
+                  className="w-18 h-auto mb-4"
+                />
+              </div>
+            </div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
+            <p className="text-sm text-gray-400">Validating reset link...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if token validation failed
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white">
+        <div className="bg-[#111111] rounded-2xl p-10 w-full max-w-md shadow-xl border border-neutral-700">
+          <div className="text-center">
+            <div className="flex justify-center mb-4">
+              <div className="p-2 rounded-lg">
+                <img
+                  src="/images/logo-white-single.svg"
+                  alt="Logo"
+                  className="w-18 h-auto mb-4"
+                />
+              </div>
+            </div>
+            <div className="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+              <div className="flex items-center justify-center mb-2">
+                <AlertCircle className="h-6 w-6 text-red-400 mr-2" />
+                <h3 className="text-lg font-semibold text-red-400">Reset Link Invalid</h3>
+              </div>
+              <p className="text-sm text-red-200 mb-4">
+                {error}
+              </p>
+              <Link 
+                href="/forgot-password" 
+                className="w-full inline-block py-2 rounded-md bg-[oklch(0.79_0.18_86.03)] text-black font-semibold hover:opacity-90 transition text-center"
+              >
+                Request New Reset Link
+              </Link>
+            </div>
+            <Link 
+              href="/" 
+              className="text-[oklch(0.79_0.18_86.03)] font-medium cursor-pointer text-sm"
+            >
+              Back to Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show success state after password is reset
   if (passwordReset) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white">
@@ -100,7 +211,7 @@ export default function ResetPassword() {
             </div>
             <div className="mb-6 p-4 bg-green-900/20 border border-green-500/30 rounded-lg">
               <div className="flex items-center justify-center mb-2">
-                <Lock className="h-6 w-6 text-green-400 mr-2" />
+                <CheckCircle className="h-6 w-6 text-green-400 mr-2" />
                 <h3 className="text-lg font-semibold text-green-400">Password Updated!</h3>
               </div>
               <p className="text-sm text-green-200">
@@ -117,6 +228,11 @@ export default function ResetPassword() {
         </div>
       </div>
     );
+  }
+
+  // Only show the form if tokens are valid
+  if (!tokenValid) {
+    return null; // This shouldn't happen due to the error handling above, but just in case
   }
 
   return (
