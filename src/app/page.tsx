@@ -149,7 +149,7 @@ export default function LoginForm() {
             <p className="text-xs text-red-200">{authError}</p>
             {authError.includes('expired') && (
               <Link 
-                href="/forgot-password"
+                href="/auth/forgot-password"
                 className="inline-block mt-2 text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition"
               >
                 Request New Reset Link
@@ -204,7 +204,7 @@ export default function LoginForm() {
             </div>
             <div className="text-right mt-1">
               <a
-                href="/forgot-password"
+                href="/auth/forgot-password"
                 className="text-[oklch(0.79_0.18_86.03)] text-xs"
               >
                 Forgot password?
@@ -244,25 +244,8 @@ export default function LoginForm() {
             </Link>
           </p>
         </form>
-        {/* 
-        {needsVerification && (
-          <div className="mt-6 p-4 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
-            <div className="flex items-center mb-2">
-              <Mail className="h-4 w-4 text-yellow-400 mr-2" />
-              <h3 className="text-sm font-semibold text-yellow-400">Email Verification Required</h3>
-            </div>
-            <p className="text-xs text-yellow-200 mb-3">
-              Please check your email ({userEmail}) and click the verification link to complete your account setup.
-            </p>
-            <button
-              onClick={handleResendVerification}
-              disabled={resendPending}
-              className="text-xs bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded transition disabled:opacity-50"
-            >
-              {resendPending ? "Sending..." : "Resend Verification Email"}
-            </button>
-          </div>
-        )} */}
+        
+     
       </div>
     </div>
   );

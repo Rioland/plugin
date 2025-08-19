@@ -29,7 +29,7 @@ const KYCVerification = () => {
         {/* Registered Business Card */}
         <div className="bg-black text-white p-6 rounded-lg shadow-lg w-80 cursor-pointer" onClick={()=>{
          setBusinessType( 'business');
-          window.location.href = '/signup/register-seller';
+          window.location.href = '/auth/signup';
         }}>
           <div className="mb-4">
             {/* Illustration placeholder */}
@@ -49,7 +49,7 @@ const KYCVerification = () => {
         {/* Unregistered Business Card */}
         <div className="bg-black text-white p-6 rounded-lg shadow-lg w-80 cursor-pointer" onClick={()=>{
          setBusinessType( 'individual');
-          window.location.href = '/signup/register-seller';
+          window.location.href = '/auth/signup';
         }}>
           <div className="mb-4">
             {/* Illustration placeholder */}

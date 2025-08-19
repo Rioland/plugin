@@ -61,11 +61,8 @@ export default function ForgotPassword() {
 
     try {
       // Get the current site URL dynamically
-      const siteUrl = typeof window !== 'undefined'
-        ? window.location.origin
-        : process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-
-      const redirectUrl = `${siteUrl}/update-password`;
+      const siteUrl = window.location.origin
+      const redirectUrl = `${siteUrl}auth/update-password`;
       console.log('Sending password reset email with redirect URL:', redirectUrl);
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {

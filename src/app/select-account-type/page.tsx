@@ -21,7 +21,7 @@ const PluginPage = () => {
       <div className="flex flex-col md:flex-row justify-center items-center gap-6 px-6">
         <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-sm cursor-pointer" onClick={() => {
           setAccountType("buyer");
-          window.location.href = '/signup'}}>
+          window.location.href = '/auth/signup'}}>
           <div className="flex justify-center mb-4">
           <img
                 src="/images/ineedsservice.svg"
@@ -36,7 +36,7 @@ const PluginPage = () => {
         </div>
         <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-sm cursor-pointer" onClick={()=>{
            setAccountType("seller");
-          window.location.href = '/signup'}}>
+          window.location.href = '/auth/signup'}}>
           <div className="flex justify-center mb-4">
             {/* <div className="text-6xl">&#128682;&#129309;</div> Door and handshake
              */}
