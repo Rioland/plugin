@@ -9,6 +9,7 @@ import Link from "next/link";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/clients";
+import Swal from "sweetalert2";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -24,19 +25,16 @@ export default function LoginForm() {
   useEffect(() => {
     const error = searchParams.get('error');
     if (error) {
-      // const decodedError = decodeURIComponent(error);
-      // console.log('Auth callback error:', decodedError);
-      
-      // if (decodedError.includes('expired')) {
+
         setAuthError(error);
-      // } else if (decodedError.includes('invalid request')) {
-      //   setAuthError('Invalid authentication request. Please try logging in again.');
-      // } else {
-      //   setAuthError(decodedError);
-      // }
-      
-      // Show toast as well
-      toast.error(error);
+  
+     Swal.fire({
+        title: 'Error!',
+        text: error,
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      });
+      // }  
     }
   }, [searchParams]);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
