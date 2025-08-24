@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import { ApiBaseUrl, fetchAndReturnUserProfile } from "@/helper/functions";
 import { useState } from "react";
@@ -5,8 +7,8 @@ import { toast, Toaster } from "sonner";
 import Cookies from "js-cookie";
 import { Button } from "@/components/ui/button";
 
-import { SellersProfileType } from "@/types/SellersProfileType";
-import { useSellerProfile } from "@/stores/userStore";
+// import { SellersProfileType } from "@/types/SellersProfileType";
+// import { useSellerProfile } from "@/stores/userStore";
 
 
 interface AddExperienceFormProps {
@@ -15,7 +17,7 @@ interface AddExperienceFormProps {
 
 const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
   // const profile =useSellerProfile((state) => state.profile);
-  const setProfile = useSellerProfile((state) => state.setProfile);
+  // const setProfile = useSellerProfile((state) => state.setProfile);
   const [loading, setLoading] = useState(false);
   const [experience, setExperience] = useState({
     start_year: "",
@@ -111,7 +113,5 @@ const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
 };
 
 export default AddExperienceForm;
-function dispatch(arg0: { payload: SellersProfileType; type: "sellersProfile/updateSellersProfile"; }) {
-  throw new Error("Function not implemented.");
-}
+
 

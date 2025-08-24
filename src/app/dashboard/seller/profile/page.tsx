@@ -1,39 +1,104 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import { Button } from "@/components/ui/button";
-
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Share2, Pencil, Star, Bookmark, PlusCircleIcon, Trash, EditIcon } from "lucide-react";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MyModal from "@/components/ui/MyModal";
 import AddExperienceForm from "./Components/AddExperienceForm";
 import SellerSkills from "@/components/onboarding/SellerSkills";
 import { toast, Toaster } from "sonner";
 import MySkills from "./Components/MySkill";
-import { ApiBaseUrl, fetchAndReturnUserProfile } from "@/helper/functions";
+import { createClient } from "@supabase/supabase-js";
 import Swal from "sweetalert2";
-import Cookies from "js-cookie";
-
-import { Experience } from "@/types/SellersProfileType";
 import UpdateExperienceForm from "./Components/UpdateExperienceForm";
 import PluginNavbar from "../Components/NavBar";
-import { useSellerProfile } from "@/stores/userStore";
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
+// Function to fetch user profile and related data
+async function fetchAndReturnUserProfile() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("No user logged in");
+
+  const { data: profileData, error: profileError } = await supabase
+    .from("profiles")
+    .select("id, first_name, last_name, email, avatar_url")
+    .eq("id", user.id)
+    .single();
+
+  if (profileError) throw profileError;
+
+  const { data: experiences, error: expError } = await supabase
+    .from("experiences")
+    .select("*")
+    .eq("user_id", user.id);
+
+  if (expError) throw expError;
+
+  const { data: educations, error: eduError } = await supabase
+    .from("educations")
+    .select("*")
+    .eq("user_id", user.id);
+
+  if (eduError) throw eduError;
+
+  const { data: awards, error: awardError } = await supabase
+    .from("awards")
+    .select("*")
+    .eq("user_id", user.id);
+
+  if (awardError) throw awardError;
+
+  return {
+    ...profileData,
+    experiences: experiences || [],
+    educations: educations || [],
+    awards: awards || [],
+  };
+}
 
 export default function ProfilePage() {
-  const profile = useSellerProfile((state) => state.profile);
-  const setProfile = useSellerProfile((state) => state.setProfile);
+  const [profile, setProfile] = useState({
+    id: null,
+    first_name: "",
+    last_name: "",
+    email: "",
+    avatar_url: null,
+    experiences: [],
+    educations: [],
+    awards: [],
+  });
   const [selectedFile, setSelectedFile] = useState(null);
- 
   const [addSkill, setAddSkill] = useState(false);
   const [addExperience, setAddExperience] = useState(false);
   const [addAward, setAddAward] = useState(false);
   const [addEducation, setAddEducation] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [preview, setPreview] = useState(null);
-  const [updateExperience, setUpdateExperience] = useState<Experience | null>(null)
+  const [updateExperience, setUpdateExperience] = useState(null);
   const [uploading, setUploading] = useState(false);
+
+  // Fetch profile on component mount
+  useEffect(() => {
+    async function loadProfile() {
+      try {
+        const profileData = await fetchAndReturnUserProfile();
+        if (profileData && profileData.id) {
+          setProfile(profileData);
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        toast.error("Failed to load profile");
+      }
+    }
+    loadProfile();
+  }, []);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -42,59 +107,89 @@ export default function ProfilePage() {
       setPreview(URL.createObjectURL(file));
     }
   };
+
   const uploadImage = async () => {
     if (!selectedFile) return toast.error("Please select an image first!");
     setUploading(true);
 
-    const formData = new FormData();
-    formData.append("profile_picture", selectedFile);
-
     try {
-      const response = await fetch(`${ApiBaseUrl}/seller/upload-profile-picture`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`, // Keep only Authorization header
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("No user logged in");
 
-        },
-      });
+      const fileExt = selectedFile.name.split(".").pop();
+      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+      const { data, error } = await supabase.storage
+        .from("avatars")
+        .upload(fileName, selectedFile, {
+          cacheControl: "3600",
+          upsert: true,
+        });
 
-      const data = await response.json();
-      if (data.status) {
-         const profile = await fetchAndReturnUserProfile();
-                       console.log(profile);
-                       if (profile && profile.id) {
-                         setProfile(profile);
-                       }
+      if (error) throw error;
 
-        toast.success("Profile picture updated successfully!");
-      } else {
-        toast.error("Upload failed!");
+      const { data: { publicUrl } } = supabase.storage
+        .from("avatars")
+        .getPublicUrl(fileName);
+
+      // Update profile with new avatar URL
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({ avatar_url: publicUrl })
+        .eq("id", user.id);
+
+      if (updateError) throw updateError;
+
+      // Refresh profile
+      const profileData = await fetchAndReturnUserProfile();
+      if (profileData && profileData.id) {
+        setProfile(profileData);
       }
+
+      toast.success("Profile picture updated successfully!");
     } catch (error) {
-      console.log(error);
+      console.error("Upload error:", error);
       toast.error("Upload error occurred");
     } finally {
       setUploading(false);
     }
   };
 
-  console.log(profile)
+  const handleDelete = async (id, type) => {
+    try {
+      const table = type === "experience" ? "experiences" : type === "education" ? "educations" : "awards";
+      const { error } = await supabase
+        .from(table)
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
+
+      // Refresh profile
+      const profileData = await fetchAndReturnUserProfile();
+      if (profileData && profileData.id) {
+        setProfile(profileData);
+      }
+
+      toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully!`);
+    } catch (error) {
+      console.error(`Error deleting ${type}:`, error);
+      toast.error(`An error occurred while deleting ${type}`);
+    }
+  };
+
   return (
-    <PluginNavbar   >
-      <div className=" bg-[#0C0C0C] text-white p-4 md:p-10">
+    <PluginNavbar>
+      <div className="bg-[#0C0C0C] text-white p-4 md:p-10">
         <div className="w-full mx-auto">
           <div className="bg-[#141414] p-6 md:p-10 rounded-2xl border border-[#2A2A2A]">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="flex items-center gap-4">
-                <div className="flex flex-col items-start  my-5">
-
+                <div className="flex flex-col items-start my-5">
                   <div className="flex items-center">
-                    <div className=" relative w-24 h-24 rounded-full overflow-hidden ">
+                    <div className="relative w-24 h-24 rounded-full overflow-hidden">
                       <img
-                        src={preview || profile.profile_picture || "/images/avatar.jpg"}
-                        // {profile.profile_picture || "https://picsum.photos/200/300"}
+                        src={preview || profile.avatar_url || "/images/avatar.jpg"}
                         alt="User Avatar"
                         className="w-20 h-20 rounded-full object-cover border shadow"
                       />
@@ -104,35 +199,19 @@ export default function ProfilePage() {
                         className="absolute inset-0 opacity-0 cursor-pointer"
                         onChange={handleImageChange}
                       />
-
                     </div>
-
                     <div>
-                      <h2 className="text-xl font-semibold">{profile.firstname} {profile.lastname}</h2>
+                      <h2 className="text-xl font-semibold">{profile.first_name} {profile.last_name}</h2>
                       <p className="text-sm text-gray-400">{profile.email}</p>
                     </div>
-
                   </div>
-
-
-
-
-                  <div className=" p-2 bg-yellow-500 w-fit  rounded h-fit ms-4 cursor-pointer hover:bg-transparent hover:border hover:border-yellow-500" onClick={uploadImage}>
-                    <p> {uploading ? "Uploading..." : "Update Profile Picture"}</p>
+                  <div
+                    className="p-2 bg-yellow-500 w-fit rounded h-fit ms-4 cursor-pointer hover:bg-transparent hover:border hover:border-yellow-500"
+                    onClick={uploadImage}
+                  >
+                    <p>{uploading ? "Uploading..." : "Update Profile Picture"}</p>
                   </div>
-
-
-
-
                 </div>
-                {/* <Image
-                  src={profile.profile_picture ?? "/images/avatar.jpg"}
-                  width={60}
-                  height={60}
-                  alt="avatar"
-                  className="rounded-full"
-                /> */}
-
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" className="border-yellow-500 text-yellow-500 hover:bg-transparent hover:text-yellow-500">
@@ -189,24 +268,19 @@ export default function ProfilePage() {
                 <div className="text-sm text-gray-400 flex items-center justify-between">
                   <p>Experience</p>
                   <PlusCircleIcon className="hover:text-yellow-500 cursor-pointer" onClick={() => setAddExperience(true)} />
-
                 </div>
                 <div className="text-sm text-gray-400 flex items-center justify-between">
                   <p>Skills</p>
                   <PlusCircleIcon className="hover:text-yellow-500 cursor-pointer" onClick={() => setAddSkill(true)} />
-
                 </div>
                 <div className="text-sm text-gray-400 flex items-center justify-between">
                   <p>Education</p>
                   <PlusCircleIcon className="hover:text-yellow-500 cursor-pointer" onClick={() => setAddEducation(true)} />
-
                 </div>
                 <div className="text-sm text-gray-400 flex items-center justify-between">
                   <p>Awards</p>
                   <PlusCircleIcon className="hover:text-yellow-500 cursor-pointer" onClick={() => setAddAward(true)} />
-
                 </div>
-
               </div>
 
               {/* Main Content */}
@@ -215,7 +289,8 @@ export default function ProfilePage() {
                   <div>
                     <h2 className="text-xl font-bold">Ui/Ux designer and Product developer</h2>
                     <p className="text-sm mt-2 text-gray-300">
-                      I am a passionate UI/UX designer and product developer... <Button variant="link" className="text-yellow-500 px-1 text-sm">more</Button>
+                      I am a passionate UI/UX designer and product developer...{" "}
+                      <Button variant="link" className="text-yellow-500 px-1 text-sm">more</Button>
                     </p>
                   </div>
                   <div className="text-right text-sm">
@@ -239,252 +314,171 @@ export default function ProfilePage() {
                     Add a Project. Talent are hired 9x more often if theyve published a portfolio.
                   </div>
                 </div>
-                {/* ************************************************ */}
+
                 <div className="border-b border-[#2A2A2A] rounded-xl p-4">
                   <h3 className="font-semibold mb-2">Work History</h3>
                   <div className="text-sm text-gray-200 space-y-2">
-
-
-                    {profile.experiences.length == 0 ? <p>No Work Experience Added</p> : profile.experiences.map((experience, index) => (
-                      <div className="flex justify-between items-start py-4" key={experience.id}>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-yellow-500 text-sm">●</span>
-                            <p>{experience.title}</p>
+                    {profile.experiences.length === 0 ? (
+                      <p>No Work Experience Added</p>
+                    ) : (
+                      profile.experiences.map((experience) => (
+                        <div className="flex justify-between items-start py-4" key={experience.id}>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-yellow-500 text-sm">●</span>
+                              <p>{experience.title}</p>
+                            </div>
+                            <p className="text-gray-400 ml-4">
+                              {experience.from} | {experience.start_year} - {experience.end_year}
+                            </p>
                           </div>
-                          <p className="text-gray-400 ml-4">{experience.from}| {experience.start_year} - {experience.end_year}</p>
-                        </div>
-
-                        <div className="flex items-center gap-4">
-                          <EditIcon width={20} height={20} className="text-yellow-500 cursor-pointer" onClick={() => {
-                            setUpdateExperience(experience)
-                            setShowUpdateModal(true)
-                          }} />
-                          <Trash width={20} height={20} className="text-red-400" onClick={() => Swal.fire({
-                            title: "Are you sure?",
-                            text: "You won't be able to revert this!",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            confirmButtonText: "Yes, delete it!"
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-
-                              fetch(`${ApiBaseUrl}/seller/credentials/${experience.id}/delete`, {
-                                method: "POST",
-                                headers: {
-                                  "Content-Type": "application/json",
-                                  Authorization: `Bearer ${Cookies.get("token")}`,
-                                },
-                              })
-                                .then((res) => res.json())
-                                .then(async (data) => {
-                                  if (data.status) {
-                                    const profile = await fetchAndReturnUserProfile();
-                                    console.log(profile);
-                                    if (profile && profile.id) {
-                                      setProfile(profile);
-                                    }
-                                    // setExperiences((prev) =>
-                                    //         prev.filter((item) => item.id !== exp.id)
-                                    // )
-
-                                    toast.success("Experience deleted successfully!")
-                                  } else {
-                                    toast.error("Failed to delete experience")
-
+                          <div className="flex items-center gap-4">
+                            <EditIcon
+                              width={20}
+                              height={20}
+                              className="text-yellow-500 cursor-pointer"
+                              onClick={() => {
+                                setUpdateExperience(experience);
+                                setShowUpdateModal(true);
+                              }}
+                            />
+                            <Trash
+                              width={20}
+                              height={20}
+                              className="text-red-400 cursor-pointer"
+                              onClick={() =>
+                                Swal.fire({
+                                  title: "Are you sure?",
+                                  text: "You won't be able to revert this!",
+                                  icon: "warning",
+                                  showCancelButton: true,
+                                  confirmButtonColor: "#3085d6",
+                                  cancelButtonColor: "#d33",
+                                  confirmButtonText: "Yes, delete it!",
+                                }).then((result) => {
+                                  if (result.isConfirmed) {
+                                    handleDelete(experience.id, "experience");
                                   }
                                 })
-                                .catch((error) => {
-                                  toast.error("An error occurred while deleting experience")
-                                  console.error("Error deleting experience:", error)
-                                })
-
-
-                            }
-                          })
-                          } />
+                              }
+                            />
+                          </div>
                         </div>
-
-
-                      </div>
-                    ))
-
-
-                    }
-
+                      ))
+                    )}
                   </div>
                 </div>
-                {/* ************************************************ */}
+
                 <div className="border-b border-[#2A2A2A] rounded-xl p-4">
                   <h3 className="font-semibold mb-2">Education History</h3>
                   <div className="text-sm text-gray-200 space-y-2">
-
-
-                    {profile.educations.length === 0 ? <p>No Work Experience Added</p> : profile.educations.map((educations, index) => (
-                      <div className="flex justify-between items-start py-4" key={educations.id}>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-yellow-500 text-sm">●</span>
-                            <p>{educations.title}</p>
+                    {profile.educations.length === 0 ? (
+                      <p>No Education Added</p>
+                    ) : (
+                      profile.educations.map((education) => (
+                        <div className="flex justify-between items-start py-4" key={education.id}>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-yellow-500 text-sm">●</span>
+                              <p>{education.title}</p>
+                            </div>
+                            <p className="text-gray-400 ml-4">
+                              {education.from} | {education.start_year} - {education.end_year}
+                            </p>
                           </div>
-                          <p className="text-gray-400 ml-4">{educations.from}| {educations.start_year} - {educations.end_year}</p>
-                        </div>
-
-                        <div className="flex items-center gap-4">
-                          <EditIcon width={20} height={20} className="text-yellow-500 cursor-pointer" onClick={() => {
-                            setUpdateExperience(educations)
-                            setShowUpdateModal(true)
-                          }} />
-                          <Trash width={20} height={20} className="text-red-400" onClick={() => Swal.fire({
-                            title: "Are you sure?",
-                            text: "You won't be able to revert this!",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            confirmButtonText: "Yes, delete it!"
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-
-                              fetch(`${ApiBaseUrl}/seller/credentials/${educations.id}/delete`, {
-                                method: "POST",
-                                headers: {
-                                  "Content-Type": "application/json",
-                                  Authorization: `Bearer ${Cookies.get("token")}`,
-                                },
-                              })
-                                .then((res) => res.json())
-                                .then(async (data) => {
-                                  if (data.status) {
-                                    const profile = await fetchAndReturnUserProfile();
-                                    console.log(profile);
-                                    if (profile && profile.id) {
-                                      setProfile(profile);
-                                    }
-                                    // setExperiences((prev) =>
-                                    //         prev.filter((item) => item.id !== exp.id)
-                                    // )
-
-                                    toast.success("Experience deleted successfully!")
-                                  } else {
-                                    toast.error("Failed to delete experience")
-
+                          <div className="flex items-center gap-4">
+                            <EditIcon
+                              width={20}
+                              height={20}
+                              className="text-yellow-500 cursor-pointer"
+                              onClick={() => {
+                                setUpdateExperience(education);
+                                setShowUpdateModal(true);
+                              }}
+                            />
+                            <Trash
+                              width={20}
+                              height={20}
+                              className="text-red-400 cursor-pointer"
+                              onClick={() =>
+                                Swal.fire({
+                                  title: "Are you sure?",
+                                  text: "You won't be able to revert this!",
+                                  icon: "warning",
+                                  showCancelButton: true,
+                                  confirmButtonColor: "#3085d6",
+                                  cancelButtonColor: "#d33",
+                                  confirmButtonText: "Yes, delete it!",
+                                }).then((result) => {
+                                  if (result.isConfirmed) {
+                                    handleDelete(education.id, "education");
                                   }
                                 })
-                                .catch((error) => {
-                                  toast.error("An error occurred while deleting experience")
-                                  console.error("Error deleting experience:", error)
-                                })
-
-
-                            }
-                          })
-                          } />
+                              }
+                            />
+                          </div>
                         </div>
-
-
-                      </div>
-                    ))
-
-
-                    }
-
+                      ))
+                    )}
                   </div>
                 </div>
-                {/* ************************************************ */}
 
                 <div className="border-b border-[#2A2A2A] rounded-xl p-4">
                   <h3 className="font-semibold mb-2">Award History</h3>
                   <div className="text-sm text-gray-200 space-y-2">
-
-
-                    {profile.awards.length === 0 ? <p>No Work Experience Added</p> : profile.awards.map((awards, index) => (
-                      <div className="flex justify-between items-start py-4" key={awards.id}>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-yellow-500 text-sm">●</span>
-                            <p>{awards.title}</p>
+                    {profile.awards.length === 0 ? (
+                      <p>No Awards Added</p>
+                    ) : (
+                      profile.awards.map((award) => (
+                        <div className="flex justify-between items-start py-4" key={award.id}>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-yellow-500 text-sm">●</span>
+                              <p>{award.title}</p>
+                            </div>
+                            <p className="text-gray-400 ml-4">
+                              {award.from} | {award.start_year} - {award.end_year}
+                            </p>
                           </div>
-                          <p className="text-gray-400 ml-4">{awards.from}| {awards.start_year} - {awards.end_year}</p>
-                        </div>
-
-                        <div className="flex items-center gap-4">
-                          <EditIcon width={20} height={20} className="text-yellow-500 cursor-pointer" onClick={() => {
-                            setUpdateExperience(awards)
-                            setShowUpdateModal(true)
-                          }} />
-                          <Trash width={20} height={20} className="text-red-400" onClick={() => Swal.fire({
-                            title: "Are you sure?",
-                            text: "You won't be able to revert this!",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            confirmButtonText: "Yes, delete it!"
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-
-                              fetch(`${ApiBaseUrl}/seller/credentials/${awards.id}/delete`, {
-                                method: "POST",
-                                headers: {
-                                  "Content-Type": "application/json",
-                                  Authorization: `Bearer ${Cookies.get("token")}`,
-                                },
-                              })
-                                .then((res) => res.json())
-                                .then(async (data) => {
-                                  if (data.status) {
-                                    const profile = await fetchAndReturnUserProfile();
-                                    console.log(profile);
-                                    if (profile && profile.id) {
-                                      setProfile(profile);
-                                    }
-                                    // setExperiences((prev) =>
-                                    //         prev.filter((item) => item.id !== exp.id)
-                                    // )
-
-                                    toast.success("Experience deleted successfully!")
-                                  } else {
-                                    toast.error("Failed to delete experience")
-
+                          <div className="flex items-center gap-4">
+                            <EditIcon
+                              width={20}
+                              height={20}
+                              className="text-yellow-500 cursor-pointer"
+                              onClick={() => {
+                                setUpdateExperience(award);
+                                setShowUpdateModal(true);
+                              }}
+                            />
+                            <Trash
+                              width={20}
+                              height={20}
+                              className="text-red-400 cursor-pointer"
+                              onClick={() =>
+                                Swal.fire({
+                                  title: "Are you sure?",
+                                  text: "You won't be able to revert this!",
+                                  icon: "warning",
+                                  showCancelButton: true,
+                                  confirmButtonColor: "#3085d6",
+                                  cancelButtonColor: "#d33",
+                                  confirmButtonText: "Yes, delete it!",
+                                }).then((result) => {
+                                  if (result.isConfirmed) {
+                                    handleDelete(award.id, "award");
                                   }
                                 })
-                                .catch((error) => {
-                                  toast.error("An error occurred while deleting experience")
-                                  console.error("Error deleting experience:", error)
-                                })
-
-
-                            }
-                          })
-                          } />
+                              }
+                            />
+                          </div>
                         </div>
-
-
-                      </div>
-                    ))
-
-
-                    }
-
+                      ))
+                    )}
                   </div>
                 </div>
 
-                {/* ************************************************ */}
-
-
                 <div>
-
                   <MySkills cominprofile={profile} />
-                  {/* <Badge variant="secondary">UX/UI</Badge> */}
-                  {/* <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">UX/UI</Badge>
-                  <Badge variant="secondary">Graphics</Badge>
-                  <Badge variant="secondary">App development</Badge>
-                  <Badge variant="secondary">Web Design</Badge>
-                </div> */}
                 </div>
               </div>
             </div>
@@ -505,10 +499,11 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      {/* others */}
+
+      {/* Modals */}
       <MyModal isOpen={showUpdateModal} onClose={() => {
-        setShowUpdateModal(false)
-        setUpdateExperience(null)
+        setShowUpdateModal(false);
+        setUpdateExperience(null);
       }}>
         {updateExperience && (
           <UpdateExperienceForm
@@ -522,16 +517,16 @@ export default function ProfilePage() {
           />
         )}
       </MyModal>
-      <MyModal isOpen={addSkill} onClose={() => { setAddSkill(false) }}>
+      <MyModal isOpen={addSkill} onClose={() => setAddSkill(false)}>
         <SellerSkills />
       </MyModal>
-      <MyModal isOpen={addExperience} onClose={() => { setAddExperience(false) }}>
+      <MyModal isOpen={addExperience} onClose={() => setAddExperience(false)}>
         <AddExperienceForm type="experience" />
       </MyModal>
-      <MyModal isOpen={addAward} onClose={() => { setAddAward(false) }}>
+      <MyModal isOpen={addAward} onClose={() => setAddAward(false)}>
         <AddExperienceForm type="award" />
       </MyModal>
-      <MyModal isOpen={addEducation} onClose={() => { setAddEducation(false) }}>
+      <MyModal isOpen={addEducation} onClose={() => setAddEducation(false)}>
         <AddExperienceForm type="education" />
       </MyModal>
       <Toaster position="top-center" />
