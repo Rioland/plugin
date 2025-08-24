@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { createClient } from "@/lib/supabase/clients";
 import Swal from "sweetalert2";
+import Preloading from "@/components/preloading";
 
 
 
@@ -45,7 +46,7 @@ export default function Page() {
 
         if (!isHydrated) {
                 // Optional loader to avoid flicker
-                return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+                return <Preloading />;
         }
 
         return (

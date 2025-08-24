@@ -13,6 +13,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Bell, HelpCircle, User, Settings, LogOut, Menu, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import Preloading from "@/components/preloading";
 
 interface PluginNavbarProps {
   children?: React.ReactNode;
@@ -87,9 +88,7 @@ const PluginNavbar: React.FC<PluginNavbarProps> = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen text-white">
-        Loading your dashboard...
-      </div>
+      <Preloading />
     );
   }
 

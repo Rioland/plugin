@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import SkipNavBar from '../Components/SkipNavBar';
 import { createClient } from '@/lib/supabase/clients';
+import Preloading from '@/components/preloading';
 
 const KYBIntroScreen = () => {
   const router = useRouter();
@@ -35,9 +36,9 @@ const KYBIntroScreen = () => {
           return;
         }
 
-        // Fetch seller profile from table `sellers`
+        // Fetch seller profile from table `profiles`
         const { data, error } = await supabase
-          .from('sellers') // Change table name if different
+          .from('profiles') // Change table name if different
           .select('*')
           .eq('id', user.id)
           .single();
@@ -57,9 +58,7 @@ const KYBIntroScreen = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen text-white">
-        Loading profile...
-      </div>
+          <Preloading/>
     );
   }
 
@@ -81,7 +80,7 @@ const KYBIntroScreen = () => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <SkipNavBar />
+      <SkipNavBar hideskip={true} />
       {profile?.business_type === 'individual' ? (
         <KYBUnregisterCard />
       ) : (

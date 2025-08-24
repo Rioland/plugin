@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 import MyModal from '@/components/ui/MyModal'
 import UpdateExperienceForm from './UpdateExperienceForm'
 import { toast, Toaster } from 'sonner'
+import Preloading from '@/components/preloading'
 
 interface Experience {
         id: number
@@ -54,8 +55,8 @@ export default function MyExperience({ type }: Props) {
                 fetchExperience()
         }, [type])
 
-        if (loading) return <p>Loading...</p>
-        if (experiences.length === 0) return <p>No {type} found.</p>
+        if (loading) return <Preloading />;
+        if (experiences.length === 0) return <p>No {type} found.</p>;
 
         return (
                 <div>

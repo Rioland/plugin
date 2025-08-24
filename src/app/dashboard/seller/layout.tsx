@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/clients";
+import Preloading from "@/components/preloading";
 
 interface SellerDashboardLayoutProps {
   children: React.ReactNode;
@@ -67,9 +68,7 @@ export default function SellerDashboardLayout({ children }: SellerDashboardLayou
   // Show loading state
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen text-gray-600">
-        Loading your dashboard...
-      </div>
+     <Preloading />
     );
   }
 
