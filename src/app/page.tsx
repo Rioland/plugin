@@ -26,9 +26,9 @@ export default function LoginForm() {
     const error = searchParams.get('error');
     if (error) {
 
-        setAuthError(error);
-  
-     Swal.fire({
+      setAuthError(error);
+
+      Swal.fire({
         title: 'Error!',
         text: error,
         icon: 'error',
@@ -58,12 +58,13 @@ export default function LoginForm() {
         email: email.toString(),
         password: password.toString(),
       })
+
       if (error) {
         if (error.message.includes("Email not confirmed")) {
-          const siteUrl = typeof window !== 'undefined' 
-            ? window.location.origin 
+          const siteUrl = typeof window !== 'undefined'
+            ? window.location.origin
             : process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-          
+
           const redirectUrl = `${siteUrl}/auth/verify-email`;
 
           await supabase.auth.resend({
@@ -81,13 +82,15 @@ export default function LoginForm() {
         }
         return; // Don't proceed to success handling if there was an error
       }
-
-
-
-
-      
       toast.success("Login successful!");
-      router.push("/dashboard");
+      if (data.user.user_metadata?.account_type === "seller") {
+        router.push("/dashboard/seller");
+      } else {
+        router.push("/dashboard/buyer");
+      }
+
+
+
     } catch (error: any) {
       console.error('Login error:', error);
       toast.error(error || "An unexpected error occurred");
@@ -148,7 +151,7 @@ export default function LoginForm() {
             </div>
             <p className="text-xs text-red-200">{authError}</p>
             {authError.includes('expired') && (
-              <Link 
+              <Link
                 href="/auth/forgot-password"
                 className="inline-block mt-2 text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition"
               >
@@ -244,8 +247,8 @@ export default function LoginForm() {
             </Link>
           </p>
         </form>
-        
-     
+
+
       </div>
     </div>
   );
