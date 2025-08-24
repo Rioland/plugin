@@ -10,7 +10,7 @@ import { createClient } from '@/lib/supabase/clients';
 import Preloading from '@/components/preloading';
 
 const KYBIntroScreen = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const supabase = createClient();
 
   const [profile, setProfile] = useState(null);

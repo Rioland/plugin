@@ -48,11 +48,11 @@ export default function SellerDashboardLayout({ children }: SellerDashboardLayou
           return;
         }
         
-        // If onboarding is incomplete, redirect
-        if (!data.business_type || !data.skills || data.skills.length === 0) {
-          router.push("/dashboard/seller/onboarding");
-          return;
-        }
+        // If onboarding is incomplete, redirect data.skills
+        // if ( data.skills.length === 0) {
+        //   router.push("/dashboard/seller/onboarding");
+        //   return;
+        // }
 
       } catch (err) {
         console.error("Unexpected error:", err);
