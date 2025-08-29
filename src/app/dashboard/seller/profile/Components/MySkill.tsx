@@ -1,24 +1,31 @@
+"use client"
 import { useState } from "react";
-import Cookies from "js-cookie";
 import { toast, Toaster } from "sonner";
-import { ApiBaseUrl, fetchAndReturnUserProfile } from "@/helper/functions";
 import { Badge } from "@/components/ui/badge";
-import { useSellerProfile } from "@/stores/userStore";
+import { createClient } from "@/lib/supabase/clients";
+
+
 interface MySkillProps {
-  cominprofile: any;
+  skills: any[];
+  userId: string;
 }
-const MySkills: React.FC<MySkillProps> = ({ cominprofile }) => {
-  const [profile, setProfile] = useState(cominprofile);
+
+const MySkills: React.FC<MySkillProps> = ({ skills, userId }) => {
+  const supabase = createClient();
+  const [skillsList, setSkillsList] = useState(skills);
   const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
-const setProfilestore = useSellerProfile((state) => state.setProfile);
 
+  // Select or Deselect Skills
   const handleSkillClick = (skillId: number) => {
     setSelectedSkills((prev) =>
-      prev.includes(skillId) ? prev.filter((id) => id !== skillId) : [...prev, skillId]
+      prev.includes(skillId)
+        ? prev.filter((id) => id !== skillId)
+        : [...prev, skillId]
     );
   };
 
+  // Remove Skills from Supabase
   const removeSkills = async () => {
     if (selectedSkills.length === 0) {
       toast.error("Select at least one skill to remove.");
@@ -27,52 +34,51 @@ const setProfilestore = useSellerProfile((state) => state.setProfile);
 
     try {
       setLoading(true);
-      const response = await fetch(`${ApiBaseUrl}/seller/remove-skills`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        },
-        body: JSON.stringify({ skills: selectedSkills }),
-      });
 
-      const data = await response.json();
+      const { error } = await supabase
+        .from("user_skills") // <-- Your linking table between users & skills
+        .delete()
+        .eq("user_id", userId)
+        .in("skill_id", selectedSkills);
 
-      if (data.status) {
-        toast.success("Skill(s) removed successfully!");
-        const profile = await fetchAndReturnUserProfile();
-        if (profile && profile.id) {
-          setProfilestore(profile);
-          setProfile(profile);
-        }
-        setProfile((prev) => ({
-          ...prev,
-          skills: prev.skills.filter((skill) => !selectedSkills.includes(skill.id)),
-        }));
-        setSelectedSkills([]);
-        setLoading(false);
-      } else {
-        toast.error("Failed to remove skills.");
-        setLoading(false);
-      }
-    } catch (error) {
-      toast.error("An error occurred while removing skills.");
+      if (error) throw error;
+
+      // Update local state after successful deletion
+      setSkillsList((prev) =>
+        prev.filter((skill) => !selectedSkills.includes(skill.id))
+      );
+      setSelectedSkills([]);
+
+      toast.success("Skill(s) removed successfully!");
+    } catch (error: any) {
+      console.error("Supabase error:", error);
+      toast.error(error.message || "An error occurred while removing skills.");
+    } finally {
       setLoading(false);
     }
   };
 
-  if (!profile) return <p>Loading...</p>;
+  if (!skillsList) return <p>Loading...</p>;
 
   return (
-    <div className="">
+    <div>
       <h2 className="text-lg font-semibold mb-2">Skills</h2>
 
-      {/* Skill List */}
+      {/* Skills List */}
       <div className="flex flex-wrap gap-2 mt-2">
-        {profile.skills.map((skill) => (
-          <Badge variant="secondary" key={skill.id} onClick={() => handleSkillClick(skill.id)} className={`cursor-pointer px-3 py-1 rounded-full text-sm ${selectedSkills.includes(skill.id) ? "bg-red-500 text-white" : ""
-            }`}>  {skill.name}</Badge>
-
+        {skillsList.map((skill) => (
+          <Badge
+            variant="secondary"
+            key={skill.id}
+            onClick={() => handleSkillClick(skill.id)}
+            className={`cursor-pointer px-3 py-1 rounded-full text-sm ${
+              selectedSkills.includes(skill.id)
+                ? "bg-red-500 text-white"
+                : ""
+            }`}
+          >
+            {skill.name}
+          </Badge>
         ))}
       </div>
 
@@ -80,11 +86,13 @@ const setProfilestore = useSellerProfile((state) => state.setProfile);
       {selectedSkills.length > 0 && (
         <button
           onClick={removeSkills}
-          className=" bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition mt-6"
+          className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition mt-6"
+          disabled={loading}
         >
-          {loading ? 'Uploading......' : " Remove Selected Skills"}
+          {loading ? "Removing..." : "Remove Selected Skills"}
         </button>
       )}
+
       <Toaster position="top-center" />
     </div>
   );

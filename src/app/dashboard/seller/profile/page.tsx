@@ -1,187 +1,104 @@
 /* eslint-disable @next/next/no-img-element */
-"use client"
+"use client";
+
+import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { Share2, Pencil, Star, Bookmark, PlusCircleIcon, Trash, EditIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Share2, Pencil, Star, Bookmark, PlusCircleIcon, Trash, EditIcon, Briefcase, ArrowRight, CircleUser, PencilIcon } from "lucide-react";
 import MyModal from "@/components/ui/MyModal";
 import AddExperienceForm from "./Components/AddExperienceForm";
 import SellerSkills from "@/components/onboarding/SellerSkills";
 import { toast, Toaster } from "sonner";
-import MySkills from "./Components/MySkill";
-import { createClient } from "@supabase/supabase-js";
 import Swal from "sweetalert2";
 import UpdateExperienceForm from "./Components/UpdateExperienceForm";
 import PluginNavbar from "../Components/NavBar";
+import { createClient } from "@/lib/supabase/clients";
 
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+// Create Supabase client
+const supabase = createClient();
 
-// Function to fetch user profile and related data
-async function fetchAndReturnUserProfile() {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error("No user logged in");
+// Fetch all profile data (profile + experiences + awards + educations)
+const fetchProfileData = async () => {
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+  if (authError || !user) throw new Error("User not authenticated");
 
-  const { data: profileData, error: profileError } = await supabase
+  // Fetch profile
+  const { data: profile, error: profileError } = await supabase
     .from("profiles")
-    .select("id, first_name, last_name, email, avatar_url")
+    .select("*")
     .eq("id", user.id)
     .single();
-
   if (profileError) throw profileError;
 
-  const { data: experiences, error: expError } = await supabase
-    .from("experiences")
+  // Fetch all user experiences
+  const { data: experiencesData, error: expError } = await supabase
+    .from("user_experiences")
     .select("*")
     .eq("user_id", user.id);
-
   if (expError) throw expError;
 
-  const { data: educations, error: eduError } = await supabase
-    .from("educations")
-    .select("*")
-    .eq("user_id", user.id);
-
-  if (eduError) throw eduError;
-
-  const { data: awards, error: awardError } = await supabase
-    .from("awards")
-    .select("*")
-    .eq("user_id", user.id);
-
-  if (awardError) throw awardError;
+  // Separate experiences by type
+  const experiences = experiencesData.filter((exp) => exp.type === "experience");
+  const awards = experiencesData.filter((exp) => exp.type === "award");
+  const educations = experiencesData.filter((exp) => exp.type === "education");
 
   return {
-    ...profileData,
-    experiences: experiences || [],
-    educations: educations || [],
-    awards: awards || [],
+    ...profile,
+    experiences,
+    awards,
+    educations,
   };
-}
+};
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState({
-    id: null,
-    first_name: "",
-    last_name: "",
-    email: "",
-    avatar_url: null,
-    experiences: [],
-    educations: [],
-    awards: [],
-  });
-  const [selectedFile, setSelectedFile] = useState(null);
+  const queryClient = useQueryClient();
   const [addSkill, setAddSkill] = useState(false);
   const [addExperience, setAddExperience] = useState(false);
   const [addAward, setAddAward] = useState(false);
   const [addEducation, setAddEducation] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [preview, setPreview] = useState(null);
   const [updateExperience, setUpdateExperience] = useState(null);
-  const [uploading, setUploading] = useState(false);
+  const [profileCompletion] = useState(70);
+  // ✅ Fetch everything using React Query
+  const {
+    data: profile,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["profile"],
+    queryFn: fetchProfileData,
+    staleTime: 1000 * 60 * 5, // cache for 5 mins
+  });
 
-  // Fetch profile on component mount
-  useEffect(() => {
-    async function loadProfile() {
-      try {
-        const profileData = await fetchAndReturnUserProfile();
-        if (profileData && profileData.id) {
-          setProfile(profileData);
-        }
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-        toast.error("Failed to load profile");
-      }
-    }
-    loadProfile();
-  }, []);
+  if (isLoading) {
+    return (
+      <PluginNavbar>
+        <div className="text-center py-20 text-white">Loading profile...</div>
+      </PluginNavbar>
+    );
+  }
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-      setPreview(URL.createObjectURL(file));
-    }
-  };
-
-  const uploadImage = async () => {
-    if (!selectedFile) return toast.error("Please select an image first!");
-    setUploading(true);
-
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("No user logged in");
-
-      const fileExt = selectedFile.name.split(".").pop();
-      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-      const { data, error } = await supabase.storage
-        .from("avatars")
-        .upload(fileName, selectedFile, {
-          cacheControl: "3600",
-          upsert: true,
-        });
-
-      if (error) throw error;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from("avatars")
-        .getPublicUrl(fileName);
-
-      // Update profile with new avatar URL
-      const { error: updateError } = await supabase
-        .from("profiles")
-        .update({ avatar_url: publicUrl })
-        .eq("id", user.id);
-
-      if (updateError) throw updateError;
-
-      // Refresh profile
-      const profileData = await fetchAndReturnUserProfile();
-      if (profileData && profileData.id) {
-        setProfile(profileData);
-      }
-
-      toast.success("Profile picture updated successfully!");
-    } catch (error) {
-      console.error("Upload error:", error);
-      toast.error("Upload error occurred");
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleDelete = async (id, type) => {
-    try {
-      const table = type === "experience" ? "experiences" : type === "education" ? "educations" : "awards";
-      const { error } = await supabase
-        .from(table)
-        .delete()
-        .eq("id", id);
-
-      if (error) throw error;
-
-      // Refresh profile
-      const profileData = await fetchAndReturnUserProfile();
-      if (profileData && profileData.id) {
-        setProfile(profileData);
-      }
-
-      toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully!`);
-    } catch (error) {
-      console.error(`Error deleting ${type}:`, error);
-      toast.error(`An error occurred while deleting ${type}`);
-    }
-  };
+  if (isError) {
+    return (
+      <PluginNavbar>
+        <div className="text-center py-20 text-red-500">
+          Failed to fetch profile data. Please try again.
+        </div>
+      </PluginNavbar>
+    );
+  }
 
   return (
     <PluginNavbar>
-      <div className="bg-[#0C0C0C] text-white p-4 md:p-10">
+      <div className=" text-white p-4 md:p-10">
         <div className="w-full mx-auto">
-          <div className="bg-[#141414] p-6 md:p-10 rounded-2xl border border-[#2A2A2A]">
+          <div className=" p-6 md:p-10 rounded-2xl border border-[#2A2A2A]">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="flex items-center gap-4">
@@ -189,37 +106,25 @@ export default function ProfilePage() {
                   <div className="flex items-center">
                     <div className="relative w-24 h-24 rounded-full overflow-hidden">
                       <img
-                        src={preview || profile.avatar_url || "/images/avatar.jpg"}
+                        src={profile?.avatar_url || "/images/avatar.jpg"}
                         alt="User Avatar"
                         className="w-20 h-20 rounded-full object-cover border shadow"
                       />
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="absolute inset-0 opacity-0 cursor-pointer"
-                        onChange={handleImageChange}
-                      />
                     </div>
                     <div>
-                      <h2 className="text-xl font-semibold">{profile.first_name} {profile.last_name}</h2>
-                      <p className="text-sm text-gray-400">{profile.email}</p>
+                      <h2 className="text-xl font-semibold">{profile?.full_name}</h2>
+                      <p className="text-lg text-gray-400">{profile?.email}</p>
                     </div>
-                  </div>
-                  <div
-                    className="p-2 bg-yellow-500 w-fit rounded h-fit ms-4 cursor-pointer hover:bg-transparent hover:border hover:border-yellow-500"
-                    onClick={uploadImage}
-                  >
-                    <p>{uploading ? "Uploading..." : "Update Profile Picture"}</p>
                   </div>
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline" className="border-yellow-500 text-yellow-500 hover:bg-transparent hover:text-yellow-500">
+                <div className="border-2 font-bold border-yellow-500 text-yellow-500 hover:bg-transparent hover:text-yellow-500 outline px-2 py-2 rounded-md flex items-center gap-2 cursor-pointer">
                   Saved Jobs
-                </Button>
-                <Button className="bg-yellow-500 text-black hover:bg-yellow-600">
+                </div>
+                <div className="bg-yellow-500 text-black hover:bg-yellow-600 px-2 py-2 rounded-md font-bold">
                   See Profile Settings
-                </Button>
+                </div>
               </div>
             </div>
 
@@ -227,57 +132,66 @@ export default function ProfilePage() {
 
             <div className="grid md:grid-cols-4 gap-8">
               {/* Sidebar */}
-              <div className="space-y-6">
-                <div className="border border-[#2A2A2A] rounded-xl p-4">
-                  <div className="text-sm text-gray-300 mb-1">Plugs:</div>
-                  <div className="text-2xl font-bold">275</div>
-                </div>
-
-                <div className="border border-[#2A2A2A] rounded-xl p-4 space-y-4">
-                  <div>
-                    <p className="font-semibold mb-2">Proposals and offers</p>
-                    <div className="flex justify-between text-sm">
-                      <span>Contract Offers</span>
-                      <span>2</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span>Proposals</span>
-                      <span>2</span>
-                    </div>
-                  </div>
-
-                  <Separator className="bg-[#2A2A2A]" />
-
-                  <div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span>Profile Visibility</span>
-                      <Button variant="link" className="text-yellow-500 px-0 h-auto text-sm">Edit</Button>
-                    </div>
-                    <div className="mt-2">
-                      <Progress value={70} className="h-2 bg-[#1C1C1C]" />
-                      <p className="text-xs mt-1 text-gray-400">70%</p>
-                    </div>
+              <div className="space-y-6 border-r border-[#2A2A2A] pr-6">
+                {/* plugs */}
+                <div className="w-full p-4 rounded-[15px]  outline-1 outline-offset-[-1px] outline-[#c2c4cf]/20 inline-flex flex-col justify-start items-start gap-3">
+                  <div className="w-full inline-flex justify-center items-center gap-2.5">
+                    <img src="/images/logo-single-yellow.png" alt="Plugs Icon" className="w-6 h-6" />
+                    <div className="flex-1 justify-start"><span className="text-white text-base font-normal font-['Outfit'] leading-normal">Plugs:     </span><span className="text-[#e3a325] text-base font-normal font-['Outfit'] underline leading-normal">{profile.plugs ?? 0}</span></div>
                   </div>
                 </div>
 
-                <div className="text-sm text-gray-400 space-y-2">
-                  <p>Hours per week</p>
-                  <p className="text-white">More than 30 hrs/week</p>
-                  <p>Open to contract to hire</p>
+                <div className="w-full p-4  rounded-[15px]  outline-1 outline-offset-[-1px] outline-[#c2c4cf]/20 inline-flex flex-col justify-start items-start gap-3">
+                  <div className="w-full inline-flex justify-center items-center gap-2.5">
+                    <Briefcase className="w-6 h-6" color="orange" />
+                    <div className="flex-1 justify-start text-white text-base font-normal font-['Outfit'] leading-normal">Proposals and offers</div>
+                    <div className="w-6 h-6 relative overflow-hidden">
+                      <ArrowRight className="w-6 h-6" color="orange" />
+                    </div>
+                  </div>
+                  <div className="w-full flex justify-between items-start gap-[135px]">
+                    <div className="w-28 justify-start text-white text-lg font-normal font-['Outfit'] leading-normal">Contract Offers</div>
+                    <div className="w-[13px] justify-start text-white text-sm font-normal font-['Outfit'] leading-normal">2</div>
+                  </div>
+                  <div className="w-full inline-flex justify-between items-start gap-[135px]">
+                    <div className="w-28 justify-start text-white text-lg font-normal font-['Outfit'] leading-normal">Proposals</div>
+                    <div className="w-[13px] justify-start text-white text-sm font-normal font-['Outfit'] leading-normal">2</div>
+                  </div>
                 </div>
-                <div className="text-sm text-gray-400 flex items-center justify-between">
+
+
+                <div className=" border border-gray-700 rounded-xl p-4">
+                  <h3 className="font-medium">Profile Completion</h3>
+                  <div className="mt-2 flex justify-between text-sm">
+                    <span className="text-gray-400">Profile Visibility</span>
+                    <button className="text-yellow-400 underline">Edit</button>
+                  </div>
+                  <div className="relative w-full bg-gray-800 rounded-full h-2 mt-2">
+                    <div
+                      className="bg-yellow-500 h-2 rounded-full"
+                      style={{ width: `${profileCompletion}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-right text-xs mt-1 text-gray-400">{profileCompletion}%</p>
+                  <button className="mt-3 text-yellow-400 underline text-sm">
+                    Complete your profile
+                  </button>
+                </div>
+
+
+                <div className="text-lg text-gray-400 flex items-center justify-between">
                   <p>Experience</p>
                   <PlusCircleIcon className="hover:text-yellow-500 cursor-pointer" onClick={() => setAddExperience(true)} />
                 </div>
-                <div className="text-sm text-gray-400 flex items-center justify-between">
+                <div className="text-lg text-gray-400 flex items-center justify-between">
                   <p>Skills</p>
                   <PlusCircleIcon className="hover:text-yellow-500 cursor-pointer" onClick={() => setAddSkill(true)} />
                 </div>
-                <div className="text-sm text-gray-400 flex items-center justify-between">
+                <div className="text-lg text-gray-400 flex items-center justify-between">
                   <p>Education</p>
                   <PlusCircleIcon className="hover:text-yellow-500 cursor-pointer" onClick={() => setAddEducation(true)} />
                 </div>
-                <div className="text-sm text-gray-400 flex items-center justify-between">
+                <div className="text-lg text-gray-400 flex items-center justify-between">
                   <p>Awards</p>
                   <PlusCircleIcon className="hover:text-yellow-500 cursor-pointer" onClick={() => setAddAward(true)} />
                 </div>
@@ -285,47 +199,43 @@ export default function ProfilePage() {
 
               {/* Main Content */}
               <div className="md:col-span-3 space-y-8">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h2 className="text-xl font-bold">Ui/Ux designer and Product developer</h2>
-                    <p className="text-sm mt-2 text-gray-300">
-                      I am a passionate UI/UX designer and product developer...{" "}
-                      <Button variant="link" className="text-yellow-500 px-1 text-sm">more</Button>
-                    </p>
-                  </div>
-                  <div className="text-right text-sm">
-                    <p className="font-bold">$12.50/hr</p>
-                    <div className="flex justify-end gap-2 mt-1 text-yellow-500">
-                      <Pencil size={16} className="cursor-pointer" />
-                      <Star size={16} className="cursor-pointer" />
-                      <Bookmark size={16} />
-                      <Share2 size={16} />
+
+                <div className="w-full h-[344px]  border-r border-t border-b-[0.50px] border-[#c2c4cf]/20">
+                  <div className="w-full  ">
+                    <div className="flex flex-row justify-between items-center p-4 mb-4">
+                      <div className="w-[498px] justify-start text-white text-[28px] font-normal font-['Outfit']">Ui/Ux designer and Product developer </div>
+                      <div className="flex flex-row gap-2 ">
+                        <div className="w-28 left-[-19px]  justify-start text-white text-xl font-normal font-['Outfit']">₦30,000/hr </div>
+                        <PencilIcon className="hover:text-yellow-500 cursor-pointer" color="yellow" />
+                      </div>
+
                     </div>
+
+                    <div className="w-full flex flex-row justify-between items-start p-4">
+                      <div className="w-11/12 h-[146px] justify-start">
+                        <span className="text-white text-lg font-normal font-['Outfit'] line-clamp-5">
+                          I am a passionate UI/UX designer and product developer dedicated to creating intuitive, user-centric digital experiences. With a keen eye for design and a problem-solving mindset, I specialize in crafting seamless interfaces and innovative products that enhance usability and engagement. My expertise spans user research, wireframing, prototyping, and front-end design, ensuring that every product I develop is both visually appealing and functionally efficient. Driven by a deep understanding of user behavior and emerging trends, I strive to bridge the gap........
+                        </span>
+                        <span className="text-[#e3a325] text-lg font-normal font-['Outfit']">more</span>
+                      </div>
+                      <PencilIcon className="hover:text-yellow-500 cursor-pointer" color="yellow" />
+                    
+                    </div>
+
                   </div>
                 </div>
-
-                <div>
-                  <h3 className="font-semibold mb-2">Portfolio</h3>
-                  <div className="flex gap-4 mb-2">
-                    <span className="text-yellow-500 border-b border-yellow-500 pb-1 text-sm cursor-pointer">Published</span>
-                    <span className="text-gray-400 text-sm cursor-pointer">Draft</span>
-                  </div>
-                  <div className="text-sm text-gray-400 border border-[#2A2A2A] p-4 rounded-xl">
-                    Add a Project. Talent are hired 9x more often if theyve published a portfolio.
-                  </div>
-                </div>
-
+                {/* Work Experience */}
                 <div className="border-b border-[#2A2A2A] rounded-xl p-4">
                   <h3 className="font-semibold mb-2">Work History</h3>
-                  <div className="text-sm text-gray-200 space-y-2">
-                    {profile.experiences.length === 0 ? (
+                  <div className="text-lg text-gray-200 space-y-2">
+                    {profile?.experiences?.length === 0 ? (
                       <p>No Work Experience Added</p>
                     ) : (
-                      profile.experiences.map((experience) => (
+                      profile?.experiences?.map((experience) => (
                         <div className="flex justify-between items-start py-4" key={experience.id}>
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="text-yellow-500 text-sm">●</span>
+                              <span className="text-yellow-500 text-lg">●</span>
                               <p>{experience.title}</p>
                             </div>
                             <p className="text-gray-400 ml-4">
@@ -357,7 +267,8 @@ export default function ProfilePage() {
                                   confirmButtonText: "Yes, delete it!",
                                 }).then((result) => {
                                   if (result.isConfirmed) {
-                                    handleDelete(experience.id, "experience");
+                                    toast.success("Deleted successfully!");
+                                    queryClient.invalidateQueries({ queryKey: ["profile"] });
                                   }
                                 })
                               }
@@ -369,127 +280,63 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
+                {/* Education */}
                 <div className="border-b border-[#2A2A2A] rounded-xl p-4">
                   <h3 className="font-semibold mb-2">Education History</h3>
-                  <div className="text-sm text-gray-200 space-y-2">
-                    {profile.educations.length === 0 ? (
+                  <div className="text-lg text-gray-200 space-y-2">
+                    {profile?.educations?.length === 0 ? (
                       <p>No Education Added</p>
                     ) : (
-                      profile.educations.map((education) => (
+                      profile?.educations?.map((education) => (
                         <div className="flex justify-between items-start py-4" key={education.id}>
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="text-yellow-500 text-sm">●</span>
+                              <span className="text-yellow-500 text-lg">●</span>
                               <p>{education.title}</p>
                             </div>
                             <p className="text-gray-400 ml-4">
                               {education.from} | {education.start_year} - {education.end_year}
                             </p>
                           </div>
-                          <div className="flex items-center gap-4">
-                            <EditIcon
-                              width={20}
-                              height={20}
-                              className="text-yellow-500 cursor-pointer"
-                              onClick={() => {
-                                setUpdateExperience(education);
-                                setShowUpdateModal(true);
-                              }}
-                            />
-                            <Trash
-                              width={20}
-                              height={20}
-                              className="text-red-400 cursor-pointer"
-                              onClick={() =>
-                                Swal.fire({
-                                  title: "Are you sure?",
-                                  text: "You won't be able to revert this!",
-                                  icon: "warning",
-                                  showCancelButton: true,
-                                  confirmButtonColor: "#3085d6",
-                                  cancelButtonColor: "#d33",
-                                  confirmButtonText: "Yes, delete it!",
-                                }).then((result) => {
-                                  if (result.isConfirmed) {
-                                    handleDelete(education.id, "education");
-                                  }
-                                })
-                              }
-                            />
-                          </div>
                         </div>
                       ))
                     )}
                   </div>
                 </div>
 
+                {/* Awards */}
                 <div className="border-b border-[#2A2A2A] rounded-xl p-4">
                   <h3 className="font-semibold mb-2">Award History</h3>
-                  <div className="text-sm text-gray-200 space-y-2">
-                    {profile.awards.length === 0 ? (
+                  <div className="text-lg text-gray-200 space-y-2">
+                    {profile?.awards?.length === 0 ? (
                       <p>No Awards Added</p>
                     ) : (
-                      profile.awards.map((award) => (
+                      profile?.awards?.map((award) => (
                         <div className="flex justify-between items-start py-4" key={award.id}>
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="text-yellow-500 text-sm">●</span>
+                              <span className="text-yellow-500 text-lg">●</span>
                               <p>{award.title}</p>
                             </div>
                             <p className="text-gray-400 ml-4">
                               {award.from} | {award.start_year} - {award.end_year}
                             </p>
                           </div>
-                          <div className="flex items-center gap-4">
-                            <EditIcon
-                              width={20}
-                              height={20}
-                              className="text-yellow-500 cursor-pointer"
-                              onClick={() => {
-                                setUpdateExperience(award);
-                                setShowUpdateModal(true);
-                              }}
-                            />
-                            <Trash
-                              width={20}
-                              height={20}
-                              className="text-red-400 cursor-pointer"
-                              onClick={() =>
-                                Swal.fire({
-                                  title: "Are you sure?",
-                                  text: "You won't be able to revert this!",
-                                  icon: "warning",
-                                  showCancelButton: true,
-                                  confirmButtonColor: "#3085d6",
-                                  cancelButtonColor: "#d33",
-                                  confirmButtonText: "Yes, delete it!",
-                                }).then((result) => {
-                                  if (result.isConfirmed) {
-                                    handleDelete(award.id, "award");
-                                  }
-                                })
-                              }
-                            />
-                          </div>
                         </div>
                       ))
                     )}
                   </div>
-                </div>
-
-                <div>
-                  <MySkills cominprofile={profile} />
                 </div>
               </div>
             </div>
 
             <Separator className="my-6 bg-[#2A2A2A]" />
 
-            <div className="text-sm text-gray-400 bg-[#0F0F0F] border border-[#2A2A2A] rounded-xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="text-lg text-gray-400 bg-[#0F0F0F] border border-[#2A2A2A] rounded-xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 <p className="mb-2 text-white">Your project catalog</p>
                 <p className="max-w-lg">
-                  Projects are a new way to earn on Upwork that helps you do more of the work you love to do. Create project offerings that highlight your strengths and attract more clients.
+                  Projects are a new way to earn on Plugin that helps you do more of the work you love to do. Create project offerings that highlight your strengths and attract more clients.
                 </p>
               </div>
               <Button className="bg-yellow-500 text-black hover:bg-yellow-600 w-fit">
