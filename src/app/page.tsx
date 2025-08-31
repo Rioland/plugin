@@ -4,9 +4,8 @@
 
 import { toast, Toaster } from "sonner";
 import React, { useState, useEffect } from "react";
-import { Eye, EyeOff, User, Lock, Mail, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, User, Lock, AlertCircle } from "lucide-react";
 import Link from "next/link";
-
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/clients";
 import Swal from "sweetalert2";
@@ -14,29 +13,39 @@ import Swal from "sweetalert2";
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [loading, setLoading] = useState(false)
+  const supabase = createClient();
+
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [authError, setAuthError] = useState<string | null>(null);
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
 
-  const supabase = createClient()
+  // Load "Remember Me" preference from localStorage on mount
+  useEffect(() => {
+    const savedRememberMe = localStorage.getItem("rememberMe");
+    setRememberMe(savedRememberMe === "true");
+  }, []);
+
+  // Save "Remember Me" preference to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem("rememberMe", rememberMe.toString());
+  }, [rememberMe]);
 
   // Check for auth callback errors
   useEffect(() => {
-    const error = searchParams.get('error');
+    const error = searchParams.get("error");
     if (error) {
-
       setAuthError(error);
-
       Swal.fire({
-        title: 'Error!',
+        title: "Error!",
         text: error,
-        icon: 'error',
-        confirmButtonText: 'Cool'
+        icon: "error",
+        confirmButtonText: "Cool",
       });
-      // }  
     }
   }, [searchParams]);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -49,81 +58,75 @@ export default function LoginForm() {
     }
 
     setUserEmail(email);
+    setLoading(true);
 
     try {
-
-      setLoading(true)
-
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.toString(),
-        password: password.toString(),
-      })
+        email,
+        password,
+      });
 
       if (error) {
         if (error.message.includes("Email not confirmed")) {
-          const siteUrl = typeof window !== 'undefined'
-            ? window.location.origin
-            : process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+          const siteUrl =
+            typeof window !== "undefined"
+              ? window.location.origin
+              : process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
           const redirectUrl = `${siteUrl}/auth/verify-email`;
 
           await supabase.auth.resend({
             type: "signup",
-            email: email.toString(),
+            email,
             options: {
               emailRedirectTo: redirectUrl,
             },
-          })
+          });
 
           toast.error("Please verify your email before logging in.");
         } else {
-          console.log('Login error:', error)
+          console.log("Login error:", error);
           toast.error(error.message);
         }
-        return; // Don't proceed to success handling if there was an error
+        return;
       }
+
+      // Handle Remember Me
+      const accessToken = data.session?.access_token;
+      const refreshToken = data.session?.refresh_token;
+
+      if (!accessToken) {
+        toast.error("Login failed: No access token received.");
+        return;
+      }
+
+      if (rememberMe) {
+        // Keep session even after browser restart
+        await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken ?? "",
+        });
+      } else {
+        // Clear existing refresh token for a temporary session
+        await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: "", // This disables auto-refresh
+        });
+      }
+
       toast.success("Login successful!");
       if (data.user.user_metadata?.account_type === "seller") {
         router.push("/dashboard/seller");
       } else {
         router.push("/dashboard/buyer");
       }
-
-
-
     } catch (error: any) {
-      console.error('Login error:', error);
-      toast.error(error || "An unexpected error occurred");
+      console.error("Login error:", error);
+      toast.error(error?.message || "An unexpected error occurred");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
-
-  // const handleResendVerification = async () => {
-  //   if (!userEmail) {
-  //     toast.error("Email is required to resend verification");
-  //     return;
-  //   }
-
-  //   setResendPending(true);
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append('email', userEmail);
-
-  //     const result = await resendVerificationEmail(null, formData);
-
-  //     if (result.error) {
-  //       toast.error(result.error);
-  //     } else if (result.success) {
-  //       toast.success(result.message || "Verification email sent! Please check your inbox.");
-  //     }
-  //   } catch (error: any) {
-  //     console.error('Resend error:', error);
-  //     toast.error(error.message || "Failed to resend verification email");
-  //   } finally {
-  //     setResendPending(false);
-  //   }
-  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f2c94c] to-black text-white p-2">
@@ -147,10 +150,12 @@ export default function LoginForm() {
           <div className="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
             <div className="flex items-center mb-2">
               <AlertCircle className="h-4 w-4 text-red-400 mr-2" />
-              <h3 className="text-sm font-semibold text-red-400">Authentication Error</h3>
+              <h3 className="text-sm font-semibold text-red-400">
+                Authentication Error
+              </h3>
             </div>
             <p className="text-xs text-red-200">{authError}</p>
-            {authError.includes('expired') && (
+            {authError.includes("expired") && (
               <Link
                 href="/auth/forgot-password"
                 className="inline-block mt-2 text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition"
@@ -162,6 +167,7 @@ export default function LoginForm() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Email */}
           <div className="mb-5">
             <label className="block mb-1 text-sm">Email Address</label>
             <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md">
@@ -171,18 +177,14 @@ export default function LoginForm() {
                 name="email"
                 id="email"
                 required
-                defaultValue=""
                 autoComplete="email"
-                autoFocus
-                autoCorrect="off"
-                autoCapitalize="none"
-                spellCheck="false"
                 placeholder="Enter your email address"
                 className="bg-transparent ml-2 outline-none w-full text-sm placeholder-gray-400 p-3"
               />
             </div>
           </div>
 
+          {/* Password */}
           <div className="mb-3">
             <label className="block mb-1 text-sm">Password</label>
             <div className="flex items-center bg-neutral-800 px-3 py-2 rounded-md relative">
@@ -190,7 +192,6 @@ export default function LoginForm() {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                defaultValue=""
                 autoComplete="current-password"
                 required
                 name="password"
@@ -215,16 +216,21 @@ export default function LoginForm() {
             </div>
           </div>
 
+          {/* Remember Me */}
           <div className="flex items-center space-x-2 mb-5">
             <input
               type="checkbox"
               id="remember"
               className="accent-purple-500"
-              defaultChecked={false}
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
             />
-            <label htmlFor="remember" className="text-sm">Remember Me</label>
+            <label htmlFor="remember" className="text-sm">
+              Remember Me
+            </label>
           </div>
 
+          {/* Submit Button */}
           {loading ? (
             <img src="/images/preloader.gif" className="mx-auto" />
           ) : (
@@ -247,8 +253,6 @@ export default function LoginForm() {
             </Link>
           </p>
         </form>
-
-
       </div>
     </div>
   );

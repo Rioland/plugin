@@ -3,13 +3,13 @@ import { ApiBaseUrl, fetchAndReturnUserProfile } from "@/helper/functions";
 import { Button } from "@/components/ui/button";
 import { toast, Toaster } from "sonner";
 import Cookies from 'js-cookie';
-import { useSellerProfile } from "@/stores/userStore";
+
 
 const SellerSkills = () => {
   const [categories, setCategories] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [loading, setLoading] = useState(false);
-  const setProfile = useSellerProfile((state) => state.setProfile);
+  // const setProfile = useSellerProfile((state) => state.setProfile);
   useEffect(() => {
     fetch(`${ApiBaseUrl}/categories`, {
       headers: {

@@ -10,7 +10,7 @@ export default function VerifySuccess() {
   useEffect(() => {
     // Redirect after 4 seconds
     const timer = setTimeout(() => {
-      router.push("/"); // change "/login" to your desired redirect page
+      router.push("/"); 
     }, 4000);
 
     return () => clearTimeout(timer);
@@ -38,7 +38,7 @@ export default function VerifySuccess() {
           Your email address has been verified. You will be redirected shortly...
         </p>
         <button
-          onClick={() => router.push("/login")}
+          onClick={() => router.push("/")}
           className="px-6 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition"
         >
           Go to Login

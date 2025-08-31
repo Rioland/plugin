@@ -19,7 +19,7 @@ const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
     end_year: "",
     title: "",
     from: "",
-    desc: "",
+    description: "",
     type: type,
   });
 
@@ -61,7 +61,7 @@ const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
           end_year: experience.end_year,
           title: experience.title,
           from: experience.from,
-          desc: experience.desc,
+          description: experience.description,
           type: experience.type,
         },
       ]);
@@ -85,7 +85,7 @@ const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
           end_year: "",
           title: "",
           from: "",
-          desc: "",
+          description: "",
           type: type,
         });
       }
@@ -172,8 +172,8 @@ const AddExperienceForm: React.FC<AddExperienceFormProps> = ({ type }) => {
       <input type="hidden" name="type" value={type} />
 
       <textarea
-        name="desc"
-        value={experience.desc}
+        name="description"
+        value={experience.description}
         onChange={handleChange}
         placeholder="Description"
         className="border p-2 w-full mb-2 rounded text-white bg-black"

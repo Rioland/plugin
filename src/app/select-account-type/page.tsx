@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 import { useAccountStore } from '@/stores/useAccountStore';
+import Link from 'next/link';
 import React from 'react';
 
 const PluginPage = () => {
@@ -52,7 +53,7 @@ const PluginPage = () => {
         </div>
       </div>
       <div className="mt-8">
-        <a href="/login" className="text-white ">Already have an account? <span className='text-yellow-500'> Login</span></a>
+        <Link href="/" className="text-white ">Already have an account? <span className='text-yellow-500'> Login</span></Link>
       </div>
     </div>
   );

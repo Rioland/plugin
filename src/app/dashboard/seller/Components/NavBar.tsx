@@ -35,7 +35,7 @@ const PluginNavbar: React.FC<PluginNavbarProps> = ({ children }) => {
         const { data: { user }, error: userError } = await supabase.auth.getUser();
         if (userError || !user) {
           console.error("No logged-in user:", userError);
-          router.push("/login");
+          router.push("/");
           return;
         }
 
@@ -47,14 +47,14 @@ const PluginNavbar: React.FC<PluginNavbarProps> = ({ children }) => {
 
         if (error) {
           console.error("Error fetching profile:", error.message);
-          router.push("/login");
+          router.push("/");
           return;
         }
 
         setProfile(data);
       } catch (err) {
         console.error("Unexpected error:", err);
-        router.push("/login");
+        router.push("/");
       } finally {
         setLoading(false);
       }

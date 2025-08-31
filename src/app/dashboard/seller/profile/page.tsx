@@ -6,7 +6,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { Share2, Pencil, Star, Bookmark, PlusCircleIcon, Trash, EditIcon, Briefcase, ArrowRight, CircleUser, PencilIcon } from "lucide-react";
+import {  PlusCircleIcon, Trash, EditIcon, Briefcase, ArrowRight, PencilIcon } from "lucide-react";
 import MyModal from "@/components/ui/MyModal";
 import AddExperienceForm from "./Components/AddExperienceForm";
 import SellerSkills from "@/components/onboarding/SellerSkills";
@@ -137,7 +137,7 @@ export default function ProfilePage() {
                 <div className="w-full p-4 rounded-[15px]  outline-1 outline-offset-[-1px] outline-[#c2c4cf]/20 inline-flex flex-col justify-start items-start gap-3">
                   <div className="w-full inline-flex justify-center items-center gap-2.5">
                     <img src="/images/logo-single-yellow.png" alt="Plugs Icon" className="w-6 h-6" />
-                    <div className="flex-1 justify-start"><span className="text-white text-base font-normal font-['Outfit'] leading-normal">Plugs:     </span><span className="text-[#e3a325] text-base font-normal font-['Outfit'] underline leading-normal">{profile.plugs ?? 0}</span></div>
+                    <div className="flex-1 justify-start"><span className="text-white text-base font-normal font-['Outfit'] leading-normal">Plugs:     </span><span className="text-[#e3a325] text-base font-normal font-['Outfit'] underline leading-normal ms-4">{profile.plugs ?? 0}</span></div>
                   </div>
                 </div>
 

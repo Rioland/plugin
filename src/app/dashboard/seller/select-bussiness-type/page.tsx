@@ -130,7 +130,7 @@ const KYCVerification = () => {
         <Button
           variant="link"
           className="text-white cursor-pointer"
-          onClick={() => (window.location.href = "/login")}
+          onClick={() => (window.location.href = "/")}
         >
           Already have an account?{" "}
           <span className="text-yellow-500"> Login</span>
