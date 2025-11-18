@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import { toast, Toaster } from 'sonner'
 import { Button } from '../ui/button';
 import Cookies from 'js-cookie';
-import { useSellerProfile } from '@/stores/useSupabaseAuth';
+import { useSellerProfile } from '@/stores/useSellerProfile';
 
 
 

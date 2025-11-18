@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import { fetchAndReturnUserProfile } from "@/helper/functions";
+import { useSellerProfile } from "@/stores/useSellerProfile";
 
 export default function SetBio() {
   const setProfile = useSellerProfile((state) => state.setProfile);

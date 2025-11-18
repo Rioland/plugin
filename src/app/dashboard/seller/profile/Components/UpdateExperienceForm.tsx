@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast, Toaster } from "sonner";
 import Cookies from "js-cookie";
 import { Button } from "@/components/ui/button";
-import { useSellerProfile } from "@/stores/useSupabaseAuth";
+import { useSellerProfile } from "@/stores/useSellerProfile";
 
 
 interface UpdateExperienceFormProps {
