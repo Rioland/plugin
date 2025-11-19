@@ -86,7 +86,7 @@ export default function LoginForm() {
           toast.error("Please verify your email before logging in.");
         } else {
           console.log("Login error:", error);
-          toast.error(error.message);
+          toast.error("Invalid login credentials. Please try again.");
         }
         return;
       }
@@ -122,7 +122,7 @@ export default function LoginForm() {
       }
     } catch (error: any) {
       console.error("Login error:", error);
-      toast.error(error?.message || "An unexpected error occurred");
+      toast.error("An unexpected error occurred. Please try again later.");
     } finally {
       setLoading(false);
     }
