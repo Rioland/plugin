@@ -21,7 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { FooterDivider } from "flowbite-react";
+import { Separator } from "@/components/ui/separator";
 
 
 const navLinks = [
@@ -224,7 +224,7 @@ const AddBillPayment = () => {
           <img src="/images/preloader.gif" width={20} height={20} />
           <p className="text-lg  text-white font-semibold">Dapo Samuel Garuba</p>
         </div>
-        <FooterDivider />
+        <Separator className="my-4" />
         <div className="flex justify-end">
 
           <Button className="bg-yellow-500 hover:border hover:border-yellow-500 hover:bg-transparent px-3 w-fit" variant="default">

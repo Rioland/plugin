@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-const withFlowbiteReact = require("flowbite-react/plugin/nextjs");
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -17,6 +16,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withFlowbiteReact(nextConfig);
-
-module.exports = withFlowbiteReact(nextConfig);
+export default nextConfig;

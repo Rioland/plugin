@@ -1,9 +1,7 @@
 'use client'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-
-import { ModalBody, ModalFooter, ModalHeader, Modal, FooterDivider } from 'flowbite-react'
-
+import { Separator } from "@/components/ui/separator"
 import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { cn } from "@/lib/utils"
 import { Eye, EyeOff, ChevronLeft, ChevronRight, PlusCircle, MinusCircle, ShoppingCart, BadgeCheck, Plus } from "lucide-react"
@@ -128,7 +126,7 @@ export default function WalletPage() {
           <p className="text-lg text-white font-semibold">9:52 AM  </p>
           <p className="text-sm text-gray-400">April 25th, 2024</p>
         </div>
-        <FooterDivider/>
+        <Separator className="my-4" />
         <div className="mb-5">
           <p className="text-sm text-gray-400">Amount:</p>
           <p className="text-lg text-white font-bold">N:200,000 </p>
